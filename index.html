@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio — Creative Studio</title>
-  <meta name="description" content="An interdisciplinary team of researchers, brand strategists, and designers working to strengthen your brand at every stage.">
+  <title>W. — Creative Studio · Resonant Strategy, Carefully Executed</title>
+  <meta name="description" content="We are an interdisciplinary team of researchers, brand strategists, and designers who work side by side with you to strengthen your brand's viability at every stage of your business lifecycle.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo:wght@400;500&family=Inter:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
 
   <style>
     /* ========== RESET & TOKENS ========== */
@@ -27,6 +27,7 @@
       --max-w: 1280px;
       --font-display: 'Archivo Narrow', sans-serif;
       --font-body: 'Inter', sans-serif;
+      --font-archivo: 'Archivo', sans-serif;
       --font-mono: 'Fragment Mono', monospace;
     }
 
@@ -51,14 +52,7 @@
       color: var(--accent);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    a:hover { color: var(--accent); }
-
+    a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; height: auto; }
 
     .grid-8 {
@@ -74,19 +68,11 @@
 
     .label {
       font-family: var(--font-display);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .heading-lg {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 5vw, 64px);
+      font-size: 18px;
       font-weight: 500;
       letter-spacing: -0.02em;
-      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--text-light);
     }
 
     .heading-md {
@@ -104,29 +90,6 @@
       max-width: 540px;
     }
 
-    .cta-link {
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: gap 0.3s ease, color 0.3s ease;
-    }
-
-    .cta-link:hover {
-      color: var(--accent);
-      gap: 14px;
-    }
-
-    .cta-link::after {
-      content: '→';
-      font-size: 16px;
-    }
-
     .divider {
       height: 1px;
       background: rgba(207, 207, 207, 0.15);
@@ -135,21 +98,19 @@
 
     /* ========== CUSTOM CURSOR ========== */
     .cursor-dot {
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       background: var(--accent);
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
       z-index: 100;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
+      transition: width 0.2s, height 0.2s;
       mix-blend-mode: difference;
     }
 
     .cursor-ring {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border: 1px solid rgba(0, 153, 255, 0.4);
       border-radius: 50%;
       position: fixed;
@@ -162,113 +123,30 @@
     .cursor-dot.hovering { width: 14px; height: 14px; }
     .cursor-ring.hovering { width: 50px; height: 50px; border-color: var(--accent); }
 
-    /* ========== NAVBAR ========== */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      padding: 20px 0;
-      transition: background 0.4s ease, backdrop-filter 0.4s ease;
-    }
-
-    .navbar.scrolled {
-      background: rgba(26, 26, 26, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .navbar .grid-8 {
-      align-items: center;
-    }
-
-    .nav-left {
-      grid-column: span 2;
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-center {
-      grid-column: span 4;
-      display: flex;
-      justify-content: center;
-    }
-
-    .nav-logo {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--text-light);
-    }
-
-    .nav-right {
-      grid-column: span 2;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .nav-link {
-      font-family: var(--font-display);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      transition: color 0.3s;
-    }
-
-    .nav-link:hover { color: var(--text-light); }
-
-    .nav-clock {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    .nav-status {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(207, 207, 207, 0.2);
-      color: var(--text-secondary);
-    }
-
-    .nav-status.available {
-      color: #4ade80;
-      border-color: rgba(74, 222, 128, 0.3);
-    }
-
-    /* ========== HERO ========== */
+    /* ========== HERO SECTION ========== */
     .hero {
+      position: relative;
       height: 100vh;
       min-height: 600px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--surface-light);
+      display: grid;
+      grid-template-columns: repeat(8, minmax(50px, 1fr));
+      grid-template-rows: 1fr;
+      gap: var(--grid-gap);
+      padding: 40px var(--side-pad) var(--side-pad);
       overflow: hidden;
     }
 
-    .hero-grid-bg {
+    .hero-video {
       position: absolute;
       inset: 0;
-      background: var(--surface-light);
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: var(--grid-gap);
-      padding: 0 var(--side-pad);
+      z-index: 1;
     }
 
-    .hero-grid-bg .col {
-      border-left: 1px solid rgba(0, 0, 0, 0.06);
-      border-right: 1px solid rgba(0, 0, 0, 0.06);
+    .hero-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .hero-overlay {
@@ -276,87 +154,160 @@
       inset: 0;
       background: #000;
       opacity: 0.25;
-    }
-
-    .hero-content {
-      position: relative;
       z-index: 2;
-      text-align: center;
-      padding: 0 24px;
-    }
-
-    .hero-logo {
-      font-family: var(--font-display);
-      font-size: clamp(80px, 15vw, 200px);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      color: var(--text-light);
-      line-height: 0.9;
-      margin-bottom: 32px;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 1s ease 0.3s forwards;
     }
 
     .hero-tagline {
+      position: relative;
+      z-index: 3;
+      grid-column: 1 / span 3;
+      align-self: end;
       font-family: var(--font-display);
-      font-size: clamp(16px, 2vw, 22px);
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      color: rgba(247, 247, 247, 0.7);
-      margin-bottom: 12px;
+      font-size: clamp(32px, 5.2vw, 66px);
+      font-weight: 500;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+      padding-bottom: 12px;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeUp 1s ease 0.6s forwards;
-    }
-
-    .hero-subtitle {
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: rgba(247, 247, 247, 0.4);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 1s ease 0.8s forwards;
-    }
-
-    .hero-scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeUp 1s ease 1.2s forwards;
-    }
-
-    .hero-scroll-indicator span {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(247, 247, 247, 0.4);
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, rgba(247, 247, 247, 0.4), transparent);
-      animation: scrollPulse 2s ease infinite;
     }
 
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
+    /* ========== NAVBAR (overlaid on hero) ========== */
+    .navbar-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
     }
+
+    .navbar-spacer {
+      flex: 0 0 50vh;
+    }
+
+    .navbar {
+      pointer-events: auto;
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 16px var(--side-pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--surface-light);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      transition: opacity 0.3s;
+    }
+
+    .nav-brand:hover { opacity: 0.7; color: var(--text-light); }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.3s;
+    }
+
+    .nav-link:hover { opacity: 0.6; color: var(--text-light); }
+
+    .nav-greeting {
+      font-family: var(--font-archivo);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 24px;
+      color: rgb(43, 43, 43);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-clock-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-time {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .nav-tz {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .nav-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+    }
+
+    .nav-status-dot.off { background: #ff004d; }
+
+    .nav-status-text { color: var(--text-light); }
 
     /* ========== SECTIONS COMMON ========== */
     .section {
@@ -365,29 +316,41 @@
     }
 
     .section-header {
-      margin-bottom: 64px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px var(--side-pad);
+      width: 100%;
     }
 
     /* ========== ABOUT ========== */
     .about .grid-8 { align-items: start; }
 
-    .about-label {
-      grid-column: span 2;
-      padding-top: 4px;
-    }
+    .about-label { grid-column: span 2; padding-top: 4px; }
 
-    .about-content {
-      grid-column: span 4;
-    }
+    .about-content { grid-column: span 4; }
 
     .about-content .heading-md {
       color: var(--text-light);
       margin-bottom: 24px;
     }
 
-    .about-content .body-text {
-      margin-bottom: 40px;
+    .about-content .body-text { margin-bottom: 40px; }
+
+    .about-cta {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.3s;
     }
+
+    .about-cta:hover { opacity: 0.6; color: var(--text-light); }
 
     .about-side {
       grid-column: span 2;
@@ -413,9 +376,7 @@
     }
 
     /* ========== CLIENTS ========== */
-    .clients {
-      padding: 80px 0;
-    }
+    .clients { padding: 80px 0; }
 
     .clients-inner {
       max-width: var(--max-w);
@@ -423,9 +384,7 @@
       padding: 0 var(--side-pad);
     }
 
-    .clients-label {
-      margin-bottom: 40px;
-    }
+    .clients-label { margin-bottom: 40px; }
 
     .clients-list {
       font-family: var(--font-display);
@@ -435,131 +394,168 @@
       line-height: 2.2;
     }
 
-    .clients-list span {
-      transition: color 0.3s;
-      cursor: default;
-    }
-
-    .clients-list span:hover {
-      color: var(--text-light);
-    }
-
-    .clients-list span::after {
-      content: ' · ';
-      color: rgba(207, 207, 207, 0.2);
-    }
-
-    .clients-list span:last-child::after {
-      content: '';
-    }
+    .clients-list span { transition: color 0.3s; cursor: default; }
+    .clients-list span:hover { color: var(--text-light); }
+    .clients-list span::after { content: ' · '; color: rgba(207, 207, 207, 0.2); }
+    .clients-list span:last-child::after { content: ''; }
 
     /* ========== FEATURED WORK ========== */
-    .work { padding-bottom: 80px; }
+    .work-section { padding-bottom: 80px; }
 
     .work-header {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      max-width: var(--max-w);
-      margin: 0 auto 64px;
-      padding: 0 var(--side-pad);
+      justify-content: center;
+      align-items: center;
+      padding: 24px var(--side-pad);
+      width: 100%;
     }
 
-    .work-cards {
+    .work-header .label::before {
+      content: '\\';
+      margin-right: 6px;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(1px, 1fr));
+      gap: var(--grid-gap);
+      width: 100%;
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 0 var(--side-pad);
+      padding: 68px var(--side-pad) 0;
+    }
+
+    .work-cards-container {
+      grid-column: span 7;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 24px;
     }
 
-    .work-card {
+    .work-row {
       display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(50px, 1fr));
       gap: var(--grid-gap);
-      padding: 24px 0;
-      border-top: 1px solid rgba(207, 207, 207, 0.1);
+      width: 100%;
+    }
+
+    /* Row 1: 4 + 3 */
+    .work-row:nth-child(1) .work-card:nth-child(1) { grid-column: span 4; }
+    .work-row:nth-child(1) .work-card:nth-child(2) { grid-column: span 3; }
+
+    /* Row 2: 2 + 3 + 2 empty */
+    .work-row:nth-child(2) .work-card:nth-child(1) { grid-column: span 2; }
+    .work-row:nth-child(2) .work-card:nth-child(2) { grid-column: span 3; }
+
+    /* Row 3: 3 + 2 + 2 empty */
+    .work-row:nth-child(3) .work-card:nth-child(1) { grid-column: span 3; }
+    .work-row:nth-child(3) .work-card:nth-child(2) { grid-column: span 2; }
+
+    /* ---- Work Card ---- */
+    .work-card {
+      display: flex;
+      flex-direction: column;
       cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .work-card:last-child {
-      border-bottom: 1px solid rgba(207, 207, 207, 0.1);
-    }
-
-    .work-card:hover {
-      background: rgba(207, 207, 207, 0.03);
+      text-decoration: none;
+      overflow: hidden;
     }
 
     .work-card-image {
-      grid-column: span 5;
-      aspect-ratio: 16/9;
+      width: 100%;
+      position: relative;
       overflow: hidden;
-      border-radius: 4px;
       background: var(--text-dark);
     }
+
+    .work-card:nth-child(1) .work-card-image { aspect-ratio: 1.5; }
+    .work-card:nth-child(2) .work-card-image { aspect-ratio: 1.5; }
+
+    .work-row:nth-child(1) .work-card:nth-child(2) .work-card-image { aspect-ratio: 1.778; }
 
     .work-card-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s ease;
+      transition: transform 0.6s ease, filter 0.4s ease;
     }
 
     .work-card:hover .work-card-image img {
       transform: scale(1.03);
+      filter: brightness(0.9);
     }
 
-    .work-card-info {
-      grid-column: span 3;
+    .work-card-frost {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 8px 0;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 8px;
+      width: 100%;
+      padding: 4px 0;
     }
 
-    .work-card-title {
+    .work-card-title-area {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .work-card-slash {
       font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 8px;
+    }
+
+    .work-card-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-left: 2px;
+    }
+
+    .work-card-category-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
     }
 
     .work-card-category {
       font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-secondary);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .work-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .tag {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.04em;
-      padding: 4px 12px;
-      border: 1px solid rgba(207, 207, 207, 0.15);
-      border-radius: 20px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
+      color: var(--surface-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .work-footer {
       max-width: var(--max-w);
       margin: 48px auto 0;
       padding: 0 var(--side-pad);
-      text-align: right;
+      display: flex;
+      justify-content: center;
     }
+
+    .work-footer .nav-link-cta {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      transition: opacity 0.3s;
+    }
+
+    .work-footer .nav-link-cta:hover { opacity: 0.6; color: var(--text-light); }
 
     /* ========== SERVICES ========== */
     .services {
@@ -583,9 +579,7 @@
       padding: 0 var(--side-pad);
     }
 
-    .services-header {
-      margin-bottom: 80px;
-    }
+    .services-header { margin-bottom: 80px; }
 
     .services-counter {
       font-family: var(--font-mono);
@@ -596,8 +590,7 @@
 
     .service-slide {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       opacity: 0;
       transform: translateY(40px);
@@ -620,10 +613,7 @@
       line-height: 1;
     }
 
-    .service-description {
-      max-width: 500px;
-      margin-bottom: 32px;
-    }
+    .service-description { max-width: 500px; margin-bottom: 32px; }
 
     .service-list {
       list-style: none;
@@ -654,8 +644,7 @@
     }
 
     .progress-dot {
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: rgba(207, 207, 207, 0.15);
       transition: background 0.4s, transform 0.4s;
@@ -685,14 +674,12 @@
     }
 
     .whisper-card {
+      display: block;
       padding: 24px 0;
       border-top: 1px solid rgba(207, 207, 207, 0.1);
-      cursor: pointer;
     }
 
-    .whisper-card:hover .whisper-title {
-      color: var(--accent);
-    }
+    .whisper-card:hover .whisper-title { color: var(--accent); }
 
     .whisper-date {
       font-family: var(--font-mono);
@@ -724,13 +711,9 @@
       border-top: 1px solid rgba(207, 207, 207, 0.1);
     }
 
-    .footer .grid-8 {
-      align-items: start;
-    }
+    .footer .grid-8 { align-items: start; }
 
-    .footer-brand {
-      grid-column: span 2;
-    }
+    .footer-brand { grid-column: span 2; }
 
     .footer-logo {
       font-family: var(--font-display);
@@ -747,9 +730,7 @@
       line-height: 1.6;
     }
 
-    .footer-nav {
-      grid-column: span 2;
-    }
+    .footer-nav { grid-column: span 2; }
 
     .footer-nav-title {
       font-family: var(--font-display);
@@ -771,15 +752,13 @@
     .footer-nav ul li a {
       font-size: 14px;
       color: var(--text-secondary);
+      transition: color 0.3s;
     }
 
-    .footer-contact {
-      grid-column: span 2;
-    }
+    .footer-nav ul li a:hover { color: var(--text-light); }
 
-    .footer-socials {
-      grid-column: span 2;
-    }
+    .footer-contact { grid-column: span 2; }
+    .footer-socials { grid-column: span 2; }
 
     .footer-socials-list {
       display: flex;
@@ -794,7 +773,10 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: var(--text-secondary);
+      transition: color 0.3s;
     }
+
+    .footer-socials-list a:hover { color: var(--text-light); }
 
     .footer-bottom {
       grid-column: span 8;
@@ -806,15 +788,8 @@
       border-top: 1px solid rgba(207, 207, 207, 0.1);
     }
 
-    .footer-copyright {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    .footer-credit {
-      font-size: 12px;
-      color: rgba(140, 140, 140, 0.5);
-    }
+    .footer-copyright { font-size: 12px; color: var(--text-secondary); }
+    .footer-credit { font-size: 12px; color: rgba(140, 140, 140, 0.5); }
 
     /* ========== SCROLL REVEAL ========== */
     .reveal {
@@ -823,50 +798,61 @@
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ========== RESPONSIVE ========== */
-    @media (max-width: 1024px) {
-      .nav-left { display: none; }
-      .nav-center { grid-column: span 4; }
-      .nav-right { grid-column: span 4; }
+    @media (max-width: 1279px) {
+      .hero {
+        grid-template-columns: repeat(4, minmax(50px, 1fr));
+      }
 
-      .about-label { grid-column: span 8; margin-bottom: 24px; }
-      .about-content { grid-column: span 5; }
-      .about-side { grid-column: span 3; }
+      .hero-tagline { grid-column: 1 / span 3; }
 
-      .work-card-image { grid-column: span 4; }
-      .work-card-info { grid-column: span 4; }
+      .work-cards-container { grid-column: 1 / -1; gap: 12px; }
 
-      .whispers-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-row {
+        grid-template-columns: repeat(2, minmax(50px, 1fr));
+      }
+
+      .work-row .work-card:nth-child(1),
+      .work-row .work-card:nth-child(2) {
+        grid-column: span 1 !important;
+      }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 809px) {
       .section { padding: 80px 0; }
 
-      .navbar { padding: 16px 0; }
-      .nav-center { grid-column: span 4; }
-      .nav-right { grid-column: span 4; gap: 12px; }
-      .nav-status { display: none; }
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 24px var(--side-pad) var(--side-pad);
+      }
 
-      .about-label { grid-column: span 8; }
+      .hero-tagline {
+        grid-column: span 1;
+        font-size: 36px;
+      }
+
+      .navbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .nav-right { width: 100%; justify-content: space-between; }
+      .nav-greeting { display: none; }
+
+      .about-label { grid-column: span 8; margin-bottom: 12px; }
       .about-content { grid-column: span 8; }
       .about-side { grid-column: span 8; flex-direction: row; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
 
-      .work-card { grid-template-columns: 1fr; }
-      .work-card-image { grid-column: span 1; }
-      .work-card-info { grid-column: span 1; }
+      .work-grid { grid-template-columns: 1fr; padding-top: 24px; }
+      .work-cards-container { grid-column: span 1; }
+      .work-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
 
       .whispers-grid { grid-template-columns: 1fr; }
 
       .footer .grid-8 { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .footer-brand,
-      .footer-nav,
-      .footer-contact,
-      .footer-socials { grid-column: span 1; }
+      .footer-brand, .footer-nav, .footer-contact, .footer-socials { grid-column: span 1; }
       .footer-bottom { grid-column: span 2; flex-direction: column; gap: 12px; text-align: center; }
 
       .cursor-dot, .cursor-ring { display: none; }
@@ -874,10 +860,7 @@
 
     @media (max-width: 480px) {
       .footer .grid-8 { grid-template-columns: 1fr; }
-      .footer-brand,
-      .footer-nav,
-      .footer-contact,
-      .footer-socials { grid-column: span 1; }
+      .footer-brand, .footer-nav, .footer-contact, .footer-socials { grid-column: span 1; }
       .footer-bottom { grid-column: span 1; }
     }
   </style>
@@ -888,39 +871,52 @@
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- ========== NAVBAR ========== -->
-  <nav class="navbar" id="navbar">
-    <div class="grid-8">
-      <div class="nav-left">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#work" class="nav-link">Work</a>
-      </div>
-      <div class="nav-center">
-        <a href="#" class="nav-logo">W.</a>
-      </div>
-      <div class="nav-right">
-        <span class="nav-clock" id="navClock"></span>
-        <span class="nav-status available">Available</span>
-        <a href="#contact" class="nav-link">Contact</a>
-      </div>
-    </div>
-  </nav>
-
   <!-- ========== HERO ========== -->
   <section class="hero" id="hero">
-    <div class="hero-grid-bg">
-      <div class="col"></div><div class="col"></div><div class="col"></div><div class="col"></div>
-      <div class="col"></div><div class="col"></div><div class="col"></div><div class="col"></div>
+    <!-- Video Background -->
+    <div class="hero-video">
+      <video autoplay loop muted playsinline>
+        <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4">
+      </video>
     </div>
+
+    <!-- Dark Overlay (25%) -->
     <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="hero-logo">W.</div>
-      <p class="hero-tagline">Hi, we're a creative studio — call us W.</p>
-      <p class="hero-subtitle">Resonant Strategy, Carefully Executed</p>
+
+    <!-- Tagline at bottom-left, spanning 3 of 8 columns -->
+    <div class="hero-tagline">
+      WE ARE A STORY<br>
+      OF HISTORY<br>
+      IN THE MAKING
     </div>
-    <div class="hero-scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+
+    <!-- Navbar overlaid in lower half -->
+    <div class="navbar-wrapper">
+      <div class="navbar-spacer"></div>
+      <nav class="navbar" id="navbar">
+        <div class="nav-left">
+          <a href="#" class="nav-brand">W.</a>
+          <div class="nav-links">
+            <div class="nav-links-row">
+              <a href="#whispers" class="nav-link">Whispers</a>
+              <a href="#about" class="nav-link">About</a>
+              <a href="#work" class="nav-link">Work</a>
+            </div>
+            <span class="nav-greeting">Hi, we're W. — call us double u :)</span>
+          </div>
+        </div>
+        <div class="nav-right">
+          <a href="#contact" class="nav-link">Contact</a>
+          <div class="nav-clock-area">
+            <span class="nav-time" id="navTime"></span>
+            <span class="nav-tz" id="navTz"></span>
+            <div class="nav-status">
+              <div class="nav-status-dot" id="statusDot"></div>
+              <span class="nav-status-text" id="statusText"></span>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   </section>
 
@@ -928,30 +924,18 @@
   <section class="section about" id="about">
     <div class="grid-8">
       <div class="about-label reveal">
-        <span class="label">About</span>
+        <span class="label">\ About</span>
       </div>
       <div class="about-content reveal">
         <h2 class="heading-md">We are an interdisciplinary team of researchers, brand strategists, and designers.</h2>
         <p class="body-text">We work side by side with you to strengthen your brand's viability at every stage of your business lifecycle. From research and strategy to visual identity and experience design — we craft brands that resonate.</p>
-        <a href="/about" class="cta-link">Read About Us</a>
+        <a href="/about" class="about-cta">Read About Us</a>
       </div>
       <div class="about-side reveal">
-        <div class="about-stat">
-          <span>Founded</span>
-          <span>2020</span>
-        </div>
-        <div class="about-stat">
-          <span>Projects</span>
-          <span>40+</span>
-        </div>
-        <div class="about-stat">
-          <span>Industries</span>
-          <span>12</span>
-        </div>
-        <div class="about-stat">
-          <span>Based In</span>
-          <span>Toronto</span>
-        </div>
+        <div class="about-stat"><span>Founded</span><span>2020</span></div>
+        <div class="about-stat"><span>Projects</span><span>40+</span></div>
+        <div class="about-stat"><span>Industries</span><span>12</span></div>
+        <div class="about-stat"><span>Based In</span><span>Toronto</span></div>
       </div>
     </div>
   </section>
@@ -961,23 +945,9 @@
   <!-- ========== CLIENTS ========== -->
   <section class="clients reveal">
     <div class="clients-inner">
-      <p class="label clients-label">Selected Clients</p>
+      <p class="label clients-label">\ Selected Clients</p>
       <div class="clients-list">
-        <span>TechFlow</span>
-        <span>Meridian Studio</span>
-        <span>Atlas Health</span>
-        <span>Vanguard Digital</span>
-        <span>Northern Collective</span>
-        <span>Prism Labs</span>
-        <span>Elevate Agency</span>
-        <span>Vertex Capital</span>
-        <span>Cascade Creative</span>
-        <span>Horizon Ventures</span>
-        <span>Blueprint Co.</span>
-        <span>Kinetic Studios</span>
-        <span>Apex Consulting</span>
-        <span>Forge & Co.</span>
-        <span>Summit Digital</span>
+        <span>TechFlow</span><span>Meridian Studio</span><span>Atlas Health</span><span>Vanguard Digital</span><span>Northern Collective</span><span>Prism Labs</span><span>Elevate Agency</span><span>Vertex Capital</span><span>Cascade Creative</span><span>Horizon Ventures</span><span>Blueprint Co.</span><span>Kinetic Studios</span><span>Apex Consulting</span><span>Forge & Co.</span><span>Summit Digital</span>
       </div>
     </div>
   </section>
@@ -985,111 +955,121 @@
   <div class="divider" style="max-width: var(--max-w); margin: 0 auto;"></div>
 
   <!-- ========== FEATURED WORK ========== -->
-  <section class="section work" id="work">
+  <section class="work-section" id="work">
     <div class="work-header">
       <span class="label">Featured Work</span>
-      <a href="/work" class="cta-link">View All Work</a>
     </div>
-    <div class="work-cards">
 
-      <a href="/work/techflow-brand-identity" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" alt="TechFlow Brand Identity">
-        </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">TechFlow</h3>
-            <p class="work-card-category">Brand Identity · 2024</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Strategy</span>
-            <span class="tag">Identity</span>
-            <span class="tag">Digital</span>
-          </div>
-        </div>
-      </a>
+    <div class="work-grid">
+      <div class="work-cards-container">
 
-      <a href="/work/meridian-rebranding" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&q=80" alt="Meridian Rebranding">
+        <!-- Row 1: 4-col + 3-col -->
+        <div class="work-row reveal">
+          <a href="/work/techflow-brand-identity" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.498;">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80" alt="TechFlow">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">TechFlow</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Brand Identity</span>
+              </div>
+            </div>
+          </a>
+          <a href="/work/meridian-rebranding" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.778;">
+              <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1200&q=80" alt="Meridian Studio">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">Meridian Studio</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Rebranding</span>
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">Meridian Studio</h3>
-            <p class="work-card-category">Rebranding · 2024</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Rebranding</span>
-            <span class="tag">Visual</span>
-          </div>
-        </div>
-      </a>
 
-      <a href="/work/atlas-health-brand-setup" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=800&q=80" alt="Atlas Health">
+        <!-- Row 2: 2-col + 3-col -->
+        <div class="work-row reveal">
+          <a href="/work/atlas-health-brand-setup" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.415;">
+              <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=1200&q=80" alt="Atlas Health">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">Atlas Health</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Brand Setup</span>
+              </div>
+            </div>
+          </a>
+          <a href="/work/prism-labs-branding" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.5;">
+              <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&q=80" alt="Prism Labs">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">Prism Labs</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Branding</span>
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">Atlas Health</h3>
-            <p class="work-card-category">Brand Setup · 2023</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Healthcare</span>
-            <span class="tag">Brand Setup</span>
-          </div>
-        </div>
-      </a>
 
-      <a href="/work/prism-labs-branding" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80" alt="Prism Labs">
+        <!-- Row 3: 3-col + 2-col -->
+        <div class="work-row reveal">
+          <a href="/work/cascade-creative-identity" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.5;">
+              <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=1200&q=80" alt="Cascade Creative">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">Cascade Creative</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Brand Identity</span>
+              </div>
+            </div>
+          </a>
+          <a href="/work/horizon-ventures-brand" class="work-card">
+            <div class="work-card-image" style="aspect-ratio: 1.5;">
+              <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=1200&q=80" alt="Horizon Ventures">
+            </div>
+            <div class="work-card-frost">
+              <div class="work-card-title-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-name">Horizon Ventures</span>
+              </div>
+              <div class="work-card-category-area">
+                <span class="work-card-slash">\</span>
+                <span class="work-card-category">Brand Setup</span>
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">Prism Labs</h3>
-            <p class="work-card-category">Branding · 2023</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Tech</span>
-            <span class="tag">Branding</span>
-            <span class="tag">Web</span>
-          </div>
-        </div>
-      </a>
 
-      <a href="/work/cascade-creative-identity" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&q=80" alt="Cascade Creative">
-        </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">Cascade Creative</h3>
-            <p class="work-card-category">Brand Identity · 2023</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Creative</span>
-            <span class="tag">Identity</span>
-          </div>
-        </div>
-      </a>
+      </div>
+    </div>
 
-      <a href="/work/horizon-ventures-brand" class="work-card reveal">
-        <div class="work-card-image">
-          <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=800&q=80" alt="Horizon Ventures">
-        </div>
-        <div class="work-card-info">
-          <div>
-            <h3 class="work-card-title">Horizon Ventures</h3>
-            <p class="work-card-category">Brand Setup · 2022</p>
-          </div>
-          <div class="work-card-tags">
-            <span class="tag">Finance</span>
-            <span class="tag">Strategy</span>
-          </div>
-        </div>
-      </a>
-
+    <div class="work-footer">
+      <a href="/work" class="nav-link-cta">View All Work</a>
     </div>
   </section>
 
@@ -1100,51 +1080,34 @@
     <div class="services-sticky">
       <div class="services-inner">
         <div class="services-header">
-          <span class="label">What We Do</span>
+          <span class="label">\ What We Do</span>
         </div>
         <div class="services-counter">
           <span id="serviceCounter">01</span> / 03
         </div>
         <div class="services-slides" id="servicesSlides">
-
           <div class="service-slide active" data-index="0">
             <h2 class="service-title">Research</h2>
             <p class="body-text service-description">We start by understanding — your brand, your market, your audience. Through deep research, we uncover insights that form the foundation of everything we build.</p>
             <ul class="service-list">
-              <li>Brand Audit</li>
-              <li>Market Segmentation</li>
-              <li>Journey Mapping</li>
-              <li>Competitor Analysis</li>
-              <li>User Research</li>
+              <li>Brand Audit</li><li>Market Segmentation</li><li>Journey Mapping</li><li>Competitor Analysis</li><li>User Research</li>
             </ul>
           </div>
-
           <div class="service-slide" data-index="1">
             <h2 class="service-title">Strategy</h2>
             <p class="body-text service-description">We translate insights into direction — crafting positioning, narrative, and architecture that give your brand a clear voice and purpose in the market.</p>
             <ul class="service-list">
-              <li>Brand Positioning</li>
-              <li>Brand Architecture</li>
-              <li>Messaging Framework</li>
-              <li>Content Strategy</li>
-              <li>Go-to-Market</li>
+              <li>Brand Positioning</li><li>Brand Architecture</li><li>Messaging Framework</li><li>Content Strategy</li><li>Go-to-Market</li>
             </ul>
           </div>
-
           <div class="service-slide" data-index="2">
             <h2 class="service-title">Experience</h2>
             <p class="body-text service-description">We bring the brand to life — through visual identity, digital products, and every touchpoint where your audience meets your brand.</p>
             <ul class="service-list">
-              <li>Visual Identity</li>
-              <li>Web Design</li>
-              <li>Motion & Interaction</li>
-              <li>Brand Guidelines</li>
-              <li>Art Direction</li>
+              <li>Visual Identity</li><li>Web Design</li><li>Motion & Interaction</li><li>Brand Guidelines</li><li>Art Direction</li>
             </ul>
           </div>
-
         </div>
-
         <div class="services-progress">
           <div class="progress-dot active" data-index="0"></div>
           <div class="progress-dot" data-index="1"></div>
@@ -1157,28 +1120,24 @@
   <!-- ========== WHISPERS / BLOG ========== -->
   <section class="section whispers" id="whispers">
     <div class="whispers-header">
-      <span class="label">Whispers</span>
+      <span class="label">\ Whispers</span>
     </div>
     <div class="whispers-grid">
-
       <a href="/whisper/designing-for-resonance" class="whisper-card reveal">
         <p class="whisper-date">Mar 12, 2024</p>
         <h3 class="whisper-title">Designing for Resonance</h3>
         <p class="whisper-excerpt">How to create brand experiences that stick — the intersection of strategy, emotion, and visual craft.</p>
       </a>
-
       <a href="/whisper/the-future-of-brand-identity" class="whisper-card reveal">
         <p class="whisper-date">Feb 28, 2024</p>
         <h3 class="whisper-title">The Future of Brand Identity</h3>
         <p class="whisper-excerpt">AI-generated assets, dynamic logos, and the evolution of brand systems in a digital-first world.</p>
       </a>
-
       <a href="/whisper/craft-over-trend" class="whisper-card reveal">
         <p class="whisper-date">Jan 15, 2024</p>
         <h3 class="whisper-title">Craft Over Trend</h3>
         <p class="whisper-excerpt">Why lasting brands are built on principles, not aesthetics — and how to tell the difference.</p>
       </a>
-
     </div>
   </section>
 
@@ -1187,12 +1146,10 @@
   <!-- ========== FOOTER ========== -->
   <footer class="footer" id="contact">
     <div class="grid-8">
-
       <div class="footer-brand">
         <div class="footer-logo">W.</div>
         <p class="footer-tagline">Resonant strategy,<br>carefully executed.</p>
       </div>
-
       <div class="footer-nav">
         <p class="footer-nav-title">Navigate</p>
         <ul>
@@ -1202,15 +1159,13 @@
           <li><a href="#whispers">Whispers</a></li>
         </ul>
       </div>
-
-      <div class="footer-contact">
+      <div class="footer-contact footer-nav">
         <p class="footer-nav-title">Contact</p>
-        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
-          <li><a href="mailto:hello@example.com" style="font-size:14px; color:var(--text-secondary);">hello@example.com</a></li>
-          <li><a href="mailto:press@example.com" style="font-size:14px; color:var(--text-secondary);">press@example.com</a></li>
+        <ul>
+          <li><a href="mailto:hello@example.com">hello@example.com</a></li>
+          <li><a href="mailto:press@example.com">press@example.com</a></li>
         </ul>
       </div>
-
       <div class="footer-socials">
         <p class="footer-nav-title">Follow</p>
         <div class="footer-socials-list">
@@ -1219,12 +1174,10 @@
           <a href="#">Behance</a>
         </div>
       </div>
-
       <div class="footer-bottom">
         <span class="footer-copyright">&copy; 2024. All Rights Reserved.</span>
         <span class="footer-credit">Built with care</span>
       </div>
-
     </div>
   </footer>
 
@@ -1235,23 +1188,35 @@
       const now = new Date();
       const h = now.getHours().toString().padStart(2, '0');
       const m = now.getMinutes().toString().padStart(2, '0');
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop().replace('_', ' ');
-      document.getElementById('navClock').textContent = `${h}:${m} ${tz}`;
+      const hour = now.getHours();
+      const isWorking = hour >= 9 && hour < 18;
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const short = tz.split('/').pop().replace(/_/g, ' ');
+      const offset = -now.getTimezoneOffset() / 60;
+      const sign = offset >= 0 ? '+' : '';
+
+      document.getElementById('navTime').textContent = `${h}:${m}`;
+      document.getElementById('navTz').textContent = `GMT${sign}${offset}`;
+
+      const dotEl = document.getElementById('statusDot');
+      const textEl = document.getElementById('statusText');
+      if (isWorking) {
+        dotEl.classList.remove('off');
+        textEl.textContent = 'Available';
+        textEl.style.color = '#4ade80';
+      } else {
+        dotEl.classList.add('off');
+        textEl.textContent = 'Off Work';
+        textEl.style.color = '#ff004d';
+      }
     }
     updateClock();
     setInterval(updateClock, 30000);
 
-    // ---- Navbar Scroll ----
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
-
     // ---- Custom Cursor ----
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
@@ -1269,16 +1234,9 @@
     }
     animateRing();
 
-    // Hover effect on interactive elements
     document.querySelectorAll('a, button, .work-card, .whisper-card').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        dot.classList.add('hovering');
-        ring.classList.add('hovering');
-      });
-      el.addEventListener('mouseleave', () => {
-        dot.classList.remove('hovering');
-        ring.classList.remove('hovering');
-      });
+      el.addEventListener('mouseenter', () => { dot.classList.add('hovering'); ring.classList.add('hovering'); });
+      el.addEventListener('mouseleave', () => { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
     });
 
     // ---- Scroll Reveal ----
@@ -1291,7 +1249,6 @@
         }
       });
     }, { threshold: 0.15 });
-
     reveals.forEach(el => revealObserver.observe(el));
 
     // ---- Services Scroll Scrub ----
@@ -1308,25 +1265,17 @@
       const progress = Math.max(0, Math.min(1, scrolled / sectionHeight));
       const index = Math.min(2, Math.floor(progress * 3));
 
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-      });
-      dots.forEach((d, i) => {
-        d.classList.toggle('active', i === index);
-      });
+      slides.forEach((s, i) => s.classList.toggle('active', i === index));
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
       counter.textContent = String(index + 1).padStart(2, '0');
     }
-
     window.addEventListener('scroll', updateServices, { passive: true });
 
-    // ---- Smooth Scroll for Nav Links ----
+    // ---- Smooth Scroll ----
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
       });
     });
   </script>
