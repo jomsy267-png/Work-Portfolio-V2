@@ -45,25 +45,24 @@ export default function ServicesSection() {
   const service = services[activeIndex]
 
   return (
-    <section ref={containerRef} className="relative" style={{ minHeight: '300vh' }}>
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <div className="max-w-[1280px] mx-auto px-3 w-full">
+    <section ref={containerRef} id="services" style={{ minHeight: '300vh', position: 'relative' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+        <div className="max-w-[1280px] mx-auto px-3 w-full" style={{ position: 'relative' }}>
+
           {/* Label */}
-          <div className="mb-20">
-            <span className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light]">
-              \ What I Do
-            </span>
-          </div>
+          <p className="fd text-[18px] font-medium tracking-[-0.02em] uppercase text-[var(--light)] mb-20">
+            \ What I Do
+          </p>
 
           {/* Counter */}
-          <p className="font-[family-name:var(--font-mono)] text-[12px] text-[--muted] mb-3">
+          <p className="fmono text-[12px] text-[var(--muted)] mb-3">
             <motion.span key={activeIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
               0{activeIndex + 1}
             </motion.span>
             {' '}/ 0{services.length}
           </p>
 
-          {/* Slide */}
+          {/* Animated slide */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -73,19 +72,20 @@ export default function ServicesSection() {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <h2
-                className="font-[family-name:var(--font-display)] font-bold tracking-[-0.03em] text-[--light] leading-[1] mb-6"
+                className="fd font-bold tracking-[-0.03em] text-[var(--light)] leading-[1] mb-6"
                 style={{ fontSize: 'clamp(40px, 6vw, 72px)' }}
               >
                 {service.title}
               </h2>
-              <p className="text-[15px] leading-[1.7] text-[--muted] max-w-[500px] mb-8">
+              <p className="text-[15px] leading-[1.7] text-[var(--muted)] max-w-[500px] mb-8">
                 {service.description}
               </p>
               <ul className="flex flex-wrap gap-2">
                 {service.list.map((item) => (
                   <li
                     key={item}
-                    className="font-[family-name:var(--font-display)] text-[13px] tracking-[0.04em] uppercase px-4 py-1.5 border border-white/[0.12] rounded-full text-[--muted]"
+                    className="fd text-[13px] tracking-[0.04em] uppercase px-4 py-1.5 rounded-full text-[var(--muted)]"
+                    style={{ border: '1px solid rgba(207,207,207,0.12)' }}
                   >
                     {item}
                   </li>
@@ -95,7 +95,7 @@ export default function ServicesSection() {
           </AnimatePresence>
 
           {/* Progress dots */}
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+          <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {services.map((_, i) => (
               <motion.div
                 key={i}
@@ -104,7 +104,7 @@ export default function ServicesSection() {
                   scale: i === activeIndex ? 1.4 : 1,
                 }}
                 transition={{ duration: 0.3 }}
-                className="w-2 h-2 rounded-full"
+                style={{ width: 8, height: 8, borderRadius: '50%' }}
               />
             ))}
           </div>

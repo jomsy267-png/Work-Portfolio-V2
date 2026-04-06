@@ -20,23 +20,23 @@ export default function ClientsSection() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5 }}
-          className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] mb-10"
+          className="fd text-[18px] font-medium tracking-[-0.02em] uppercase text-[var(--light)] mb-10"
         >
           \ Selected Clients
         </motion.p>
-        <div className="font-[family-name:var(--font-display)] text-[clamp(14px,2vw,18px)] font-[400] text-[--muted] leading-[2.2]">
+        <p className="fd text-[clamp(14px,2vw,18px)] font-[400] text-[var(--muted)] leading-[2.2]">
           {clients.map((c, i) => (
             <motion.span
               key={c}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.05 * i }}
-              className="hover:text-[--light] transition-colors cursor-default"
+              className="hover:text-[var(--light)] transition-colors cursor-default"
             >
-              {c}{i < clients.length - 1 && <span className="text-white/10"> · </span>}
+              {c}{i < clients.length - 1 && <span style={{ color: 'rgba(207,207,207,0.2)' }}> · </span>}
             </motion.span>
           ))}
-        </div>
+        </p>
       </div>
     </section>
   )

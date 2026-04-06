@@ -1,70 +1,68 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export default function CustomCursor() {
-  const dotX = useMotionValue(-100)
-  const dotY = useMotionValue(-100)
-
-  const springX = useSpring(dotX, { stiffness: 120, damping: 18, mass: 0.6 })
-  const springY = useSpring(dotY, { stiffness: 120, damping: 18, mass: 0.6 })
-
-  const hovering = useRef(false)
-  const dotRef = useRef<HTMLDivElement>(null)
+  const dotRef  = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const dot  = dotRef.current
+    const ring = ringRef.current
+    if (!dot || !ring) return
+
+    let mx = 0, my = 0
+    let rx = 0, ry = 0
+    let rafId: number
+
     const onMove = (e: MouseEvent) => {
-      dotX.set(e.clientX)
-      dotY.set(e.clientY)
+      mx = e.clientX
+      my = e.clientY
+      // dot follows instantly via direct style
+      dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`
     }
 
-    const onEnter = () => {
-      hovering.current = true
-      dotRef.current?.classList.add('scale-[1.75]')
-      ringRef.current?.classList.add('scale-[1.4]', '!border-[--accent]')
+    const loop = () => {
+      rx += (mx - rx) * 0.12
+      ry += (my - ry) * 0.12
+      const isHovering = dot.classList.contains('hovering')
+      const offset = isHovering ? 7 : 4
+      const ringOffset = isHovering ? 26 : 18
+      dot.style.transform  = `translate(${mx - offset}px, ${my - offset}px)`
+      ring.style.transform = `translate(${rx - ringOffset}px, ${ry - ringOffset}px)`
+      rafId = requestAnimationFrame(loop)
     }
 
-    const onLeave = () => {
-      hovering.current = false
-      dotRef.current?.classList.remove('scale-[1.75]')
-      ringRef.current?.classList.remove('scale-[1.4]', '!border-[--accent]')
-    }
+    const onEnter = () => { dot.classList.add('hovering');  ring.classList.add('hovering') }
+    const onLeave = () => { dot.classList.remove('hovering'); ring.classList.remove('hovering') }
 
-    window.addEventListener('mousemove', onMove)
-
-    const addListeners = () => {
-      document.querySelectorAll('a, button, [data-cursor]').forEach((el) => {
+    const bindHover = () => {
+      document.querySelectorAll('a, button').forEach(el => {
+        el.removeEventListener('mouseenter', onEnter)
+        el.removeEventListener('mouseleave', onLeave)
         el.addEventListener('mouseenter', onEnter)
         el.addEventListener('mouseleave', onLeave)
       })
     }
 
-    addListeners()
-    const observer = new MutationObserver(addListeners)
-    observer.observe(document.body, { childList: true, subtree: true })
+    window.addEventListener('mousemove', onMove, { passive: true })
+    rafId = requestAnimationFrame(loop)
+    bindHover()
+
+    const obs = new MutationObserver(bindHover)
+    obs.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       window.removeEventListener('mousemove', onMove)
-      observer.disconnect()
+      cancelAnimationFrame(rafId)
+      obs.disconnect()
     }
-  }, [dotX, dotY])
+  }, [])
 
   return (
     <>
-      {/* Dot */}
-      <motion.div
-        ref={dotRef}
-        style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[--accent] pointer-events-none z-[9999] mix-blend-difference transition-transform duration-200"
-      />
-      {/* Ring */}
-      <motion.div
-        ref={ringRef}
-        style={{ x: springX, y: springY, translateX: '-50%', translateY: '-50%' }}
-        className="fixed top-0 left-0 w-9 h-9 rounded-full border border-[rgba(0,153,255,0.4)] pointer-events-none z-[9999] transition-[border-color,transform] duration-300"
-      />
+      <div ref={dotRef}  className="cursor-dot"  />
+      <div ref={ringRef} className="cursor-ring" />
     </>
   )
 }

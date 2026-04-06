@@ -25,13 +25,15 @@ export default function Navbar({ overlaid = false }: { overlaid?: boolean }) {
     return () => clearInterval(id)
   }, [])
 
-  const navStyle = overlaid
-    ? 'absolute left-0 right-0 z-10 pointer-events-auto'
+  const base = 'fd text-[18px] font-medium tracking-[-0.02em] uppercase text-[var(--light)]'
+
+  const navClass = overlaid
+    ? 'left-0 right-0 z-10'
     : 'fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[rgba(26,26,26,0.92)] backdrop-blur-[12px]'
 
   return (
     <motion.nav
-      className={navStyle}
+      className={navClass}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.2 }}
@@ -39,38 +41,30 @@ export default function Navbar({ overlaid = false }: { overlaid?: boolean }) {
       <div className="max-w-[1280px] mx-auto px-3 py-4 flex justify-between items-center">
         {/* Left */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] hover:opacity-70 transition-opacity"
-          >
-            JS.
-          </Link>
+          <Link href="/" className={`${base} hover:opacity-70 transition-opacity`}>JS.</Link>
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <Link href="/work" className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] hover:opacity-60 transition-opacity">
-                Work
-              </Link>
-              <Link href="/#about" className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] hover:opacity-60 transition-opacity">
-                About
-              </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/work"    className={`${base} hover:opacity-60 transition-opacity`}>Work</Link>
+              <Link href="/#about"  className={`${base} hover:opacity-60 transition-opacity`}>About</Link>
             </div>
-            <span className="font-[family-name:var(--font-archivo)] text-[13px] text-[rgb(43,43,43)] hidden md:block">
-              Hi, I'm Jomil — graphic designer based in Edmonton :)
+            <span
+              className="text-[13px] hidden md:block"
+              style={{ fontFamily: "var(--font-archivo), 'Archivo', sans-serif", color: 'rgb(180,180,180)' }}
+            >
+              Hi, I&apos;m Jomil — graphic designer based in Edmonton :)
             </span>
           </div>
         </div>
 
         {/* Right */}
         <div className="flex items-center gap-4">
-          <Link href="/#contact" className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] hover:opacity-60 transition-opacity hidden sm:block">
-            Contact
-          </Link>
+          <Link href="/#contact" className={`${base} hover:opacity-60 transition-opacity hidden sm:block`}>Contact</Link>
           <div className="flex items-center gap-2">
-            <span className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light]">{time}</span>
-            <span className="font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase text-[--light] hidden sm:block">{tz}</span>
+            <span className={`${base}`}>{time}</span>
+            <span className={`${base} hidden sm:block`}>{tz}</span>
             <div className="flex items-center gap-1.5">
               <div className={`w-2 h-2 rounded-full ${available ? 'bg-green-400' : 'bg-red-500'}`} />
-              <span className={`font-[family-name:var(--font-display)] text-[18px] font-medium tracking-[-0.02em] uppercase ${available ? 'text-green-400' : 'text-red-500'} hidden sm:block`}>
+              <span className={`${base} ${available ? 'text-green-400' : 'text-red-500'} hidden sm:block`}>
                 {available ? 'Available' : 'Off Work'}
               </span>
             </div>
