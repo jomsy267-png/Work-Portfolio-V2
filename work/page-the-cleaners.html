@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page The Cleaners — Jomil Shah</title>
+  <meta name="description" content="Logo design, brand identity, environmental design, and store signage for Page The Cleaners — an Edmonton-based dry cleaning operation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo:wght@400;500&family=Inter:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#1a1a1a;--surface:#cfcfcf;--light:#f7f7f7;--muted:#8c8c8c;--dark:#262626;--accent:#0099ff;--gap:12px;--pad:12px;--max:1280px;--fd:'Archivo Narrow',sans-serif;--fb:'Inter',sans-serif;--fm:'Fragment Mono',monospace; }
+    html { -webkit-font-smoothing:antialiased;scroll-behavior:smooth; }
+    body { background:var(--bg);color:var(--light);font-family:var(--fb);font-size:16px;line-height:1.5;overflow-x:hidden; }
+    a { color:inherit;text-decoration:none; }
+    img { display:block;max-width:100%;height:auto; }
+    ::selection { background:rgba(0,153,255,.2);color:var(--accent); }
+    .cursor-dot { width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference; }
+    .cursor-ring { width:36px;height:36px;border:1px solid rgba(0,153,255,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s; }
+    .cursor-dot.h { width:14px;height:14px; }
+    .cursor-ring.h { width:50px;height:50px;border-color:var(--accent); }
+    .nav { position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid rgba(207,207,207,.15);background:rgba(26,26,26,.92);backdrop-filter:blur(12px); }
+    .nav-inner { max-width:var(--max);margin:0 auto;padding:16px var(--pad);display:flex;justify-content:space-between;align-items:center; }
+    .nav-brand { font-family:var(--fd);font-size:18px;font-weight:500;letter-spacing:-.02em;text-transform:uppercase; }
+    .nav-brand:hover { opacity:.7; }
+    .nav-back { font-family:var(--fd);font-size:18px;font-weight:500;letter-spacing:-.02em;text-transform:uppercase;transition:opacity .3s; }
+    .nav-back:hover { opacity:.6; }
+    .project-hero { width:100%;aspect-ratio:2.2;overflow:hidden;margin-top:57px;background:var(--dark); }
+    .project-hero img { width:100%;height:100%;object-fit:cover; }
+    .project-info { max-width:var(--max);margin:0 auto;padding:72px var(--pad) 80px;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:var(--gap); }
+    .pi-title-col { grid-column:span 4; }
+    .pi-meta-col { grid-column:span 4;display:flex;flex-direction:column;gap:32px;padding-top:8px; }
+    .pi-label { font-family:var(--fm);font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px; }
+    .pi-title { font-family:var(--fd);font-size:clamp(36px,5vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1;text-transform:uppercase;margin-bottom:32px; }
+    .pi-desc { font-size:15px;color:var(--muted);line-height:1.75;max-width:480px;margin-bottom:40px; }
+    .pi-deliverables { display:flex;flex-wrap:wrap;gap:8px; }
+    .pi-tag { font-family:var(--fd);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(207,207,207,.15);border-radius:24px;color:var(--muted); }
+    .meta-row { display:flex;flex-direction:column;gap:4px; }
+    .meta-val { font-family:var(--fd);font-size:16px;font-weight:500;letter-spacing:-.01em;color:var(--light); }
+    .divider { height:1px;background:rgba(207,207,207,.12);max-width:var(--max);margin:0 auto; }
+    .gallery { max-width:var(--max);margin:0 auto;padding:80px var(--pad); }
+    .gallery-label { font-family:var(--fd);font-size:18px;font-weight:500;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:48px; }
+    .gallery-label::before { content:'\ ';margin-right:4px; }
+    .gallery-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap); }
+    .gallery-item { overflow:hidden;background:var(--dark); }
+    .gallery-item.span-2 { grid-column:span 2; }
+    .gallery-item img { width:100%;height:100%;object-fit:cover;transition:transform .6s ease; }
+    .gallery-item:hover img { transform:scale(1.02); }
+    .next-project { border-top:1px solid rgba(207,207,207,.12);padding:80px var(--pad); }
+    .next-inner { max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center; }
+    .next-label { font-family:var(--fm);font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px; }
+    .next-title { font-family:var(--fd);font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.03em;text-transform:uppercase;transition:opacity .3s; }
+    .next-project a:hover .next-title { opacity:.6; }
+    .next-arrow { font-family:var(--fd);font-size:32px;color:var(--muted);transition:transform .3s,color .3s; }
+    .next-project a:hover .next-arrow { transform:translateX(8px);color:var(--light); }
+    .footer { padding:48px var(--pad);max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(207,207,207,.08); }
+    .footer-copy { font-family:var(--fm);font-size:11px;color:var(--muted); }
+    .reveal { opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    @media (max-width:809px) {
+      .project-info { grid-template-columns:1fr;padding:40px var(--pad) 60px; }
+      .pi-title-col,.pi-meta-col { grid-column:span 1; }
+      .gallery-grid { grid-template-columns:1fr; }
+      .gallery-item.span-2 { grid-column:span 1; }
+      .next-inner { flex-direction:column;align-items:flex-start;gap:24px; }
+      .cursor-dot,.cursor-ring { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cd"></div>
+  <div class="cursor-ring" id="cr"></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-brand">JS.</a>
+      <a href="../work.html" class="nav-back">← All Work</a>
+    </div>
+  </nav>
+
+  <div class="project-hero">
+    <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ae96c42b-e2da-4265-8371-51f925166acf_rw_3840.png" alt="Page The Cleaners">
+  </div>
+
+  <div class="project-info">
+    <div class="pi-title-col reveal">
+      <p class="pi-label">Project</p>
+      <h1 class="pi-title">Page The Cleaners</h1>
+      <p class="pi-desc">Full visual identity for Page The Cleaners — an Edmonton-based dry cleaning operation offering a full suite of services for individual and commercial clients. The project encompassed logo design, brand identity system, environmental design, and store signage — emphasising quality, reliability, and customer service through clean, professional aesthetics.</p>
+      <div class="pi-deliverables">
+        <span class="pi-tag">Logo Design</span>
+        <span class="pi-tag">Brand Identity</span>
+        <span class="pi-tag">Environmental Design</span>
+        <span class="pi-tag">Store Signage</span>
+      </div>
+    </div>
+    <div class="pi-meta-col reveal">
+      <div class="meta-row"><p class="pi-label">Client</p><p class="meta-val">Page The Cleaners</p></div>
+      <div class="meta-row"><p class="pi-label">Location</p><p class="meta-val">Edmonton, AB</p></div>
+      <div class="meta-row"><p class="pi-label">Category</p><p class="meta-val">Brand Identity &amp; Environmental</p></div>
+      <div class="meta-row"><p class="pi-label">Designer</p><p class="meta-val">Jomil Shah</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="gallery reveal">
+    <p class="gallery-label">Project Gallery</p>
+    <div class="gallery-grid">
+      <div class="gallery-item span-2">
+        <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/0ae0d6bb-e09d-424f-97e1-246f90126eab_rw_3840.png" alt="Page The Cleaners — Brand System">
+      </div>
+      <div class="gallery-item">
+        <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f46b19cc-4c3b-4235-8701-5340a8824696_rw_3840.png" alt="Page The Cleaners — Logo">
+      </div>
+      <div class="gallery-item">
+        <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/46229af3-f2b7-471f-89be-6c09728293d9_rw_3840.png" alt="Page The Cleaners — Stationery">
+      </div>
+      <div class="gallery-item">
+        <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/23f74fe1-da35-4262-ab83-13da9329c221_rw_3840.png" alt="Page The Cleaners — Signage">
+      </div>
+      <div class="gallery-item">
+        <img src="https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e1a676d3-d513-4ea9-b0d3-93e7d9bfde34_rw_3840.png" alt="Page The Cleaners — Environmental">
+      </div>
+    </div>
+  </div>
+
+  <div class="next-project">
+    <div class="next-inner">
+      <a href="publications.html">
+        <p class="next-label">Next Project</p>
+        <p class="next-title">Publications</p>
+      </a>
+      <a href="publications.html"><span class="next-arrow">→</span></a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="footer-copy">&copy; 2024 Jomil Shah. All Rights Reserved.</span>
+    <a href="../index.html" style="font-family:var(--fd);font-size:18px;font-weight:500;letter-spacing:-.02em;text-transform:uppercase;">JS.</a>
+  </footer>
+
+  <script>
+    const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{ mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px'; });
+    (function loop(){ rx+=(mx-rx)*.15;ry+=(my-ry)*.15;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button').forEach(el=>{ el.addEventListener('mouseenter',()=>{cd.classList.add('h');cr.classList.add('h');}); el.addEventListener('mouseleave',()=>{cd.classList.remove('h');cr.classList.remove('h');}); });
+    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} }),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  </script>
+</body>
+</html>
