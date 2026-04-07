@@ -173,25 +173,45 @@ export default function Home() {
     <>
       {/* HERO — Navbar lives inside so it can be positioned mid-hero */}
       <section className="hero" id="main-content">
-        <div className="hero-video">
+        <motion.div
+          className="hero-video"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.8, ease: 'easeOut' }}
+        >
           <video autoPlay loop muted playsInline>
             <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4" />
           </video>
-        </div>
-        <div className="hero-overlay" />
+        </motion.div>
+        <motion.div
+          className="hero-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, ease: 'easeOut', delay: 0.2 }}
+        />
 
         {/* Navbar embedded at 44% — slides to top on scroll */}
         <Navbar heroMode />
 
-        <motion.div
-          className="hero-tagline"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 }}
-        >
-          VISUAL DESIGNS<br />
-          THAT TELL A STORY
-        </motion.div>
+        {/* Line-by-line clip reveal — each line wipes up from below its container */}
+        <div className="hero-tagline">
+          {['VISUAL DESIGNS', 'THAT TELL A STORY'].map((line, i) => (
+            <div key={i} className="hero-tagline-line">
+              <motion.span
+                className="hero-tagline-inner"
+                initial={{ y: '108%' }}
+                animate={{ y: '0%' }}
+                transition={{
+                  duration: 1.05,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.55 + i * 0.14,
+                }}
+              >
+                {line}
+              </motion.span>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ABOUT */}
@@ -302,10 +322,19 @@ export default function Home() {
           font-family: var(--fd);
           font-size: clamp(28px, min(6.3vw, 11.9dvh), 95px);
           font-weight: 600;
-          line-height: .88;
           letter-spacing: .02em;
           text-transform: uppercase;
           color: #fff;
+        }
+        /* Each line is an overflow:hidden clip boundary */
+        .hero-tagline-line {
+          overflow: hidden;
+          line-height: .92;
+          padding-bottom: 0.06em;
+        }
+        .hero-tagline-inner {
+          display: block;
+          line-height: .92;
         }
 
         /* TWO-COLUMN SECTION LAYOUT */

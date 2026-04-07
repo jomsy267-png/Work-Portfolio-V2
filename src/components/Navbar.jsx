@@ -42,33 +42,57 @@ export default function Navbar({ isProject = false, heroMode = false }) {
   // heroMode: absolute at 44% until scrolled, then fixed at top
   const isFixed = !heroMode || scrolledPast
 
+  const navFade = (delay) => ({
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1], delay },
+  })
+
   return (
-    <motion.nav
+    <nav
       className={`navbar${heroMode ? (scrolledPast ? ' navbar-fixed' : ' navbar-hero') : ''}`}
       aria-label="Main navigation"
-      initial={{ opacity: 0, y: heroMode ? 12 : -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut', delay: heroMode ? 0.4 : 0 }}
     >
       <div className="nav-inner">
         <div className="nav-left">
-          <Link to="/" className="nav-brand" aria-label="Jomil Shah — go to homepage">JS.</Link>
+          <motion.div {...navFade(0.1)}>
+            <Link to="/" className="nav-brand" aria-label="Jomil Shah — go to homepage">JS.</Link>
+          </motion.div>
           {!isProject ? (
             <div className="nav-links">
               <div className="nav-links-row">
-                <a href={isHome ? '#whispers' : '/#whispers'} className="nav-link"><span className="nav-slash">\</span> Whispers</a>
-                <a href={isHome ? '#about' : '/#about'} className="nav-link"><span className="nav-slash">\</span> About</a>
-                <a href={isHome ? '#work' : '/#work'} className="nav-link"><span className="nav-slash">\</span> Work</a>
+                {['Whispers','About','Work'].map((label, i) => (
+                  <motion.a
+                    key={label}
+                    href={isHome ? `#${label.toLowerCase()}` : `/#${label.toLowerCase()}`}
+                    className="nav-link"
+                    {...navFade(0.18 + i * 0.07)}
+                  >
+                    <span className="nav-slash">\</span> {label}
+                  </motion.a>
+                ))}
               </div>
-              <span className="nav-greeting">Hi, I'm Jomil — graphic designer based in Edmonton :)</span>
+              <motion.span className="nav-greeting" {...navFade(0.42)}>
+                Hi, I'm Jomil — graphic designer based in Edmonton :)
+              </motion.span>
             </div>
           ) : (
-            <Link to="/work" className="nav-back"><span className="nav-slash">\</span> All Work</Link>
+            <motion.div {...navFade(0.15)}>
+              <Link to="/work" className="nav-back"><span className="nav-slash">\</span> All Work</Link>
+            </motion.div>
           )}
         </div>
         <div className="nav-right">
-          {!isProject && <a href={isHome ? '#contact' : '/#contact'} className="nav-link"><span className="nav-slash">\</span> Contact</a>}
-          <div className="nav-clock-area">
+          {!isProject && (
+            <motion.a
+              href={isHome ? '#contact' : '/#contact'}
+              className="nav-link"
+              {...navFade(0.38)}
+            >
+              <span className="nav-slash">\</span> Contact
+            </motion.a>
+          )}
+          <motion.div className="nav-clock-area" {...navFade(0.44)}>
             <span className="nav-time">{time}</span>
             <span className="nav-tz">{tz}</span>
             <div className="nav-status">
@@ -77,7 +101,7 @@ export default function Navbar({ isProject = false, heroMode = false }) {
                 {available ? 'Available' : 'Off Work'}
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
       <style>{`
@@ -208,6 +232,6 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           .navbar.navbar-hero { top: 40%; }
         }
       `}</style>
-    </motion.nav>
+    </nav>
   )
 }
