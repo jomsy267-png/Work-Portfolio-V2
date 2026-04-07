@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
@@ -76,61 +76,69 @@ function WorkCard({ project }) {
   )
 }
 
-/* ---- Services section with scroll scrub ---- */
-function ServicesSection() {
-  const containerRef = useRef(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] })
-  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, 2.99])
-
-  return (
-    <section className="services" id="services" ref={containerRef}>
-      <div className="services-sticky">
-        <div className="services-inner sec-layout">
-          <div className="sec-label services-header">
-            <span className="label">\ What We Do</span>
-          </div>
-          <div className="services-body">
-            {services.map((s, i) => (
-              <ServiceSlide key={s.title} service={s} index={i} rawIndex={rawIndex} />
-            ))}
-          </div>
-          <div className="services-progress">
-            {services.map((_, i) => (
-              <ProgressDot key={i} index={i} rawIndex={rawIndex} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function ServiceSlide({ service, index, rawIndex }) {
-  const opacity = useTransform(rawIndex, [index - 0.4, index, index + 0.4, index + 0.9], [0, 1, 1, 0])
-  const y = useTransform(rawIndex, [index - 0.5, index], [40, 0])
-  const pointerEvents = useTransform(rawIndex, (v) => Math.round(v) === index ? 'auto' : 'none')
+/* ---- Services section — vertical list matching reference ---- */
+function ServiceRow({ service, index, total }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-8% 0px' })
 
   return (
     <motion.div
-      className="service-slide"
-      style={{ opacity, y, pointerEvents, position: index === 0 ? 'relative' : 'absolute', top: 0, left: 0, width: '100%' }}
+      ref={ref}
+      className="service-row"
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.13 }}
     >
-      <div className="services-counter">
-        {String(index + 1).padStart(2, '0')}/03
+      <div className="service-divider" />
+      <div className="service-row-inner">
+        {/* Left: service name */}
+        <div className="service-name-col">
+          <span className="service-name-text">
+            {index > 0 && <span className="svc-slash">\ </span>}
+            {service.title.toUpperCase()}
+          </span>
+        </div>
+
+        {/* Right: description + counter + tags */}
+        <div className="service-content-col">
+          <p className="service-desc-text">{service.desc}</p>
+          <div className="service-bottom-row">
+            <div className="service-tags-row">
+              {service.items.map((tag, ti) => (
+                <span key={tag} className="svc-tag">
+                  {tag}{ti < service.items.length - 1 && <span className="tag-sep"> \ </span>}
+                </span>
+              ))}
+            </div>
+            <div className="service-counter">
+              <span className="counter-n">{String(index + 1).padStart(2, '0')}</span>
+              <span className="counter-sep"> / </span>
+              <span className="counter-total">{String(total).padStart(2, '0')}</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <h2 className="service-title">{service.title}</h2>
-      <p className="body-text service-desc">{service.desc}</p>
-      <ul className="service-list">
-        {service.items.map((item) => <li key={item}>{item}</li>)}
-      </ul>
     </motion.div>
   )
 }
 
-function ProgressDot({ index, rawIndex }) {
-  const scale = useTransform(rawIndex, (v) => Math.round(v) === index ? 1.4 : 1)
-  const bg = useTransform(rawIndex, (v) => Math.round(v) === index ? '#0099ff' : 'rgba(207,207,207,.15)')
-  return <motion.div className="progress-dot" style={{ scale, background: bg }} />
+function ServicesSection() {
+  return (
+    <section className="services" id="services">
+      <div className="sec-layout">
+        <div className="sec-label">
+          <span className="label">\ What We Do</span>
+        </div>
+        <div className="services-list">
+          {services.map((s, i) => (
+            <ServiceRow key={s.title} service={s} index={i} total={services.length} />
+          ))}
+          {/* Bottom closing line */}
+          <div className="service-divider" />
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export default function Home() {
@@ -428,52 +436,110 @@ export default function Home() {
         .nav-link-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
         /* SERVICES */
-        .services { position: relative; min-height: 300vh; }
-        .services-sticky {
-          position: sticky; top: 0;
-          height: 100vh;
-          display: flex; align-items: center;
-          overflow: hidden;
+        .services { padding: 80px 0; }
+        .services-list { display: flex; flex-direction: column; }
+
+        .service-divider {
+          height: 1px;
+          background: rgba(140, 140, 140, 0.22);
         }
-        .services-inner {
-          position: relative;
-          width: 100%;
+
+        .service-row {
+          cursor: default;
+          transition: background .35s ease;
         }
-        .services-header { margin-bottom: 0; }
-        .services-body { position: relative; min-height: 200px; }
-        .services-counter {
-          font-family: var(--fm);
-          font-size: 12px; color: var(--muted);
-          margin-bottom: 12px;
+        .service-row:hover { background: rgba(207, 207, 207, 0.025); }
+
+        .service-row-inner {
+          display: grid;
+          grid-template-columns: 35% 1fr;
+          gap: 0 var(--gap);
+          padding: 44px 0;
+          align-items: start;
         }
-        .service-title {
+
+        /* Left col — service name */
+        .service-name-col {
+          display: flex;
+          align-items: flex-start;
+          padding-top: 4px;
+        }
+        .service-name-text {
           font-family: var(--fd);
-          font-size: clamp(40px, 6vw, 72px);
+          font-size: clamp(26px, 3.8vw, 52px);
           font-weight: 700;
           letter-spacing: -.03em;
           line-height: 1;
-          margin-bottom: 24px;
-        }
-        .service-desc { max-width: 500px; margin-bottom: 32px; }
-        .service-list {
-          list-style: none;
-          display: flex; flex-wrap: wrap; gap: 8px;
-        }
-        .service-list li {
-          font-family: var(--fd);
-          font-size: 12px; letter-spacing: .06em;
           text-transform: uppercase;
-          padding: 6px 14px;
-          border: 1px solid rgba(207,207,207,.14);
-          border-radius: 3px;
+          color: var(--light);
+          display: block;
+          transition: transform .4s cubic-bezier(.25,.1,.25,1);
+        }
+        .service-row:hover .service-name-text { transform: translateX(7px); }
+        .svc-slash {
+          color: rgba(207, 207, 207, 0.28);
+          transition: color .35s;
+        }
+        .service-row:hover .svc-slash { color: rgba(207, 207, 207, 0.55); }
+
+        /* Right col — content */
+        .service-content-col {
+          display: flex;
+          flex-direction: column;
+          gap: 28px;
+        }
+        .service-desc-text {
+          font-size: 15px;
+          line-height: 1.72;
+          color: var(--muted);
+          max-width: 480px;
+        }
+
+        .service-bottom-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 16px;
+        }
+
+        /* Tags — inline with backslash separators */
+        .service-tags-row {
+          font-family: var(--fd);
+          font-size: 11.5px;
+          letter-spacing: .05em;
+          text-transform: uppercase;
+          color: var(--muted);
+          line-height: 1.9;
+          flex: 1;
+        }
+        .svc-tag { white-space: nowrap; }
+        .tag-sep {
+          color: rgba(207, 207, 207, 0.22);
+          margin: 0 2px;
+        }
+
+        /* Counter — right-aligned "01 / 03" */
+        .service-counter {
+          flex-shrink: 0;
+          text-align: right;
+          white-space: nowrap;
+          line-height: 1;
+        }
+        .counter-n {
+          font-family: var(--fd);
+          font-size: clamp(22px, 2.8vw, 36px);
+          font-weight: 700;
+          letter-spacing: -.03em;
+          color: var(--light);
+        }
+        .counter-sep { color: var(--muted); font-size: 14px; margin: 0 2px; }
+        .counter-total {
+          font-family: var(--fd);
+          font-size: clamp(22px, 2.8vw, 36px);
+          font-weight: 700;
+          letter-spacing: -.03em;
           color: var(--muted);
         }
-        .services-progress {
-          position: absolute; right: var(--pad); top: 50%;
-          transform: translateY(-50%);
-          display: flex; flex-direction: column; gap: 8px;
-        }
-        .progress-dot { width: 8px; height: 8px; border-radius: 50%; }
 
         /* WHISPERS */
         .whispers { padding-top: 0; }
@@ -509,6 +575,25 @@ export default function Home() {
           .about-side { flex-direction: row; flex-wrap: wrap; gap: 24px; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
+
+          /* Services mobile */
+          .service-row-inner {
+            grid-template-columns: 1fr;
+            gap: 16px 0;
+            padding: 28px 0;
+          }
+          .service-name-text { font-size: clamp(24px, 7vw, 36px); }
+          .service-bottom-row { flex-direction: column; align-items: flex-start; gap: 14px; }
+          .service-counter { text-align: left; }
+        }
+
+        @media (min-width: 810px) and (max-width: 1279px) {
+          /* Services tablet */
+          .service-row-inner {
+            grid-template-columns: 30% 1fr;
+            padding: 36px 0;
+          }
+          .service-name-text { font-size: clamp(22px, 3.2vw, 40px); }
         }
       `}</style>
     </>
