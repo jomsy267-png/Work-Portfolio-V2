@@ -1,6 +1,6 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
@@ -76,10 +76,11 @@ function WorkCard({ project }) {
   )
 }
 
-/* ---- Services section — vertical list matching reference ---- */
+/* ---- Services section — accordion hover reveal matching reference ---- */
 function ServiceRow({ service, index, total }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-8% 0px' })
+  const [open, setOpen] = useState(false)
 
   return (
     <motion.div
@@ -88,36 +89,62 @@ function ServiceRow({ service, index, total }) {
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.13 }}
+      onHoverStart={() => setOpen(true)}
+      onHoverEnd={() => setOpen(false)}
+      onClick={() => setOpen(v => !v)}
     >
       <div className="service-divider" />
-      <div className="service-row-inner">
-        {/* Left: service name */}
-        <div className="service-name-col">
-          <span className="service-name-text">
-            {index > 0 && <span className="svc-slash">\ </span>}
-            {service.title.toUpperCase()}
-          </span>
-        </div>
 
-        {/* Right: description + counter + tags */}
-        <div className="service-content-col">
-          <p className="service-desc-text">{service.desc}</p>
-          <div className="service-bottom-row">
-            <div className="service-tags-row">
-              {service.items.map((tag, ti) => (
-                <span key={tag} className="svc-tag">
-                  {tag}{ti < service.items.length - 1 && <span className="tag-sep"> \ </span>}
-                </span>
-              ))}
-            </div>
-            <div className="service-counter">
-              <span className="counter-n">{String(index + 1).padStart(2, '0')}</span>
-              <span className="counter-sep"> / </span>
-              <span className="counter-total">{String(total).padStart(2, '0')}</span>
-            </div>
-          </div>
-        </div>
+      {/* Always-visible header: title + counter */}
+      <div className="service-row-header">
+        <motion.span
+          className="service-name-text"
+          animate={{ x: open ? 7 : 0 }}
+          transition={{ duration: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          {index > 0 && <motion.span
+            className="svc-slash"
+            animate={{ color: open ? 'rgba(207,207,207,0.6)' : 'rgba(207,207,207,0.25)' }}
+            transition={{ duration: 0.3 }}
+          >\ </motion.span>}
+          {service.title.toUpperCase()}
+        </motion.span>
+
+        <motion.div
+          className="service-counter"
+          animate={{ opacity: open ? 1 : 0.45 }}
+          transition={{ duration: 0.3 }}
+        >
+          <span className="counter-n">{String(index + 1).padStart(2, '0')}</span>
+          <span className="counter-sep"> / </span>
+          <span className="counter-total">{String(total).padStart(2, '0')}</span>
+        </motion.div>
       </div>
+
+      {/* Expandable: description + tags */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            className="service-expanded"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ height: { duration: 0.42, ease: [0.25, 0.1, 0.25, 1] }, opacity: { duration: 0.28, ease: 'easeOut' } }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="service-expanded-inner">
+              <p className="service-desc-text">{service.desc}</p>
+              <div className="service-tags-row">
+                {service.items.map((tag, ti) => (
+                  <span key={tag} className="svc-tag">
+                    {tag}{ti < service.items.length - 1 && <span className="tag-sep"> \ </span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
@@ -444,26 +471,17 @@ export default function Home() {
           background: rgba(140, 140, 140, 0.22);
         }
 
-        .service-row {
-          cursor: default;
-          transition: background .35s ease;
-        }
-        .service-row:hover { background: rgba(207, 207, 207, 0.025); }
+        .service-row { cursor: pointer; }
 
-        .service-row-inner {
-          display: grid;
-          grid-template-columns: 35% 1fr;
-          gap: 0 var(--gap);
-          padding: 44px 0;
-          align-items: start;
-        }
-
-        /* Left col — service name */
-        .service-name-col {
+        /* Always-visible header row: title left, counter right */
+        .service-row-header {
           display: flex;
-          align-items: flex-start;
-          padding-top: 4px;
+          justify-content: space-between;
+          align-items: center;
+          padding: 24px 0;
+          gap: 16px;
         }
+
         .service-name-text {
           font-family: var(--fd);
           font-size: clamp(26px, 3.8vw, 52px);
@@ -473,52 +491,10 @@ export default function Home() {
           text-transform: uppercase;
           color: var(--light);
           display: block;
-          transition: transform .4s cubic-bezier(.25,.1,.25,1);
         }
-        .service-row:hover .service-name-text { transform: translateX(7px); }
-        .svc-slash {
-          color: rgba(207, 207, 207, 0.28);
-          transition: color .35s;
-        }
-        .service-row:hover .svc-slash { color: rgba(207, 207, 207, 0.55); }
+        .svc-slash { margin-right: 1px; }
 
-        /* Right col — content */
-        .service-content-col {
-          display: flex;
-          flex-direction: column;
-          gap: 28px;
-        }
-        .service-desc-text {
-          font-size: 15px;
-          line-height: 1.72;
-          color: var(--muted);
-          max-width: 480px;
-        }
-
-        .service-bottom-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          gap: 16px;
-        }
-
-        /* Tags — inline with backslash separators */
-        .service-tags-row {
-          font-family: var(--fd);
-          font-size: 11.5px;
-          letter-spacing: .05em;
-          text-transform: uppercase;
-          color: var(--muted);
-          line-height: 1.9;
-          flex: 1;
-        }
-        .svc-tag { white-space: nowrap; }
-        .tag-sep {
-          color: rgba(207, 207, 207, 0.22);
-          margin: 0 2px;
-        }
-
-        /* Counter — right-aligned "01 / 03" */
+        /* Counter — always visible, right side of header */
         .service-counter {
           flex-shrink: 0;
           text-align: right;
@@ -539,6 +515,35 @@ export default function Home() {
           font-weight: 700;
           letter-spacing: -.03em;
           color: var(--muted);
+        }
+
+        /* Expandable reveal area */
+        .service-expanded-inner {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          padding-bottom: 28px;
+        }
+        .service-desc-text {
+          font-size: 15px;
+          line-height: 1.72;
+          color: var(--muted);
+          max-width: 560px;
+        }
+
+        /* Tags — inline backslash separators */
+        .service-tags-row {
+          font-family: var(--fd);
+          font-size: 11.5px;
+          letter-spacing: .05em;
+          text-transform: uppercase;
+          color: var(--muted);
+          line-height: 1.9;
+        }
+        .svc-tag { white-space: nowrap; }
+        .tag-sep {
+          color: rgba(207, 207, 207, 0.22);
+          margin: 0 3px;
         }
 
         /* WHISPERS */
@@ -576,24 +581,18 @@ export default function Home() {
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
 
-          /* Services mobile */
-          .service-row-inner {
-            grid-template-columns: 1fr;
-            gap: 16px 0;
-            padding: 28px 0;
-          }
-          .service-name-text { font-size: clamp(24px, 7vw, 36px); }
-          .service-bottom-row { flex-direction: column; align-items: flex-start; gap: 14px; }
-          .service-counter { text-align: left; }
+          /* Services mobile: smaller title, tighter header padding */
+          .service-row-header { padding: 18px 0; }
+          .service-name-text { font-size: clamp(22px, 7vw, 34px); }
+          .counter-n, .counter-total { font-size: clamp(18px, 5.5vw, 28px); }
+          /* Expanded content fills width on mobile */
+          .service-desc-text { max-width: 100%; }
         }
 
         @media (min-width: 810px) and (max-width: 1279px) {
           /* Services tablet */
-          .service-row-inner {
-            grid-template-columns: 30% 1fr;
-            padding: 36px 0;
-          }
-          .service-name-text { font-size: clamp(22px, 3.2vw, 40px); }
+          .service-row-header { padding: 20px 0; }
+          .service-name-text { font-size: clamp(22px, 3.4vw, 42px); }
         }
       `}</style>
     </>
