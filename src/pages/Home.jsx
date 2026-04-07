@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
@@ -19,6 +19,30 @@ function Reveal({ children, delay = 0, className = '' }) {
     >
       {children}
     </motion.div>
+  )
+}
+
+/* ---- Word-by-word scroll-scrub opacity reveal (matches reference) ---- */
+function WordSpan({ word, index, total, progress }) {
+  const start = (index / total) * 0.78
+  const end = Math.min(((index + 2.5) / total) * 0.78, 1)
+  const opacity = useTransform(progress, [start, end], [0.12, 1])
+  return <motion.span className="rv-word" style={{ opacity }}>{word} </motion.span>
+}
+
+function WordReveal({ text, className = '' }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 0.82', 'end 0.28'],
+  })
+  const words = text.split(' ')
+  return (
+    <p ref={ref} className={`word-reveal ${className}`}>
+      {words.map((word, i) => (
+        <WordSpan key={i} word={word} index={i} total={words.length} progress={scrollYProgress} />
+      ))}
+    </p>
   )
 }
 
@@ -221,18 +245,12 @@ export default function Home() {
             <span className="label">\ About</span>
           </div>
           <div className="about-body">
-            <Reveal className="about-content" delay={0.1}>
-              <h2 className="heading-md">A versatile print and digital graphic designer focused on visual communication and creative execution.</h2>
-              <p className="body-text">I work with brands, agencies, and organisations to craft identities, publications, packaging, and campaigns that resonate. From concept to final production — every detail is considered.</p>
-              <a href="https://jomsy267.myportfolio.com" target="_blank" rel="noreferrer" className="about-cta"><span className="cta-slash">\</span> Read About Me</a>
-            </Reveal>
-            <Reveal className="about-side" delay={0.2}>
-              {[['Since', '2018'], ['Projects', '20+'], ['Disciplines', '8'], ['Based In', 'Edmonton']].map(([k, v]) => (
-                <div className="about-stat" key={k}>
-                  <span>{k}</span><span>{v}</span>
-                </div>
-              ))}
-            </Reveal>
+            <WordReveal text="I create brand identities and visual systems with an emphasis on clarity, composition, and quiet confidence. Outside of design, riding motorcycles remains one of the few things that clears the noise and keeps me grounded." />
+            <div className="about-cta-row">
+              <a href="https://jomsy267.myportfolio.com" target="_blank" rel="noreferrer" className="about-cta">
+                <span className="cta-slash">\</span> Read About Me
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -356,20 +374,26 @@ export default function Home() {
         /* ABOUT */
         .section { padding: 80px 0; }
         .about-body {
-          display: grid;
-          grid-template-columns: 1fr 200px;
-          gap: 0 48px;
-          align-items: start;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 36px;
         }
-        .about-content .heading-md {
+
+        /* Word-by-word scroll reveal */
+        .word-reveal {
           font-family: var(--fd);
-          font-size: clamp(24px, 3.2vw, 42px);
+          font-size: clamp(20px, 2.6vw, 36px);
           font-weight: 500;
           letter-spacing: -.025em;
-          line-height: 1.15;
-          margin-bottom: 28px;
+          line-height: 1.3;
+          color: var(--light);
+          text-align: right;
+          max-width: 680px;
         }
-        .about-content .body-text { margin-bottom: 40px; }
+        .rv-word { display: inline; }
+
+        .about-cta-row { display: flex; justify-content: flex-end; }
         .cta-slash { color: rgba(207,207,207,.35); margin-right: 2px; }
         .about-cta {
           font-family: var(--fd);
@@ -384,20 +408,6 @@ export default function Home() {
         }
         .about-cta:hover { color: var(--light); border-color: var(--light); }
         .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
-        .about-side {
-          display: flex; flex-direction: column; gap: 16px;
-          padding-top: 8px;
-        }
-        .about-stat {
-          font-family: var(--fm);
-          font-size: 11px; color: var(--muted);
-          display: flex; flex-direction: column; gap: 2px;
-        }
-        .about-stat span:last-child {
-          font-family: var(--fd);
-          font-size: 14px; font-weight: 600;
-          color: var(--light);
-        }
 
         /* CLIENTS */
         .clients { padding: 80px 0; }
@@ -605,8 +615,10 @@ export default function Home() {
           .sec-layout { grid-template-columns: 1fr; }
           .sec-label { position: static; margin-bottom: 24px; }
           .hero-tagline { font-size: clamp(22px, min(8.4vw, 9.8dvh), 50px); }
-          .about-body { grid-template-columns: 1fr; gap: 32px; }
-          .about-side { flex-direction: row; flex-wrap: wrap; gap: 24px; }
+          .word-reveal { font-size: clamp(18px, 5.2vw, 26px); max-width: 100%; }
+          .about-body { align-items: flex-start; }
+          .word-reveal { text-align: left; }
+          .about-cta-row { justify-content: flex-start; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
 
