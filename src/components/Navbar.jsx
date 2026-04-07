@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 function useClock() {
-  const [clock, setClock] = useState({ time: '', tz: '', available: true })
+  const [clock, setClock] = useState({ time: '', tz: '', available: true, seconds: 0, minutes: 0 })
 
   useEffect(() => {
     const update = () => {
@@ -13,18 +13,62 @@ function useClock() {
       const offset = -now.getTimezoneOffset() / 60
       const sign = offset >= 0 ? '+' : ''
       const available = now.getHours() >= 9 && now.getHours() < 18
-      setClock({ time: `${h}:${m}`, tz: `GMT${sign}${offset}`, available })
+      setClock({ time: `${h}:${m}`, tz: `GMT${sign}${offset}`, available, seconds: now.getSeconds(), minutes: now.getMinutes() })
     }
     update()
-    const id = setInterval(update, 30000)
+    const id = setInterval(update, 1000)
     return () => clearInterval(id)
   }, [])
 
   return clock
 }
 
+/* Analog clock — 12 ticks, one live hand */
+function AnalogClock({ seconds, minutes, available }) {
+  const ticks = Array.from({ length: 12 }, (_, i) => i * 30)
+  // smooth hand: degrees based on seconds within the current minute
+  const handDeg = ((minutes % 60) / 60) * 360 + (seconds / 60) * 6
+
+  return (
+    <div style={{ width: 32, height: 32, position: 'relative', borderRadius: '50%', flexShrink: 0 }}>
+      {ticks.map((deg) => (
+        <div
+          key={deg}
+          style={{
+            position: 'absolute',
+            width: 1,
+            height: 16,
+            backgroundColor: 'var(--token-surface, rgb(207,207,207))',
+            top: 0,
+            left: '50%',
+            transformOrigin: '50% 16px',
+            transform: `translateX(-50%) rotate(${deg}deg)`,
+            opacity: 0.35,
+          }}
+        />
+      ))}
+      {/* Live hand */}
+      <div
+        style={{
+          position: 'absolute',
+          width: 1,
+          height: 16,
+          backgroundColor: available ? 'rgb(37, 204, 102)' : '#ff004d',
+          top: 0,
+          left: '50%',
+          transformOrigin: '50% 16px',
+          zIndex: 10,
+          willChange: 'transform',
+          transform: `translateX(-50%) rotate(${handDeg}deg)`,
+          transition: 'transform 0.6s cubic-bezier(0.4, 2.08, 0.55, 0.44)',
+        }}
+      />
+    </div>
+  )
+}
+
 export default function Navbar({ isProject = false, heroMode = false }) {
-  const { time, tz, available } = useClock()
+  const { time, tz, available, seconds, minutes } = useClock()
   const location = useLocation()
   const isHome = location.pathname === '/'
 
@@ -106,11 +150,11 @@ export default function Navbar({ isProject = false, heroMode = false }) {
             <span className="nav-time">{time}</span>
             <span className="nav-tz">{tz}</span>
             <div className="nav-status">
-              <span className={`nav-status-dot${available ? '' : ' off'}`} />
               <span className="nav-status-text" style={{ color: available ? '#4ade80' : '#ff004d' }}>
                 {available ? 'Available' : 'Off Work'}
               </span>
             </div>
+            <AnalogClock seconds={seconds} minutes={minutes} available={available} />
           </motion.div>
         </div>
       </div>
