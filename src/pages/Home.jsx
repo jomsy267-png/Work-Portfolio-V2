@@ -59,7 +59,7 @@ const whispers = [
 function WorkCard({ project }) {
   return (
     <Link to={`/work/${project.slug}`} className="work-card" data-cursor>
-      <div className="work-card-image">
+      <div className="work-card-image img-wrap">
         <img src={project.hero} alt={project.title} loading="lazy" />
       </div>
       <div className="work-card-frost">
@@ -114,7 +114,7 @@ function ServiceSlide({ service, index, rawIndex }) {
       style={{ opacity, y, pointerEvents, position: index === 0 ? 'relative' : 'absolute', top: 0, left: 0, width: '100%' }}
     >
       <div className="services-counter">
-        <span>{String(index + 1).padStart(2, '0')}</span> / 03
+        {String(index + 1).padStart(2, '0')}/03
       </div>
       <h2 className="service-title">{service.title}</h2>
       <p className="body-text service-desc">{service.desc}</p>
@@ -134,46 +134,49 @@ function ProgressDot({ index, rawIndex }) {
 export default function Home() {
   return (
     <>
-      <Navbar />
-
-      {/* HERO */}
-      <section className="hero" id="hero">
+      {/* HERO — Navbar lives inside so it can be positioned mid-hero */}
+      <section className="hero" id="main-content">
         <div className="hero-video">
           <video autoPlay loop muted playsInline>
             <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4" />
           </video>
         </div>
         <div className="hero-overlay" />
+
+        {/* Navbar embedded at 44% — slides to top on scroll */}
+        <Navbar heroMode />
+
         <motion.div
           className="hero-tagline"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
+          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1], delay: 0.6 }}
         >
-          PRINT &amp; DIGITAL<br />
-          DESIGN THAT<br />
-          TELLS YOUR STORY
+          VISUAL DESIGNS<br />
+          THAT TELL A STORY
         </motion.div>
       </section>
 
       {/* ABOUT */}
       <section className="section" id="about">
-        <div className="grid-8">
-          <Reveal className="about-label" delay={0}>
+        <div className="sec-layout">
+          <div className="sec-label">
             <span className="label">\ About</span>
-          </Reveal>
-          <Reveal className="about-content" delay={0.1}>
-            <h2 className="heading-md">A versatile print and digital graphic designer focused on visual communication and creative execution.</h2>
-            <p className="body-text">I work with brands, agencies, and organisations to craft identities, publications, packaging, and campaigns that resonate. From concept to final production — every detail is considered.</p>
-            <a href="#" className="about-cta">Read About Me</a>
-          </Reveal>
-          <Reveal className="about-side" delay={0.2}>
-            {[['Since', '2018'], ['Projects', '20+'], ['Disciplines', '8'], ['Based In', 'Edmonton']].map(([k, v]) => (
-              <div className="about-stat" key={k}>
-                <span>{k}</span><span>{v}</span>
-              </div>
-            ))}
-          </Reveal>
+          </div>
+          <div className="about-body">
+            <Reveal className="about-content" delay={0.1}>
+              <h2 className="heading-md">A versatile print and digital graphic designer focused on visual communication and creative execution.</h2>
+              <p className="body-text">I work with brands, agencies, and organisations to craft identities, publications, packaging, and campaigns that resonate. From concept to final production — every detail is considered.</p>
+              <a href="https://jomsy267.myportfolio.com" target="_blank" rel="noreferrer" className="about-cta"><span className="cta-slash">\</span> Read About Me</a>
+            </Reveal>
+            <Reveal className="about-side" delay={0.2}>
+              {[['Since', '2018'], ['Projects', '20+'], ['Disciplines', '8'], ['Based In', 'Edmonton']].map(([k, v]) => (
+                <div className="about-stat" key={k}>
+                  <span>{k}</span><span>{v}</span>
+                </div>
+              ))}
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -182,8 +185,8 @@ export default function Home() {
       {/* CLIENTS */}
       <Reveal>
         <section className="clients">
-          <div className="clients-inner">
-            <p className="label clients-label">\ Selected Clients</p>
+          <div className="sec-layout">
+            <p className="label sec-label">\ Selected Clients</p>
             <div className="clients-list">
               {['APEGA', 'Ballet Edmonton', 'Odvod Media Inc.', 'Edmonton Community Foundation', 'CEA', 'University of Alberta', 'Runway Footwear', 'Odd. Brewing Company', 'Page The Cleaners', 'Edify'].map((c, i, arr) => (
                 <span key={c}>{c}{i < arr.length - 1 && <span className="dot-sep"> · </span>}</span>
@@ -197,20 +200,20 @@ export default function Home() {
 
       {/* FEATURED WORK */}
       <section className="work-section" id="work">
-        <div className="work-header">
-          <span className="label">Featured Work</span>
-        </div>
-        <div className="work-grid">
-          <div className="work-cards-container">
+        <div className="sec-layout work-sec">
+          <div className="sec-label">
+            <span className="label">\ Featured Work</span>
+          </div>
+          <div className="work-body">
             {featuredRows.map((row, ri) => (
               <Reveal key={ri} className="work-row" delay={ri * 0.08}>
                 {row.map((p) => <WorkCard key={p.slug} project={p} />)}
               </Reveal>
             ))}
+            <div className="work-footer">
+              <Link to="/work" className="nav-link-cta"><span className="cta-slash">\</span> View All Work</Link>
+            </div>
           </div>
-        </div>
-        <div className="work-footer">
-          <Link to="/work" className="nav-link-cta">View All Work</Link>
         </div>
       </section>
 
@@ -221,17 +224,19 @@ export default function Home() {
 
       {/* WHISPERS */}
       <section className="section whispers" id="whispers">
-        <div className="whispers-header">
-          <span className="label">\ Whispers</span>
-        </div>
-        <div className="whispers-grid">
-          {whispers.map((w, i) => (
-            <Reveal key={w.title} className="whisper-card" delay={i * 0.08}>
-              <p className="whisper-date">{w.date}</p>
-              <h3 className="whisper-title">{w.title}</h3>
-              <p className="whisper-excerpt">{w.excerpt}</p>
-            </Reveal>
-          ))}
+        <div className="sec-layout">
+          <div className="sec-label">
+            <span className="label">\ Whispers</span>
+          </div>
+          <div className="whispers-grid">
+            {whispers.map((w, i) => (
+              <Reveal key={w.title} className="whisper-card" delay={i * 0.08}>
+                <p className="whisper-date">{w.date}</p>
+                <h3 className="whisper-title">{w.title}</h3>
+                <p className="whisper-excerpt">{w.excerpt}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -243,27 +248,27 @@ export default function Home() {
         /* HERO */
         .hero {
           position: relative;
-          height: 100vh; min-height: 600px;
-          display: grid;
-          grid-template-columns: repeat(8, minmax(50px, 1fr));
-          gap: var(--gap);
-          padding: 40px var(--pad) var(--pad);
+          min-height: 100dvh;
           overflow: hidden;
         }
         .hero-video { position: absolute; inset: 0; z-index: 1; }
         .hero-video video { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; background: #000; opacity: .25; z-index: 2; }
+        .hero-overlay { position: absolute; inset: 0; background: #000; opacity: .32; z-index: 2; }
         .hero-tagline {
-          position: relative; z-index: 3;
-          grid-column: 1 / span 3;
-          align-self: end;
+          position: absolute;
+          bottom: clamp(32px, 5vh, 64px);
+          left: 0; right: 0;
+          max-width: var(--max);
+          margin: 0 auto;
+          padding: 0 var(--pad);
+          z-index: 3;
           font-family: var(--fd);
-          font-size: clamp(32px, 5.2vw, 66px);
-          font-weight: 500; line-height: .9;
-          letter-spacing: -.02em;
+          font-size: clamp(28px, min(6.3vw, 11.9dvh), 95px);
+          font-weight: 600;
+          line-height: .88;
+          letter-spacing: .02em;
           text-transform: uppercase;
           color: #fff;
-          padding-bottom: 12px;
         }
 
         /* ABOUT */
@@ -272,22 +277,27 @@ export default function Home() {
         .about-content { grid-column: span 4; }
         .about-content .heading-md {
           font-family: var(--fd);
-          font-size: clamp(24px, 3vw, 32px);
+          font-size: clamp(24px, 3.2vw, 42px);
           font-weight: 500;
-          letter-spacing: -.02em;
-          line-height: 1.25;
-          margin-bottom: 24px;
+          letter-spacing: -.025em;
+          line-height: 1.15;
+          margin-bottom: 28px;
         }
         .about-content .body-text { margin-bottom: 40px; }
+        .cta-slash { color: rgba(207,207,207,.35); margin-right: 2px; }
         .about-cta {
           font-family: var(--fd);
-          font-size: 18px; font-weight: 500;
-          letter-spacing: -.02em;
+          font-size: 13px; font-weight: 500;
+          letter-spacing: .04em;
           text-transform: uppercase;
-          display: inline-flex; align-items: center; gap: 8px;
-          transition: opacity .3s;
+          display: inline-flex; align-items: center; gap: 4px;
+          color: var(--muted);
+          border-bottom: 1px solid rgba(207,207,207,.2);
+          padding-bottom: 2px;
+          transition: color .3s, border-color .3s;
         }
-        .about-cta:hover { opacity: .6; }
+        .about-cta:hover { color: var(--light); border-color: var(--light); }
+        .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
         .about-side {
           grid-column: span 2;
           display: flex; flex-direction: column; gap: 12px;
@@ -307,33 +317,35 @@ export default function Home() {
         /* CLIENTS */
         .clients { padding: 80px 0; }
         .clients-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .clients-label { margin-bottom: 40px; }
+        .clients-label { margin-bottom: 32px; }
         .clients-list {
           font-family: var(--fd);
-          font-size: clamp(14px, 2vw, 18px);
+          font-size: clamp(13px, 1.6vw, 17px);
           color: var(--muted);
-          line-height: 2.2;
+          line-height: 2.4;
+          letter-spacing: .01em;
         }
         .clients-list span { transition: color .3s; cursor: default; }
         .clients-list span:hover { color: var(--light); }
-        .dot-sep { color: rgba(207,207,207,.2); }
+        .dot-sep { color: rgba(207,207,207,.15); padding: 0 4px; }
 
         /* WORK */
         .work-section { padding-bottom: 80px; }
         .work-header {
-          display: flex; justify-content: center; align-items: center;
-          padding: 24px var(--pad);
+          max-width: var(--max); margin: 0 auto;
+          display: flex; align-items: center;
+          padding: 80px var(--pad) 32px;
         }
         .work-grid {
           display: grid;
           grid-template-columns: repeat(8, minmax(1px, 1fr));
           gap: var(--gap);
           max-width: var(--max); margin: 0 auto;
-          padding: 68px var(--pad) 0;
+          padding: 0 var(--pad);
         }
         .work-cards-container {
           grid-column: span 7;
-          display: flex; flex-direction: column; gap: 24px;
+          display: flex; flex-direction: column; gap: var(--gap);
         }
         .work-row {
           display: grid;
@@ -342,53 +354,73 @@ export default function Home() {
         }
         .work-row:nth-child(1) .work-card:nth-child(1) { grid-column: span 4; }
         .work-row:nth-child(1) .work-card:nth-child(2) { grid-column: span 3; }
-        .work-row:nth-child(2) .work-card:nth-child(1) { grid-column: span 2; }
-        .work-row:nth-child(2) .work-card:nth-child(2) { grid-column: span 3; }
-        .work-row:nth-child(3) .work-card:nth-child(1) { grid-column: span 3; }
-        .work-row:nth-child(3) .work-card:nth-child(2) { grid-column: span 2; }
+        .work-row:nth-child(2) .work-card:nth-child(1) { grid-column: span 3; }
+        .work-row:nth-child(2) .work-card:nth-child(2) { grid-column: span 4; }
+        .work-row:nth-child(3) .work-card:nth-child(1) { grid-column: span 4; }
+        .work-row:nth-child(3) .work-card:nth-child(2) { grid-column: span 3; }
         .work-card {
           display: flex; flex-direction: column;
-          cursor: pointer; text-decoration: none; overflow: hidden;
+          cursor: pointer; text-decoration: none;
         }
         .work-card-image {
-          width: 100%; aspect-ratio: 1.5;
-          position: relative; overflow: hidden;
+          width: 100%; aspect-ratio: 1.55;
+          overflow: hidden;
           background: var(--dark);
         }
-        .work-row:nth-child(1) .work-card:nth-child(2) .work-card-image { aspect-ratio: 1.778; }
         .work-card-image img {
           width: 100%; height: 100%; object-fit: cover;
-          transition: transform .6s ease, filter .4s ease;
+          transition: transform .7s ease, filter .4s ease;
         }
-        .work-card:hover .work-card-image img { transform: scale(1.03); filter: brightness(.9); }
+        .work-card:hover .work-card-image img { transform: scale(1.04); filter: brightness(.85); }
+        .work-card:hover .wc-name { color: var(--surface); }
         .work-card-frost {
-          display: flex; flex-direction: row;
-          align-items: flex-start; gap: 8px;
-          padding: 4px 0;
+          display: flex; flex-direction: column;
+          gap: 2px;
+          padding: 12px 0 4px;
         }
-        .wc-slash, .wc-name, .wc-cat {
+        .wc-slash {
           font-family: var(--fd);
-          font-size: 18px; font-weight: 500;
-          letter-spacing: -.02em;
-          text-transform: uppercase;
+          font-size: 14px; font-weight: 400;
+          color: rgba(207,207,207,.3);
+          margin-right: 3px;
+          transition: color .3s;
         }
-        .wc-name { margin-left: 2px; }
-        .wc-cat { color: var(--surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .work-card-title-area { display: flex; align-items: center; }
-        .work-card-cat-area { display: flex; align-items: center; gap: 4px; flex: 1; }
+        .work-card:hover .wc-slash { color: rgba(207,207,207,.6); }
+        .wc-name {
+          font-family: var(--fd);
+          font-size: 14px; font-weight: 600;
+          letter-spacing: -.01em;
+          text-transform: uppercase;
+          color: var(--light);
+          transition: color .3s;
+        }
+        .wc-cat {
+          font-family: var(--fd);
+          font-size: 13px; font-weight: 400;
+          letter-spacing: .01em;
+          text-transform: uppercase;
+          color: var(--muted);
+        }
+        .work-card-title-area { display: flex; align-items: center; gap: 2px; }
+        .work-card-cat-area { display: flex; align-items: center; gap: 2px; }
         .work-footer {
-          max-width: var(--max); margin: 48px auto 0;
+          max-width: var(--max); margin: 64px auto 0;
           padding: 0 var(--pad);
-          display: flex; justify-content: center;
+          display: flex; justify-content: flex-start;
         }
         .nav-link-cta {
           font-family: var(--fd);
-          font-size: 18px; font-weight: 500;
-          letter-spacing: -.02em;
+          font-size: 13px; font-weight: 500;
+          letter-spacing: .04em;
           text-transform: uppercase;
-          transition: opacity .3s;
+          color: var(--muted);
+          border-bottom: 1px solid rgba(207,207,207,.2);
+          padding-bottom: 2px;
+          display: inline-flex; align-items: center; gap: 4px;
+          transition: color .3s, border-color .3s;
         }
-        .nav-link-cta:hover { opacity: .6; }
+        .nav-link-cta:hover { color: var(--light); border-color: var(--light); }
+        .nav-link-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
         /* SERVICES */
         .services { position: relative; min-height: 300vh; }
@@ -403,7 +435,7 @@ export default function Home() {
           width: 100%; max-width: var(--max);
           margin: 0 auto; padding: 0 var(--pad);
         }
-        .services-header { margin-bottom: 80px; }
+        .services-header { margin-bottom: 48px; }
         .services-counter {
           font-family: var(--fm);
           font-size: 12px; color: var(--muted);
@@ -424,11 +456,11 @@ export default function Home() {
         }
         .service-list li {
           font-family: var(--fd);
-          font-size: 13px; letter-spacing: .04em;
+          font-size: 12px; letter-spacing: .06em;
           text-transform: uppercase;
-          padding: 6px 16px;
-          border: 1px solid rgba(207,207,207,.12);
-          border-radius: 24px;
+          padding: 6px 14px;
+          border: 1px solid rgba(207,207,207,.14);
+          border-radius: 3px;
           color: var(--muted);
         }
         .services-progress {
@@ -472,12 +504,12 @@ export default function Home() {
         }
         @media (max-width: 809px) {
           .section { padding: 80px 0; }
-          .hero { grid-template-columns: 1fr; padding: 24px var(--pad) var(--pad); }
-          .hero-tagline { grid-column: span 1; font-size: 36px; }
+          .hero-tagline { font-size: clamp(22px, min(8.4vw, 9.8dvh), 50px); }
           .about-label { grid-column: span 8; margin-bottom: 12px; }
           .about-content { grid-column: span 8; }
           .about-side { grid-column: span 8; flex-direction: row; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
-          .work-grid { grid-template-columns: 1fr; padding-top: 24px; }
+          .work-header { padding: 48px var(--pad) 24px; }
+          .work-grid { grid-template-columns: 1fr; }
           .work-cards-container { grid-column: span 1; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }

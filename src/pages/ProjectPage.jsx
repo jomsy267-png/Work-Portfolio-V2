@@ -29,7 +29,7 @@ function GalleryGrid({ items }) {
         <Reveal
           key={i}
           delay={i * 0.04}
-          className={`gallery-item${img.span === 2 ? ' span-2' : ''}`}
+          className={`gallery-item img-wrap${img.span === 2 ? ' span-2' : ''}`}
         >
           <img src={img.src} alt={img.alt} loading="lazy" />
         </Reveal>
@@ -43,7 +43,7 @@ function PublicationsLayout({ pubs }) {
     <div className="pubs-list">
       {pubs.map((pub, i) => (
         <Reveal key={i} delay={i * 0.06} className="pub-item">
-          <div className="pub-img">
+          <div className="pub-img img-wrap">
             <img src={pub.image} alt={pub.title} loading="lazy" />
           </div>
           <div className="pub-info">
@@ -106,7 +106,7 @@ export default function ProjectPage() {
 
       {/* GALLERY */}
       <Reveal className="gallery">
-        <p className="gallery-label">Project Gallery</p>
+        <p className="gallery-label"><span className="proj-slash">\</span> Project Gallery</p>
         {project.publications ? (
           <PublicationsLayout pubs={project.publications} />
         ) : (
@@ -119,10 +119,10 @@ export default function ProjectPage() {
         <div className="next-project">
           <div className="next-inner">
             <Link to={`/work/${next.slug}`}>
-              <p className="next-label">Next Project</p>
+              <p className="next-label"><span className="proj-slash">\</span> Next Project</p>
               <p className="next-title">{next.title}</p>
             </Link>
-            <Link to={`/work/${next.slug}`} className="next-arrow">→</Link>
+            <Link to={`/work/${next.slug}`} className="next-arrow" aria-label={`Go to next project: ${next.title}`}>→</Link>
           </div>
         </div>
       )}
@@ -131,9 +131,11 @@ export default function ProjectPage() {
 
       <style>{`
         .project-hero {
-          width: 100%; aspect-ratio: 2.2;
+          width: 100%;
+          aspect-ratio: 2.35;
+          min-height: 320px;
           overflow: hidden;
-          margin-top: 57px;
+          margin-top: 53px;
           background: var(--dark);
         }
         .project-hero img { width: 100%; height: 100%; object-fit: cover; }
@@ -158,11 +160,11 @@ export default function ProjectPage() {
         .pi-desc { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 480px; margin-bottom: 40px; }
         .pi-deliverables { display: flex; flex-wrap: wrap; gap: 8px; }
         .pi-tag {
-          font-family: var(--fd); font-size: 12px;
-          letter-spacing: .04em; text-transform: uppercase;
-          padding: 5px 14px;
-          border: 1px solid rgba(207,207,207,.15);
-          border-radius: 24px; color: var(--muted);
+          font-family: var(--fd); font-size: 11px;
+          letter-spacing: .05em; text-transform: uppercase;
+          padding: 5px 12px;
+          border: 1px solid rgba(207,207,207,.12);
+          border-radius: 3px; color: var(--muted);
         }
         .meta-row { display: flex; flex-direction: column; gap: 4px; }
         .meta-val { font-family: var(--fd); font-size: 16px; font-weight: 500; letter-spacing: -.01em; }
@@ -171,10 +173,13 @@ export default function ProjectPage() {
           max-width: var(--max); margin: 0 auto;
           padding: 80px var(--pad);
         }
+        .proj-slash { color: rgba(207,207,207,.35); margin-right: 4px; }
         .gallery-label {
-          font-family: var(--fd); font-size: 18px; font-weight: 500;
-          letter-spacing: -.02em; text-transform: uppercase;
+          font-family: var(--fd); font-size: 13px; font-weight: 500;
+          letter-spacing: .04em; text-transform: uppercase;
+          color: var(--muted);
           margin-bottom: 48px;
+          display: flex; align-items: center; gap: 4px;
         }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
         .gallery-item { overflow: hidden; background: var(--dark); }
