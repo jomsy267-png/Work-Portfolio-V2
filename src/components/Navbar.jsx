@@ -56,7 +56,9 @@ export default function Navbar({ isProject = false, heroMode = false }) {
       <div className="nav-inner">
         <div className="nav-left">
           <motion.div {...navFade(0.1)}>
-            <Link to="/" className="nav-brand" aria-label="Jomil Shah — go to homepage">JS.</Link>
+            <Link to="/" className="nav-brand" aria-label="Jomil Shah — go to homepage">
+              <span className="roll-wrap"><span>JS.</span><span aria-hidden="true">JS.</span></span>
+            </Link>
           </motion.div>
           {!isProject ? (
             <div className="nav-links">
@@ -68,7 +70,11 @@ export default function Navbar({ isProject = false, heroMode = false }) {
                     className="nav-link"
                     {...navFade(0.18 + i * 0.07)}
                   >
-                    <span className="nav-slash">\</span> {label}
+                    <span className="nav-slash">\</span>
+                    <span className="roll-wrap">
+                      <span>{label}</span>
+                      <span aria-hidden="true">{label}</span>
+                    </span>
                   </motion.a>
                 ))}
               </div>
@@ -78,7 +84,10 @@ export default function Navbar({ isProject = false, heroMode = false }) {
             </div>
           ) : (
             <motion.div {...navFade(0.15)}>
-              <Link to="/work" className="nav-back"><span className="nav-slash">\</span> All Work</Link>
+              <Link to="/work" className="nav-back">
+                <span className="nav-slash">\</span>
+                <span className="roll-wrap"><span>All Work</span><span aria-hidden="true">All Work</span></span>
+              </Link>
             </motion.div>
           )}
         </div>
@@ -89,7 +98,8 @@ export default function Navbar({ isProject = false, heroMode = false }) {
               className="nav-link"
               {...navFade(0.38)}
             >
-              <span className="nav-slash">\</span> Contact
+              <span className="nav-slash">\</span>
+              <span className="roll-wrap"><span>Contact</span><span aria-hidden="true">Contact</span></span>
             </motion.a>
           )}
           <motion.div className="nav-clock-area" {...navFade(0.44)}>
@@ -154,25 +164,50 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           font-size: 16px; font-weight: 600;
           letter-spacing: -.01em;
           text-transform: uppercase;
-          transition: opacity .3s;
+          display: inline-flex;
+          align-items: center;
         }
-        .nav-brand:hover { opacity: .7; }
 
         .nav-links { display: flex; flex-direction: column; gap: 3px; }
         .nav-links-row { display: flex; align-items: center; gap: 20px; }
 
-        .nav-slash { color: rgba(207,207,207,.35); margin-right: 1px; }
+        .nav-slash {
+          color: rgba(207,207,207,.35);
+          margin-right: 1px;
+          transition: color .35s ease;
+          flex-shrink: 0;
+        }
         .nav-link {
           font-family: var(--fd);
           font-size: 13px; font-weight: 500;
           letter-spacing: .01em;
           text-transform: uppercase;
-          transition: color .3s;
           color: var(--muted);
           display: inline-flex; align-items: center; gap: 0;
+          transition: color .35s ease;
         }
         .nav-link:hover { color: var(--light); }
         .nav-link:hover .nav-slash { color: rgba(207,207,207,.7); }
+
+        /* Roll effect — overflow clips to 1 line, duplicate slides up on hover */
+        .roll-wrap {
+          display: inline-flex;
+          flex-direction: column;
+          overflow: hidden;
+          height: 1.15em;
+          line-height: 1.15;
+        }
+        .roll-wrap span {
+          display: block;
+          line-height: 1.15;
+          flex-shrink: 0;
+          transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-link:hover .roll-wrap span,
+        .nav-brand:hover .roll-wrap span,
+        .nav-back:hover .roll-wrap span {
+          transform: translateY(-100%);
+        }
 
         /* In hero (transparent) mode, nav links are white */
         .navbar-hero .nav-link,
@@ -192,11 +227,12 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           font-size: 13px; font-weight: 500;
           letter-spacing: .01em;
           text-transform: uppercase;
-          display: flex; align-items: center; gap: 6px;
+          display: inline-flex; align-items: center; gap: 2px;
           color: var(--muted);
-          transition: color .3s;
+          transition: color .35s ease;
         }
         .nav-back:hover { color: var(--light); }
+        .nav-back:hover .nav-slash { color: rgba(207,207,207,.7); }
 
         .nav-greeting {
           font-family: var(--fm);
