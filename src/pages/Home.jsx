@@ -85,13 +85,15 @@ function ServicesSection() {
   return (
     <section className="services" id="services" ref={containerRef}>
       <div className="services-sticky">
-        <div className="services-inner">
-          <div className="services-header">
+        <div className="services-inner sec-layout">
+          <div className="sec-label services-header">
             <span className="label">\ What We Do</span>
           </div>
-          {services.map((s, i) => (
-            <ServiceSlide key={s.title} service={s} index={i} rawIndex={rawIndex} />
-          ))}
+          <div className="services-body">
+            {services.map((s, i) => (
+              <ServiceSlide key={s.title} service={s} index={i} rawIndex={rawIndex} />
+            ))}
+          </div>
           <div className="services-progress">
             {services.map((_, i) => (
               <ProgressDot key={i} index={i} rawIndex={rawIndex} />
@@ -271,10 +273,30 @@ export default function Home() {
           color: #fff;
         }
 
+        /* TWO-COLUMN SECTION LAYOUT */
+        /* Label col ~18%, content col ~82% — matches reference site proportions */
+        .sec-layout {
+          display: grid;
+          grid-template-columns: 18% 1fr;
+          gap: 0 var(--gap);
+          padding: 0 var(--pad);
+        }
+        .sec-label {
+          padding-top: 4px;
+          /* sticky so label stays visible while content scrolls */
+          position: sticky;
+          top: 72px;
+          align-self: start;
+        }
+
         /* ABOUT */
-        .section { padding: 120px 0; }
-        .about-label { grid-column: span 2; padding-top: 4px; }
-        .about-content { grid-column: span 4; }
+        .section { padding: 80px 0; }
+        .about-body {
+          display: grid;
+          grid-template-columns: 1fr 200px;
+          gap: 0 48px;
+          align-items: start;
+        }
         .about-content .heading-md {
           font-family: var(--fd);
           font-size: clamp(24px, 3.2vw, 42px);
@@ -299,14 +321,13 @@ export default function Home() {
         .about-cta:hover { color: var(--light); border-color: var(--light); }
         .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
         .about-side {
-          grid-column: span 2;
-          display: flex; flex-direction: column; gap: 12px;
-          padding-top: 4px;
+          display: flex; flex-direction: column; gap: 16px;
+          padding-top: 8px;
         }
         .about-stat {
           font-family: var(--fm);
           font-size: 11px; color: var(--muted);
-          display: flex; justify-content: space-between;
+          display: flex; flex-direction: column; gap: 2px;
         }
         .about-stat span:last-child {
           font-family: var(--fd);
@@ -316,8 +337,6 @@ export default function Home() {
 
         /* CLIENTS */
         .clients { padding: 80px 0; }
-        .clients-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
-        .clients-label { margin-bottom: 32px; }
         .clients-list {
           font-family: var(--fd);
           font-size: clamp(13px, 1.6vw, 17px);
@@ -330,21 +349,8 @@ export default function Home() {
         .dot-sep { color: rgba(207,207,207,.15); padding: 0 4px; }
 
         /* WORK */
-        .work-section { padding-bottom: 80px; }
-        .work-header {
-          max-width: var(--max); margin: 0 auto;
-          display: flex; align-items: center;
-          padding: 80px var(--pad) 32px;
-        }
-        .work-grid {
-          display: grid;
-          grid-template-columns: repeat(8, minmax(1px, 1fr));
-          gap: var(--gap);
-          max-width: var(--max); margin: 0 auto;
-          padding: 0 var(--pad);
-        }
-        .work-cards-container {
-          grid-column: span 7;
+        .work-section { padding: 80px 0; }
+        .work-body {
           display: flex; flex-direction: column; gap: var(--gap);
         }
         .work-row {
@@ -404,9 +410,8 @@ export default function Home() {
         .work-card-title-area { display: flex; align-items: center; gap: 2px; }
         .work-card-cat-area { display: flex; align-items: center; gap: 2px; }
         .work-footer {
-          max-width: var(--max); margin: 64px auto 0;
-          padding: 0 var(--pad);
           display: flex; justify-content: flex-start;
+          padding-top: 32px;
         }
         .nav-link-cta {
           font-family: var(--fd);
@@ -432,10 +437,10 @@ export default function Home() {
         }
         .services-inner {
           position: relative;
-          width: 100%; max-width: var(--max);
-          margin: 0 auto; padding: 0 var(--pad);
+          width: 100%;
         }
-        .services-header { margin-bottom: 48px; }
+        .services-header { margin-bottom: 0; }
+        .services-body { position: relative; min-height: 200px; }
         .services-counter {
           font-family: var(--fm);
           font-size: 12px; color: var(--muted);
@@ -472,13 +477,7 @@ export default function Home() {
 
         /* WHISPERS */
         .whispers { padding-top: 0; }
-        .whispers-header {
-          max-width: var(--max); margin: 0 auto 48px;
-          padding: 0 var(--pad);
-        }
         .whispers-grid {
-          max-width: var(--max); margin: 0 auto;
-          padding: 0 var(--pad);
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: var(--gap);
         }
@@ -497,20 +496,17 @@ export default function Home() {
 
         /* RESPONSIVE */
         @media (max-width: 1279px) {
-          .work-cards-container { grid-column: 1 / -1; }
           .work-row { grid-template-columns: repeat(2, 1fr); }
           .work-row .work-card:nth-child(1),
           .work-row .work-card:nth-child(2) { grid-column: span 1 !important; }
         }
         @media (max-width: 809px) {
-          .section { padding: 80px 0; }
+          .section { padding: 60px 0; }
+          .sec-layout { grid-template-columns: 1fr; }
+          .sec-label { position: static; margin-bottom: 24px; }
           .hero-tagline { font-size: clamp(22px, min(8.4vw, 9.8dvh), 50px); }
-          .about-label { grid-column: span 8; margin-bottom: 12px; }
-          .about-content { grid-column: span 8; }
-          .about-side { grid-column: span 8; flex-direction: row; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
-          .work-header { padding: 48px var(--pad) 24px; }
-          .work-grid { grid-template-columns: 1fr; }
-          .work-cards-container { grid-column: span 1; }
+          .about-body { grid-template-columns: 1fr; gap: 32px; }
+          .about-side { flex-direction: row; flex-wrap: wrap; gap: 24px; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
         }
