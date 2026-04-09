@@ -1,11 +1,9 @@
-import { useRef, useState, Suspense, lazy } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
-
-const Spline = lazy(() => import('@splinetool/react-spline'))
 
 /* ---- Reveal wrapper ---- */
 function Reveal({ children, delay = 0, className = '' }) {
@@ -194,36 +192,9 @@ function ServicesSection() {
   )
 }
 
-// Detect capable device before loading Spline (per skill PERFORMANCE.md)
-function canLoadSpline() {
-  if (typeof window === 'undefined') return false
-  const isMobile = window.innerWidth < 768
-  const isLowEnd = navigator.hardwareConcurrency <= 2
-  const canvas = document.createElement('canvas')
-  const hasWebGL = !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
-  return !isMobile && !isLowEnd && hasWebGL
-}
-
 export default function Home() {
-  const [splineLoaded, setSplineLoaded] = useState(false)
-  const splineCapable = canLoadSpline()
-
   return (
     <>
-      {/* Spline 3D — sticky fixed centre, sits behind content, runs through whole page */}
-      {/* Only loads on capable (desktop, multi-core, WebGL) devices */}
-      <div className="spline-bg" aria-hidden="true">
-        {splineCapable ? (
-          <Suspense fallback={null}>
-            <Spline
-              scene="https://prod.spline.design/fokCAHDKuE8o3tgF/scene.splinecode"
-              onLoad={() => setSplineLoaded(true)}
-              style={{ opacity: splineLoaded ? 1 : 0, transition: 'opacity 0.8s ease' }}
-            />
-          </Suspense>
-        ) : null}
-      </div>
-
       {/* HERO — Navbar lives inside so it can be positioned mid-hero */}
       <section className="hero" id="main-content">
         <motion.div
@@ -349,22 +320,6 @@ export default function Home() {
       <Footer />
 
       <style>{`
-        /* SPLINE 3D BACKGROUND */
-        .spline-bg {
-          position: fixed;
-          inset: 0;
-          z-index: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          pointer-events: none;
-          overflow: hidden;
-        }
-        .spline-bg canvas {
-          width: 100% !important;
-          height: 100% !important;
-        }
-
         /* HERO */
         .hero {
           position: relative;
