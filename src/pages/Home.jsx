@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, Suspense, lazy } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
+
+const Spline = lazy(() => import('@splinetool/react-spline'))
 
 /* ---- Reveal wrapper ---- */
 function Reveal({ children, delay = 0, className = '' }) {
@@ -195,6 +197,13 @@ function ServicesSection() {
 export default function Home() {
   return (
     <>
+      {/* Spline 3D — sticky fixed centre, sits behind content, runs through whole page */}
+      <div className="spline-bg" aria-hidden="true">
+        <Suspense fallback={null}>
+          <Spline scene="https://prod.spline.design/fokCAHDKuE8o3tgF/scene.splinecode" />
+        </Suspense>
+      </div>
+
       {/* HERO — Navbar lives inside so it can be positioned mid-hero */}
       <section className="hero" id="main-content">
         <motion.div
@@ -320,9 +329,26 @@ export default function Home() {
       <Footer />
 
       <style>{`
+        /* SPLINE 3D BACKGROUND */
+        .spline-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          pointer-events: none;
+          overflow: hidden;
+        }
+        .spline-bg canvas {
+          width: 100% !important;
+          height: 100% !important;
+        }
+
         /* HERO */
         .hero {
           position: relative;
+          z-index: 1;
           min-height: 100dvh;
           overflow: hidden;
         }
@@ -372,7 +398,7 @@ export default function Home() {
         }
 
         /* ABOUT */
-        .section { padding: 80px 0; }
+        .section { padding: 80px 0; position: relative; z-index: 1; }
         .about-body {
           display: flex;
           flex-direction: column;
@@ -410,7 +436,7 @@ export default function Home() {
         .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
         /* CLIENTS */
-        .clients { padding: 80px 0; }
+        .clients { padding: 80px 0; position: relative; z-index: 1; }
         .clients-list {
           font-family: var(--fd);
           font-size: clamp(13px, 1.6vw, 17px);
@@ -423,7 +449,7 @@ export default function Home() {
         .dot-sep { color: rgba(207,207,207,.15); padding: 0 4px; }
 
         /* WORK */
-        .work-section { padding: 80px 0; }
+        .work-section { padding: 80px 0; position: relative; z-index: 1; }
         .work-body {
           display: flex; flex-direction: column; gap: var(--gap);
         }
@@ -502,7 +528,7 @@ export default function Home() {
         .nav-link-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
         /* SERVICES */
-        .services { padding: 80px 0; }
+        .services { padding: 80px 0; position: relative; z-index: 1; }
         .services-list { display: flex; flex-direction: column; }
 
         .service-divider {
@@ -586,7 +612,7 @@ export default function Home() {
         }
 
         /* WHISPERS */
-        .whispers { padding-top: 0; }
+        .whispers { padding-top: 0; position: relative; z-index: 1; }
         .whispers-grid {
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: var(--gap);
