@@ -22,18 +22,85 @@ function Reveal({ children, delay = 0, className = '', style }) {
   )
 }
 
-function GalleryGrid({ items }) {
+function VideoEmbed({ id, aspect = '16/9' }) {
+  const src = `https://www-ccv.adobe.io/v1/player/ccv/${id}/embed?bgcolor=%23191919&lazyLoading=true&api_key=BehancePro2View`
   return (
-    <div className="gallery-grid">
-      {items.map((img, i) => (
-        <Reveal
-          key={i}
-          delay={i * 0.04}
-          className={`gallery-item img-wrap${img.span === 2 ? ' span-2' : ''}`}
-        >
-          <img src={img.src} alt={img.alt} loading="lazy" />
-        </Reveal>
-      ))}
+    <div className="video-embed" style={{ aspectRatio: aspect }}>
+      <iframe
+        src={src}
+        allowFullScreen
+        frameBorder="0"
+        title="Project Video"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
+    </div>
+  )
+}
+
+function GalleryGrid({ items }) {
+  // Group consecutive side-by-side items
+  const rows = []
+  let i = 0
+  while (i < items.length) {
+    const item = items[i]
+    // Text block — always full width, standalone
+    if (item.type === 'text') {
+      rows.push({ type: 'text', item })
+      i++
+    // Side-by-side pair
+    } else if (item.side && items[i + 1]?.side) {
+      rows.push({ type: 'pair', items: [item, items[i + 1]] })
+      i += 2
+    } else {
+      rows.push({ type: 'single', item })
+      i++
+    }
+  }
+
+  return (
+    <div className="gallery-sequence">
+      {rows.map((row, ri) => {
+        if (row.type === 'text') {
+          return (
+            <Reveal key={ri} className="gallery-text-block">
+              <h3 className="gallery-text-heading">{row.item.heading}</h3>
+              <p className="gallery-text-body">{row.item.body}</p>
+            </Reveal>
+          )
+        }
+        if (row.type === 'pair') {
+          return (
+            <Reveal key={ri} className="gallery-pair" delay={0.04}>
+              {row.items.map((item, pi) => (
+                <div key={pi} className={`gallery-pair-item${item.flex ? ` flex-${item.flex}` : ''}`}>
+                  {item.type === 'video'
+                    ? <VideoEmbed id={item.id} aspect={item.aspect || '9/16'} />
+                    : <div className="gallery-item img-wrap"><img src={item.src} alt={item.alt} loading="lazy" /></div>
+                  }
+                </div>
+              ))}
+            </Reveal>
+          )
+        }
+        // Single item
+        const item = row.item
+        if (item.type === 'video') {
+          return (
+            <Reveal key={ri} className={`gallery-video-wrap${item.span === 2 ? ' span-2' : ''}`}>
+              <VideoEmbed id={item.id} aspect={item.aspect || '16/9'} />
+            </Reveal>
+          )
+        }
+        return (
+          <Reveal
+            key={ri}
+            delay={ri * 0.03}
+            className={`gallery-item img-wrap${item.span === 2 ? ' span-2' : ''}`}
+          >
+            <img src={item.src} alt={item.alt} loading="lazy" />
+          </Reveal>
+        )
+      })}
     </div>
   )
 }
@@ -182,10 +249,36 @@ export default function ProjectPage() {
           display: flex; align-items: center; gap: 4px;
         }
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+
+        /* Sequence layout — replaces grid for projects with mixed content */
+        .gallery-sequence { display: flex; flex-direction: column; gap: var(--gap); }
+
         .gallery-item { overflow: hidden; background: var(--dark); }
         .gallery-item.span-2 { grid-column: span 2; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
         .gallery-item:hover img { transform: scale(1.02); }
+
+        /* Side-by-side pair */
+        .gallery-pair { display: flex; gap: var(--gap); align-items: flex-start; }
+        .gallery-pair-item { flex: 1; overflow: hidden; background: var(--dark); }
+        .gallery-pair-item.flex-21 { flex: 21; }
+        .gallery-pair-item.flex-29 { flex: 29; }
+        .gallery-pair-item.flex-13 { flex: 13; }
+        .gallery-pair-item.flex-27 { flex: 27; }
+
+        /* Video embed */
+        .video-embed { position: relative; width: 100%; overflow: hidden; background: #000; }
+        .gallery-video-wrap { overflow: hidden; background: #000; }
+        .gallery-video-wrap.span-2 { width: 100%; }
+
+        /* Text blocks within gallery */
+        .gallery-text-block { padding: 48px 0 24px; }
+        .gallery-text-heading {
+          font-family: var(--fd); font-size: clamp(18px, 2vw, 24px);
+          font-weight: 600; letter-spacing: -.02em; text-transform: uppercase;
+          margin-bottom: 16px; color: var(--light);
+        }
+        .gallery-text-body { font-size: 15px; color: var(--muted); line-height: 1.75; max-width: 680px; }
 
         /* Publications layout */
         .pubs-list { display: flex; flex-direction: column; gap: 80px; }
@@ -235,6 +328,8 @@ export default function ProjectPage() {
           .pi-title-col, .pi-meta-col { grid-column: span 1; }
           .gallery-grid { grid-template-columns: 1fr; }
           .gallery-item.span-2 { grid-column: span 1; }
+          .gallery-pair { flex-direction: column; }
+          .gallery-pair-item { flex: 1 !important; }
           .pub-item { grid-template-columns: 1fr; gap: 32px; }
           .next-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
         }

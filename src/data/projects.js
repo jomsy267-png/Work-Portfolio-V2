@@ -55,27 +55,42 @@ export const projects = [
   {
     slug: 'edify',
     title: 'Edify',
-    category: 'Brand & Design — 2023',
-    categoryShort: 'Brand & Design',
-    tags: ['Brand Identity', 'Visual Design', 'Graphic Design'],
-    client: 'Edify',
+    category: 'Editorial & Motion Design — 2023',
+    categoryShort: 'Editorial & Motion',
+    tags: ['Editorial Design', 'Motion Graphics', 'Social Media', 'Brand Identity', 'Graphic Design'],
+    client: 'Edify Magazine',
     meta: [
-      { label: 'Client', value: 'Edify' },
-      { label: 'Year', value: '2023' },
-      { label: 'Category', value: 'Brand & Design' },
-      { label: 'Designer', value: 'Jomil Shah' },
+      { label: 'Client', value: 'Edify Magazine' },
+      { label: 'Studio', value: 'Odvod Media' },
+      { label: 'Role', value: 'Graphic Designer' },
+      { label: 'Services', value: 'Editorial, Motion' },
     ],
     description:
-      'A focused brand and design project completed in 2023. The work encompasses visual identity design and graphic communication crafted to elevate the brand\'s presence across print and digital touchpoints.',
+      'Editorial design and motion graphics for Edify Magazine — encompassing layout design, brand identity applications, and animated social content. Each piece was crafted to bring the magazine\'s visual voice to life across print and digital touchpoints.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/31f60dfd-a4cb-4ac3-b64f-83fc305cca38_rw_1920.jpg',
     gallery: [
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a7686831-8492-412a-8cab-eab52fd5aa94_rw_3840.jpg', alt: 'Edify — Overview', span: 2 },
+      // Editorial grid — covers and spreads
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/31f60dfd-a4cb-4ac3-b64f-83fc305cca38_rw_1920.jpg', alt: 'Edify — Cover' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a7686831-8492-412a-8cab-eab52fd5aa94_rw_3840.jpg', alt: 'Edify — Overview' },
       { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1bc6eb7c-fe13-479f-9c17-4516f81f6bcb_rw_1200.jpg', alt: 'Edify — Detail' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/121b7a6c-351c-405e-991c-a6bd437971d1_rw_1920.jpg', alt: 'Edify — Design' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/36dae557-a534-4a95-8daf-8a1704402f53_rw_1920.jpg', alt: 'Edify — Application', span: 2 },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/121e845c-36a3-4d6b-bd95-117ac844abc0_rw_1920.jpg', alt: 'Edify — Mockup' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5a407db2-76c1-44bb-8006-5493683ba949_rw_3840.jpg', alt: 'Edify — Final' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c86d44c1-b69e-4fbd-9220-330a7c9b05bb_rw_3840.jpg', alt: 'Edify — Brand System', span: 2 },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/121b7a6c-351c-405e-991c-a6bd437971d1_rw_1920.jpg', alt: 'Edify — Spread' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/36dae557-a534-4a95-8daf-8a1704402f53_rw_1920.jpg', alt: 'Edify — Layout', span: 2 },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/121e845c-36a3-4d6b-bd95-117ac844abc0_rw_1920.jpg', alt: 'Edify — Application', span: 2 },
+      // Two social motion videos side by side (9:16 portrait)
+      { type: 'video', id: 'SYwJI8X9gKC', alt: 'Edify — Social Motion 1', aspect: '9/16', side: true },
+      { type: 'video', id: 'MdSzh8YPPMs', alt: 'Edify — Social Motion 2', aspect: '9/16', side: true },
+      // Brand system images
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5a407db2-76c1-44bb-8006-5493683ba949_rw_3840.jpg', alt: 'Edify — Brand System' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c86d44c1-b69e-4fbd-9220-330a7c9b05bb_rw_3840.jpg', alt: 'Edify — Identity' },
+      // Motion video (portrait) paired with image
+      { type: 'video', id: 'LhIW_AvI8F4', alt: 'Edify — Motion Design', aspect: '9/16', side: true, flex: 21 },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c536382e-4026-4302-b4ff-0f4361e9b9aa_rw_1920.jpg', alt: 'Edify — Print Application', side: true, flex: 29 },
+      // Two more social motion videos side by side (9:16)
+      { type: 'video', id: 'LTGNIixiYAu', alt: 'Edify — Social Animation 1', aspect: '9/16', side: true },
+      { type: 'video', id: '2ahToZkdQPZ', alt: 'Edify — Social Animation 2', aspect: '9/16', side: true },
+      // Small portrait video + landscape video side by side
+      { type: 'video', id: 'QhfZLeDxJWr', alt: 'Edify — Motion Reel', aspect: '4/5', side: true, flex: 13 },
+      { type: 'video', id: 'A7eHN98LBec', alt: 'Edify — Full Motion Showcase', aspect: '16/9', side: true, flex: 27 },
     ],
     next: 'apega',
   },
@@ -95,14 +110,28 @@ export const projects = [
       'Two major campaigns for APEGA — the largest regulator of self-regulated professionals in Western Canada. The Membership Dollars At Work campaign transparently communicated the tangible impact of members\' contributions through infographic posters, animated video, and magazine ads. The Women in the Workplace campaign featured social media, animations, and custom illustrations promoting inclusive workplace culture.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f794d8a5-fc5c-4ba4-8bbb-81660117b533_rw_1200.jpg',
     gallery: [
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/daf07c4c-6ccf-4cc3-a6ef-bf9686bea16f_rw_1200.jpg', alt: 'APEGA — Membership Campaign', span: 2 },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a4eb79fc-2b8b-4aa0-87cb-64aa46a5800d_rw_1920.jpg', alt: 'APEGA — Iconography' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/26dd7b15-eddc-45d1-b8b3-abf2660fe40f_rw_1920.jpg', alt: 'APEGA — Animated Video' },
+      // Campaign 1 — Membership Dollars At Work overview
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f794d8a5-fc5c-4ba4-8bbb-81660117b533_rw_1200.jpg', alt: 'APEGA — Campaign Overview', span: 2 },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/daf07c4c-6ccf-4cc3-a6ef-bf9686bea16f_rw_1200.jpg', alt: 'APEGA — Infographic Poster', span: 2 },
+      // Iconography section
+      { type: 'text', heading: 'The Iconography', body: 'Designed for the campaign was a bespoke collection, crafted from scratch to visually represent APEGA\'s diverse areas of impact. Each icon served as a visual language, efficiently communicating complex ideas and projects supported by APEGA, fostering a deeper understanding among members and stakeholders.' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a4eb79fc-2b8b-4aa0-87cb-64aa46a5800d_rw_1920.jpg', alt: 'APEGA — Custom Iconography' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/26dd7b15-eddc-45d1-b8b3-abf2660fe40f_rw_1920.jpg', alt: 'APEGA — Icons Applied' },
+      // Animated video section
+      { type: 'text', heading: 'Animated Video', body: 'To bring the campaign to life, multiple short animated videos were conceptualized and produced. The dynamic visuals featured the seamlessly integrated custom iconography and typography, with gears symbolizing the intricate machinery of APEGA\'s initiatives. The animations unfolded the story of how each dollar contributed by members played a vital role in driving innovation, progress, and professional development.' },
+      { type: 'video', id: 'L2V6jpIIyDM', alt: 'APEGA — Membership Dollars At Work animated video', aspect: '16/9', span: 2 },
+      // Magazine ads and social posts
       { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/0f557fa6-37c7-4976-b55f-9d7023fbdcd3_rw_1920.jpg', alt: 'APEGA — Magazine Ad', span: 2 },
       { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/76d0affd-5e91-4ac9-98c6-9d844c545f7e_rw_1920.jpg', alt: 'APEGA — Social Media Posts' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/df0d07fc-3088-468b-abfc-fa390459c7bf_rw_1920.jpg', alt: 'APEGA — Women in Workplace' },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ddf21305-73c0-414d-a02b-7808bc7edeb9_rw_1920.jpg', alt: 'APEGA — Animation Stills', span: 2 },
-      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/98767052-6063-40cb-94d9-b2b8c09823f4_rw_1920.jpg', alt: 'APEGA — Final Campaign', span: 2 },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/df0d07fc-3088-468b-abfc-fa390459c7bf_rw_1920.jpg', alt: 'APEGA — Campaign Applications' },
+      // Campaign 2 — Women in the Workplace
+      { type: 'text', heading: 'Campaign 2 — Women in the Workplace', body: 'The campaign included the creation of impactful social media posts, video editing, and animations featuring APEGA volunteers sharing their reactions to real experiences of women being ill-treated in the workplace. Custom illustrations were crafted to promote APEGA\'s commitment to fostering an inclusive workplace culture through free training opportunities for professionals.' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ddf21305-73c0-414d-a02b-7808bc7edeb9_rw_1920.jpg', alt: 'APEGA — Women in Workplace Campaign' },
+      { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/98767052-6063-40cb-94d9-b2b8c09823f4_rw_1920.jpg', alt: 'APEGA — Social Media Posts, Women Campaign' },
+      // Video editing and animations section
+      { type: 'text', heading: 'Video Editing and Animations', body: 'The campaign incorporated dynamic video content featuring APEGA volunteers reading and reacting to real-life experiences of women facing challenges in the workplace. The video editing process focused on maintaining sensitivity while effectively conveying the emotional impact of these experiences. Animated elements were strategically integrated to enhance storytelling.' },
+      { type: 'video', id: 'PtD_f6r2hds', alt: 'APEGA — Women in Workplace video', aspect: '16/9', span: 2 },
+      { type: 'video', id: 'KVRMmcJa2nZ', alt: 'APEGA — Women in Workplace animation', aspect: '9/16' },
     ],
     next: 'ballet-edmonton',
   },
