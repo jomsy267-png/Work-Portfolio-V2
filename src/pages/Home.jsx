@@ -194,14 +194,34 @@ function ServicesSection() {
   )
 }
 
+// Detect capable device before loading Spline (per skill PERFORMANCE.md)
+function canLoadSpline() {
+  if (typeof window === 'undefined') return false
+  const isMobile = window.innerWidth < 768
+  const isLowEnd = navigator.hardwareConcurrency <= 2
+  const canvas = document.createElement('canvas')
+  const hasWebGL = !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
+  return !isMobile && !isLowEnd && hasWebGL
+}
+
 export default function Home() {
+  const [splineLoaded, setSplineLoaded] = useState(false)
+  const splineCapable = canLoadSpline()
+
   return (
     <>
       {/* Spline 3D — sticky fixed centre, sits behind content, runs through whole page */}
+      {/* Only loads on capable (desktop, multi-core, WebGL) devices */}
       <div className="spline-bg" aria-hidden="true">
-        <Suspense fallback={null}>
-          <Spline scene="https://prod.spline.design/fokCAHDKuE8o3tgF/scene.splinecode" />
-        </Suspense>
+        {splineCapable ? (
+          <Suspense fallback={null}>
+            <Spline
+              scene="https://prod.spline.design/fokCAHDKuE8o3tgF/scene.splinecode"
+              onLoad={() => setSplineLoaded(true)}
+              style={{ opacity: splineLoaded ? 1 : 0, transition: 'opacity 0.8s ease' }}
+            />
+          </Suspense>
+        ) : null}
       </div>
 
       {/* HERO — Navbar lives inside so it can be positioned mid-hero */}

@@ -29,6 +29,7 @@ body {
   font-size: 16px;
   line-height: 1.5;
   overflow-x: hidden;
+  overflow-y: auto !important; /* prevent Spline from injecting overflow:hidden */
 }
 
 a { color: inherit; text-decoration: none; }
