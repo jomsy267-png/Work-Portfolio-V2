@@ -58,6 +58,31 @@ img { display: block; max-width: 100%; height: auto; }
 }
 .skip-link:focus { top: 16px; }
 
+/* Critical Layout Utilities for Text Overlays */
+.relative {
+  position: relative;
+}
+.z-10 {
+  z-index: 10;
+}
+
+/* ── SECTION STACKING ARCHITECTURE ──
+   Hero (z=1) is sticky and pinned behind everything.
+   Each subsequent section has a higher z-index so it
+   physically slides OVER the pinned Hero as you scroll.
+   Dark sections carry a solid background so they opaquely
+   cover the sticky sections behind them. */
+
+.sticky-section { position: sticky; top: 0; }
+
+.z-layer-1 { position: sticky; top: 0; z-index: 1;  } /* Hero  — pinned, lowest   */
+.z-layer-2 { position: relative; z-index: 2;        } /* About   — light wipe     */
+.z-layer-3 { position: relative; z-index: 3; background: var(--bg); } /* Clients  — solid dark    */
+.z-layer-4 { position: relative; z-index: 4; background: var(--bg); } /* Work     — solid dark + sticky inner */
+.z-layer-5 { position: relative; z-index: 5;        } /* Services — light wipe    */
+.z-layer-6 { position: relative; z-index: 6; background: var(--bg); } /* Whispers — solid dark    */
+.z-layer-7 { position: relative; z-index: 7; background: var(--bg); } /* Footer   — highest       */
+
 .divider {
   height: 1px;
   background: rgba(207, 207, 207, 0.15);
@@ -107,4 +132,89 @@ img { display: block; max-width: 100%; height: auto; }
 }
 @media (max-width: 809px) {
   :root { --pad: 5px; --gap: 12px; }
+}
+
+/* ── THEMES & PANEL WIPE CLASSES ── */
+
+.bg-panel-dark {
+  background: var(--dark);
+}
+
+.bg-panel-light {
+  background: var(--light);
+}
+
+/* Apply this to light-themed sections */
+.theme-light {
+  background: transparent;
+  color: var(--dark);
+}
+
+/* Invert nested typography & subtle borders for light theme */
+.theme-light .label,
+.theme-light .word-reveal,
+.theme-light .service-name-text,
+.theme-light .counter-n,
+.theme-light .service-desc-text,
+.theme-light .whisper-title {
+  color: var(--dark);
+}
+
+.theme-light .svc-slash,
+.theme-light .counter-sep,
+.theme-light .cta-slash,
+.theme-light .dot-sep,
+.theme-light .tag-sep,
+.theme-light .service-divider {
+  border-color: rgba(0,0,0,0.15);
+  color: rgba(0,0,0,0.3);
+}
+
+.theme-light .whisper-date,
+.theme-light .counter-total,
+.theme-light .whisper-excerpt,
+.theme-light .svc-tag {
+  color: #666;
+}
+
+.theme-light .about-cta,
+.theme-light .nav-link-cta {
+  color: #444;
+  border-bottom-color: rgba(0,0,0,0.15);
+}
+
+.theme-light .about-cta:hover,
+.theme-light .nav-link-cta:hover {
+  color: var(--dark);
+  border-bottom-color: var(--dark);
+}
+
+.theme-light .whisper-card {
+  border-top-color: rgba(0,0,0,0.1);
+}
+
+/* ── PANEL WIPE MECHANICS ── */
+
+.panel-wipe-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+}
+
+.panel-wipe-col {
+  flex: 1;
+  height: 100%;
+}
+
+.panel-wipe-inner {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-wipe-boundary {
+  width: 100%;
+  height: 0px;
+  position: relative;
 }

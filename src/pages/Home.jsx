@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { StaggeredSectionBackground } from '../components/PanelWipe'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
@@ -175,8 +176,9 @@ function ServiceRow({ service, index, total }) {
 
 function ServicesSection() {
   return (
-    <section className="services" id="services">
-      <div className="sec-layout">
+    <section className="services theme-light z-layer-5" id="services">
+      <StaggeredSectionBackground isLight={true} />
+      <div className="sec-layout relative z-10">
         <div className="sec-label">
           <span className="label">\ What We Do</span>
         </div>
@@ -192,55 +194,64 @@ function ServicesSection() {
   )
 }
 
+// Detect capable device function removed since Spline was decommissioned.
+
 export default function Home() {
   return (
     <>
-      {/* HERO — Navbar lives inside so it can be positioned mid-hero */}
-      <section className="hero" id="main-content">
-        <motion.div
-          className="hero-video"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.8, ease: 'easeOut' }}
-        >
-          <video autoPlay loop muted playsInline>
-            <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4" />
-          </video>
-        </motion.div>
-        <motion.div
-          className="hero-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, ease: 'easeOut', delay: 0.2 }}
-        />
 
-        {/* Navbar embedded at 44% — slides to top on scroll */}
-        <Navbar heroMode />
+      {/* ─── HERO STICKY WRAP ─────────────────────────────────────────────
+          200vh wrapper: Hero sticks for exactly 100vh of scroll, then
+          releases. About pulls up with marginTop:-100vh so no empty space. */}
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '200vh' }}>
+        <section className="hero sticky-section" id="main-content">
+          <Navbar isLoaded={true} />
+          <motion.div
+            className="hero-video"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.8, ease: 'easeOut' }}
+          >
+            <video autoPlay loop muted playsInline>
+              <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
+          <motion.div
+            className="hero-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.4, ease: 'easeOut', delay: 0.2 }}
+          />
+          <Navbar heroMode />
+          <div className="hero-tagline">
+            {['VISUAL DESIGNS', 'THAT TELL A STORY'].map((line, i) => (
+              <div key={i} className="hero-tagline-line">
+                <motion.span
+                  className="hero-tagline-inner"
+                  initial={{ y: '108%' }}
+                  animate={{ y: '0%' }}
+                  transition={{
+                    duration: 1.05,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: 0.55 + i * 0.14,
+                  }}
+                >
+                  {line}
+                </motion.span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
 
-        {/* Line-by-line clip reveal — each line wipes up from below its container */}
-        <div className="hero-tagline">
-          {['VISUAL DESIGNS', 'THAT TELL A STORY'].map((line, i) => (
-            <div key={i} className="hero-tagline-line">
-              <motion.span
-                className="hero-tagline-inner"
-                initial={{ y: '108%' }}
-                animate={{ y: '0%' }}
-                transition={{
-                  duration: 1.05,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.55 + i * 0.14,
-                }}
-              >
-                {line}
-              </motion.span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section className="section" id="about">
-        <div className="sec-layout">
+      {/* ─── ABOUT (light wipe over Hero) ─────────────────────────────── */}
+      <section
+        className="section theme-light z-layer-2"
+        id="about"
+        style={{ marginTop: '-100vh' }}
+      >
+        <StaggeredSectionBackground isLight={true} />
+        <div className="sec-layout relative z-10">
           <div className="sec-label">
             <span className="label">\ About</span>
           </div>
@@ -257,10 +268,10 @@ export default function Home() {
 
       <div className="divider" />
 
-      {/* CLIENTS */}
+      {/* ─── CLIENTS (solid dark — fully covers Hero) ─────────────────── */}
       <Reveal>
-        <section className="clients">
-          <div className="sec-layout">
+        <section className="clients z-layer-3">
+          <div className="sec-layout relative z-10">
             <p className="label sec-label">\ Selected Clients</p>
             <div className="clients-list">
               {['APEGA', 'Ballet Edmonton', 'Odvod Media Inc.', 'Edmonton Community Foundation', 'CEA', 'University of Alberta', 'Runway Footwear', 'Odd. Brewing Company', 'Page The Cleaners', 'Edify'].map((c, i, arr) => (
@@ -273,8 +284,14 @@ export default function Home() {
 
       <div className="divider" />
 
-      {/* FEATURED WORK */}
-      <section className="work-section" id="work">
+      {/* ─── WORK ──────────────────────────────────────────────────
+         Scrolls normally (no sticky). Services’ staggered panels naturally
+         sweep upward as Services enters — Work exits the top at the same
+         time, creating the visual “wipe over” effect without any pinning. */}
+      <section
+        className="work-section z-layer-4"
+        id="work"
+      >
         <div className="sec-layout work-sec">
           <div className="sec-label">
             <span className="label">\ Featured Work</span>
@@ -292,14 +309,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="divider" />
-
-      {/* SERVICES */}
+      {/* ─── SERVICES (panels sweep up as Work exits top) ───────────────── */}
       <ServicesSection />
 
       {/* WHISPERS */}
-      <section className="section whispers" id="whispers">
-        <div className="sec-layout">
+      <section className="section whispers z-layer-6" id="whispers">
+        <div className="sec-layout relative z-10">
           <div className="sec-label">
             <span className="label">\ Whispers</span>
           </div>
@@ -317,13 +332,11 @@ export default function Home() {
 
       <div className="divider" />
 
-      <Footer />
+      <Footer className="z-layer-7" />
 
       <style>{`
-        /* HERO */
+        /* HERO — position/z-index controlled by .z-layer-1 in index.css */
         .hero {
-          position: relative;
-          z-index: 1;
           min-height: 100dvh;
           overflow: hidden;
         }
@@ -372,8 +385,8 @@ export default function Home() {
           align-self: start;
         }
 
-        /* ABOUT */
-        .section { padding: 80px 0; position: relative; z-index: 1; }
+        /* ABOUT — position/z-index controlled by .z-layer-X in index.css */
+        .section { padding: 80px 0; }
         .about-body {
           display: flex;
           flex-direction: column;
@@ -388,7 +401,7 @@ export default function Home() {
           font-weight: 500;
           letter-spacing: -.025em;
           line-height: 1.3;
-          color: var(--light);
+          color: inherit;
           text-align: right;
           max-width: 680px;
         }
@@ -410,8 +423,8 @@ export default function Home() {
         .about-cta:hover { color: var(--light); border-color: var(--light); }
         .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
-        /* CLIENTS */
-        .clients { padding: 80px 0; position: relative; z-index: 1; }
+        /* CLIENTS — position/z-index controlled by .z-layer-3 in index.css */
+        .clients { padding: 80px 0; }
         .clients-list {
           font-family: var(--fd);
           font-size: clamp(13px, 1.6vw, 17px);
@@ -423,8 +436,8 @@ export default function Home() {
         .clients-list span:hover { color: var(--light); }
         .dot-sep { color: rgba(207,207,207,.15); padding: 0 4px; }
 
-        /* WORK */
-        .work-section { padding: 80px 0; position: relative; z-index: 1; }
+        /* WORK — position/z-index controlled by inline style in JSX */
+        .work-section { padding: 80px 0; }
         .work-body {
           display: flex; flex-direction: column; gap: var(--gap);
         }
@@ -502,8 +515,8 @@ export default function Home() {
         .nav-link-cta:hover { color: var(--light); border-color: var(--light); }
         .nav-link-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
-        /* SERVICES */
-        .services { padding: 80px 0; position: relative; z-index: 1; }
+        /* SERVICES — position/z-index controlled by .z-layer-5 in index.css */
+        .services { padding: 80px 0; }
         .services-list { display: flex; flex-direction: column; }
 
         .service-divider {
@@ -586,8 +599,8 @@ export default function Home() {
           margin: 0 3px;
         }
 
-        /* WHISPERS */
-        .whispers { padding-top: 0; position: relative; z-index: 1; }
+        /* WHISPERS — position/z-index controlled by .z-layer-6 in index.css */
+        .whispers { padding-top: 0; }
         .whispers-grid {
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: var(--gap);
