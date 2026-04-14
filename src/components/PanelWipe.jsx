@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useRef } from 'react'
 
 const TRANSITION = { duration: 0.85, ease: [0.77, 0, 0.175, 1] }
@@ -21,17 +21,27 @@ export function PageLoadWipe() {
 }
 
 // 2. Section Background Stagger
-// Panels scale up from scaleY:0 → 1 using transformOrigin at the BOTTOM.
-// This means panels grow upward from the section's bottom edge.
-// useScroll offset: progress=0 when section top hits viewport bottom (section enters),
-//                   progress=1 when section top hits viewport top (section fully scrolled into view).
-// No Y-translation = no transparent gap at the section top. Clean wipe from below.
+// All panels start rising at progress=0 (same lowest point).
+// Each panel completes at a different progress value → different speeds →
+// at any scroll position, panels appear at different heights (stagger).
+//
+// Order (user spec):
+//   Panel 4 (index 3) → fastest  → appears highest
+//   Panel 3 (index 2) → 2nd fastest → 2nd highest
+//   Panel 5 (index 4) → 2nd fastest → 2nd highest (equal to panel 3)
+//   Panel 2 (index 1) → 3rd      → 2nd lowest
+//   Panel 1 (index 0) → slowest  → appears lowest
+//
+// Scroll offset 'start -50%' gives ~50% extra scroll room vs the original
+// 'start start' — panels travel significantly higher during animation.
+const PANEL_END = [1.0, 0.72, 0.44, 0.20, 0.44]
+
 export function StaggeredSectionBackground({ isLight = true }) {
   const ref = useRef(null)
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'start start'],
+    offset: ['start 130%', 'start 20%'],
   })
 
   const colorClass = isLight ? 'bg-panel-light' : 'bg-panel-dark'
@@ -61,15 +71,9 @@ export function StaggeredSectionBackground({ isLight = true }) {
 }
 
 function ScrubPanel({ index, colorClass, progress }) {
-  const total = 5
-
-  // Stagger: panel 0 starts at progress 0, panel 4 starts at progress 0.4.
-  // Each panel takes 0.6 of the progress range to fill completely.
-  // At progress=1 (section fully in view from top), ALL panels are at scaleY=1.
-  const start = (index / total) * 0.4
-  const end = Math.min(start + 0.6, 1)
-
-  const scaleY = useTransform(progress, [start, end], [0, 1])
+  const raw = useTransform(progress, [0, PANEL_END[index]], [0, 1])
+  // Spring with low stiffness + damping → eases out when scroll stops
+  const scaleY = useSpring(raw, { stiffness: 60, damping: 20, mass: 0.6 })
 
   return (
     <motion.div
@@ -78,7 +82,7 @@ function ScrubPanel({ index, colorClass, progress }) {
         flex: 1,
         height: '100%',
         scaleY,
-        transformOrigin: 'bottom center', // grows upward
+        transformOrigin: 'bottom center',
       }}
     />
   )

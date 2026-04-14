@@ -149,6 +149,10 @@ img { display: block; max-width: 100%; height: auto; }
   background: transparent;
   color: var(--dark);
 }
+/* Content sits above panels at z-10, needs solid bg so hero doesn't bleed through */
+.theme-light .relative.z-10 {
+  background: var(--light);
+}
 
 /* Invert nested typography & subtle borders for light theme */
 .theme-light .label,
