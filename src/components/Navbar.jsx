@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 
 function useClock() {
   const [clock, setClock] = useState({ time: '', tz: '', available: true, seconds: 0, minutes: 0 })
@@ -72,19 +72,23 @@ export default function Navbar({ isProject = false, heroMode = false }) {
   const location = useLocation()
   const isHome = location.pathname === '/'
 
-  // When in heroMode, track scroll to switch from mid-hero → sticky top
-  const [scrolledPast, setScrolledPast] = useState(false)
+  const vh = useRef(typeof window !== 'undefined' ? window.innerHeight : 800)
   useEffect(() => {
-    if (!heroMode) return
-    const handleScroll = () => {
-      setScrolledPast(window.scrollY > window.innerHeight * 0.42)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [heroMode])
+    const onResize = () => { vh.current = window.innerHeight }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
-  // heroMode: absolute at 44% until scrolled, then fixed at top
-  const isFixed = !heroMode || scrolledPast
+  const { scrollY } = useScroll()
+
+  // Slide from 44vh → 0 over the first 50vh of scroll. Non-hero pages stay at 0.
+  const rawTop = useTransform(
+    scrollY,
+    [0, vh.current * 0.5],
+    heroMode ? [vh.current * 0.44, 0] : [0, 0],
+    { clamp: true }
+  )
+  const animTop = useSpring(rawTop, { stiffness: 160, damping: 28, mass: 0.7 })
 
   const navFade = (delay) => ({
     initial: { opacity: 0, y: 10 },
@@ -93,9 +97,10 @@ export default function Navbar({ isProject = false, heroMode = false }) {
   })
 
   return (
-    <nav
-      className={`navbar${heroMode ? (scrolledPast ? ' navbar-fixed' : ' navbar-hero') : ''}`}
+    <motion.nav
+      className="navbar"
       aria-label="Main navigation"
+      style={{ top: animTop }}
     >
       <div className="nav-inner">
         <div className="nav-left">
@@ -159,39 +164,32 @@ export default function Navbar({ isProject = false, heroMode = false }) {
         </div>
       </div>
       <style>{`
+        /* Navbar — always fixed top, fully transparent.
+           mix-blend-mode: difference on .nav-inner makes all white elements
+           invert against whatever background is beneath: white on dark → white,
+           white on light → near-black. Readable on every section. */
         .navbar {
           position: fixed;
           top: 0; left: 0; right: 0;
           z-index: 100;
-          border-bottom: 1px solid rgba(207,207,207,.15);
-          background: rgba(26,26,26,.92);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-        }
-
-        /* Mid-hero position — transparent, no background */
-        .navbar.navbar-hero {
-          position: absolute;
-          top: 44%;
           background: transparent;
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
-          border-bottom: 1px solid rgba(255,255,255,.1);
+          border-bottom: none;
+          pointer-events: none; /* let clicks pass through the transparent bar area */
         }
-
-        /* After scrolling past hero — snap to top, opaque */
-        .navbar.navbar-fixed {
-          position: fixed;
-          top: 0;
-          background: rgba(26,26,26,.95);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(207,207,207,.12);
-          animation: navSlideDown .3s ease forwards;
+        .nav-inner {
+          pointer-events: all; /* re-enable on the actual content row */
+          mix-blend-mode: difference;
         }
-        @keyframes navSlideDown {
-          from { transform: translateY(-8px); opacity: 0.7; }
-          to   { transform: translateY(0);    opacity: 1; }
+        /* All text/icon children must be white so difference blend inverts them */
+        .nav-brand,
+        .nav-link,
+        .nav-back,
+        .nav-slash,
+        .nav-greeting,
+        .nav-time,
+        .nav-tz,
+        .nav-status-text {
+          color: #fff !important;
         }
 
         .nav-inner {
@@ -253,18 +251,6 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           transform: translateY(-100%);
         }
 
-        /* In hero (transparent) mode, nav links are white */
-        .navbar-hero .nav-link,
-        .navbar-hero .nav-brand,
-        .navbar-hero .nav-time,
-        .navbar-hero .nav-tz,
-        .navbar-hero .nav-status-text,
-        .navbar-hero .nav-greeting {
-          color: rgba(255,255,255,.75);
-        }
-        .navbar-hero .nav-slash { color: rgba(255,255,255,.3); }
-        .navbar-hero .nav-link:hover { color: #fff; }
-        .navbar-hero .nav-link:hover .nav-slash { color: rgba(255,255,255,.7); }
 
         .nav-back {
           font-family: var(--fd);
@@ -309,9 +295,8 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           .nav-inner { flex-direction: column; gap: 10px; align-items: flex-start; }
           .nav-right { width: 100%; justify-content: space-between; }
           .nav-greeting { display: none; }
-          .navbar.navbar-hero { top: 40%; }
         }
       `}</style>
-    </nav>
+    </motion.nav>
   )
 }

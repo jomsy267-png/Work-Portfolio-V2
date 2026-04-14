@@ -1,6 +1,6 @@
 import { useRef, useState, Suspense, lazy } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
 import { StaggeredSectionBackground } from '../components/PanelWipe'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -199,6 +199,19 @@ function ServicesSection() {
 // Detect capable device function removed since Spline was decommissioned.
 
 export default function Home() {
+  const servicesRef = useRef(null)
+
+  // Track services entering — same offset as the panel wipe trigger
+  const { scrollYProgress: svcProgress } = useScroll({
+    target: servicesRef,
+    offset: ['start 130%', 'start 20%'],
+  })
+
+  // Positive Y partially counteracts upward scroll → work appears to slow
+  // Starts at 0 (no effect), grows to 200px as services fully covers work
+  const rawWorkY = useTransform(svcProgress, [0, 1], [0, 200])
+  const workY = useSpring(rawWorkY, { stiffness: 55, damping: 22, mass: 0.8 })
+
   return (
     <>
 
@@ -207,7 +220,6 @@ export default function Home() {
           releases. About pulls up with marginTop:-100vh so no empty space. */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '200vh' }}>
         <section className="hero sticky-section" id="main-content">
-          <Navbar isLoaded={true} />
           <motion.div
             className="hero-video"
             initial={{ opacity: 0 }}
@@ -268,8 +280,6 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="divider" />
-
       {/* ─── CLIENTS (solid dark — fully covers Hero) ─────────────────── */}
       <Reveal>
         <section className="clients z-layer-3">
@@ -290,9 +300,10 @@ export default function Home() {
          Scrolls normally (no sticky). Services’ staggered panels naturally
          sweep upward as Services enters — Work exits the top at the same
          time, creating the visual “wipe over” effect without any pinning. */}
-      <section
+      <motion.section
         className="work-section z-layer-4"
         id="work"
+        style={{ y: workY }}
       >
         <div className="sec-layout work-sec">
           <div className="sec-label">
@@ -309,10 +320,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ─── SERVICES (panels sweep up as Work exits top) ───────────────── */}
-      <ServicesSection />
+      <div ref={servicesRef}>
+        <ServicesSection />
+      </div>
 
       {/* WHISPERS */}
       <section className="section whispers z-layer-6" id="whispers">
@@ -389,6 +402,9 @@ export default function Home() {
 
         /* ABOUT — position/z-index controlled by .z-layer-X in index.css */
         .section { padding: 80px 0; }
+        /* Extra breathing room on light sections */
+        .theme-light.section,
+        .theme-light.services { padding: 160px 0; }
         .about-body {
           display: flex;
           flex-direction: column;
@@ -602,7 +618,7 @@ export default function Home() {
         }
 
         /* WHISPERS — position/z-index controlled by .z-layer-6 in index.css */
-        .whispers { padding-top: 0; }
+        .whispers { padding-top: 80px; }
         .whispers-grid {
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: var(--gap);
