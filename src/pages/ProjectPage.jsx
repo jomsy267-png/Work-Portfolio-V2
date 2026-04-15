@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getProject, getNextProject } from '../data/projects'
+import { StaggeredSectionBackground } from '../components/PanelWipe'
 
 // ─── Shared reveal wrapper ────────────────────────────────────────
 function Reveal({ children, delay = 0, className = '', style }) {
@@ -243,17 +244,24 @@ export default function ProjectPage() {
     <div className={`pv pv${variant}`}>
       <Navbar isProject />
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <motion.div
-        className="project-hero"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.65, ease: 'easeOut' }}
-      >
-        <img src={project.hero} alt={project.title} />
-      </motion.div>
+      {/* ── HERO — sticky, 200vh scroll room ────────────────── */}
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '200vh' }}>
+        <motion.div
+          className="project-hero"
+          style={{ position: 'sticky', top: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.65, ease: 'easeOut' }}
+        >
+          <img src={project.hero} alt={project.title} />
+        </motion.div>
+      </div>
 
-      {/* ── PROJECT INFO ──────────────────────────────────────── */}
+      {/* ── PROJECT INFO — panels wipe up over hero ───────────── */}
+      <div style={{ position: 'relative', zIndex: 2, marginTop: '-100vh', background: 'var(--bg)' }}>
+        <StaggeredSectionBackground isLight={false} />
+        <div className="relative z-10" style={{ background: 'var(--bg)' }}>
+
       {variant === 3 ? (
         /* V3 — stacked single-col with inline meta strip */
         <div className="project-info project-info--v3">
@@ -302,6 +310,9 @@ export default function ProjectPage() {
         </div>
       )}
 
+        </div>{/* /relative z-10 */}
+      </div>{/* /panel wipe outer */}
+
       <div className="proj-divider" />
 
       {/* ── PROJECT SECTIONS ──────────────────────────────────── */}
@@ -347,11 +358,10 @@ export default function ProjectPage() {
         ══════════════════════════════════════════════════════ */
         .project-hero {
           width: 100%;
-          aspect-ratio: 2.35 / 1;
-          min-height: 300px;
+          height: 100vh;
           overflow: hidden;
-          margin-top: 53px;
           background: var(--dark);
+          padding-top: 53px;
         }
         .project-hero img {
           width: 100%; height: 100%;
