@@ -1,22 +1,27 @@
 import { useRef } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getProject, getNextProject } from '../data/projects'
 import { StaggeredSectionBackground } from '../components/PanelWipe'
 
-// ─── Shared reveal wrapper ────────────────────────────────────────
-function Reveal({ children, delay = 0, className = '', style }) {
+// ─── Shared reveal + parallax wrapper ────────────────────────────
+// depth: how many px the element travels over its scroll range
+// images use depth=28, text uses depth=14
+function Reveal({ children, delay = 0, className = '', style, depth = 28 }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-6% 0px' })
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rawY = useTransform(scrollYProgress, [0, 1], [depth, -depth])
+  const y    = useSpring(rawY, { stiffness: 90, damping: 28, mass: 0.4 })
   return (
     <motion.div
       ref={ref}
       className={className}
-      style={style}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      style={{ ...style, y }}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
       transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay }}
     >
       {children}
@@ -77,7 +82,7 @@ function SectionGrid({ s, variant }) {
 // ─── Section: Text block ──────────────────────────────────────────
 function SectionText({ s, variant }) {
   return (
-    <Reveal className={`ps-text${variant === 3 ? ' ps-text--v3' : ''}`}>
+    <Reveal className={`ps-text${variant === 3 ? ' ps-text--v3' : ''}`} depth={14}>
       {s.label && (
         <p className="ps-eyebrow">
           <span className="ps-slash">\</span>{s.label}
@@ -94,7 +99,7 @@ function SectionTextImage({ s }) {
   const isLeft = s.layout === 'left'
   return (
     <div className={`ps-ti${isLeft ? ' ps-ti--left' : ''}`}>
-      <Reveal className="ps-ti-text" delay={0}>
+      <Reveal className="ps-ti-text" delay={0} depth={14}>
         {s.label && (
           <p className="ps-eyebrow">
             <span className="ps-slash">\</span>{s.label}
@@ -113,7 +118,7 @@ function SectionTextImage({ s }) {
 // ─── Section: Campaign / chapter divider ─────────────────────────
 function SectionCampaign({ s, variant }) {
   return (
-    <Reveal className={`ps-campaign${variant === 2 ? ' ps-campaign--v2' : ''}`}>
+    <Reveal className={`ps-campaign${variant === 2 ? ' ps-campaign--v2' : ''}`} depth={14}>
       {s.num && <p className="ps-campaign-num">{s.num}</p>}
       <h2 className="ps-campaign-title">{s.title}</h2>
       {s.body && <p className="ps-body ps-campaign-body">{s.body}</p>}
@@ -153,7 +158,7 @@ function SectionPub({ s }) {
       <Reveal className="ps-pub-img" delay={0}>
         <img src={s.image} alt={s.title} loading="lazy" />
       </Reveal>
-      <Reveal className="ps-pub-info" delay={0.12}>
+      <Reveal className="ps-pub-info" delay={0.12} depth={14}>
         <p className="ps-pub-num">{s.num}</p>
         <h3 className="ps-pub-title">{s.title}</h3>
         <p className="ps-pub-meta">{s.client} — {s.year}</p>
@@ -224,6 +229,16 @@ export default function ProjectPage() {
   const project  = getProject(slug)
   const next     = getNextProject(slug)
 
+  // Scroll progress of the project-info section — same offset as StaggeredSectionBackground
+  const infoRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: infoRef,
+    offset: ['start 130%', 'start 20%'],
+  })
+  // Text reveals once panels are ~80% complete
+  const textOpacity = useTransform(scrollYProgress, [0.78, 0.96], [0, 1])
+  const textY       = useTransform(scrollYProgress, [0.78, 0.96], [18, 0])
+
   if (!project) return <Navigate to="/work" replace />
 
   const variant = project.layout || 1
@@ -244,11 +259,10 @@ export default function ProjectPage() {
     <div className={`pv pv${variant}`}>
       <Navbar isProject />
 
-      {/* ── HERO — sticky, 200vh scroll room ────────────────── */}
+      {/* ── HERO — sticky inside 200vh wrapper ────────────────── */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '200vh' }}>
         <motion.div
-          className="project-hero"
-          style={{ position: 'sticky', top: 0 }}
+          className="project-hero sticky-section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
@@ -257,61 +271,65 @@ export default function ProjectPage() {
         </motion.div>
       </div>
 
-      {/* ── PROJECT INFO — panels wipe up over hero ───────────── */}
-      <div style={{ position: 'relative', zIndex: 2, marginTop: '-100vh', background: 'var(--bg)' }}>
+      {/* ── PROJECT INFO — slides over hero with staggered panel wipe */}
+      <div
+        ref={infoRef}
+        className="project-info-section z-layer-2"
+        style={{ marginTop: '-100vh', minHeight: '100vh' }}
+      >
         <StaggeredSectionBackground isLight={false} />
-        <div className="relative z-10" style={{ background: 'var(--bg)' }}>
+        <div className="relative z-10" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+          <motion.div style={{ opacity: textOpacity, y: textY, width: '100%' }}>
 
-      {variant === 3 ? (
-        /* V3 — stacked single-col with inline meta strip */
-        <div className="project-info project-info--v3">
-          <Reveal className="pi-v3-main" delay={0.1}>
-            <p className="pi-label">Project</p>
-            <h1 className="pi-title">{project.title}</h1>
-            <p className="pi-desc">{project.description}</p>
-            <div className="pi-deliverables">
-              {project.tags.map((t) => (
-                <span key={t} className="pi-tag">{t}</span>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal className="pi-v3-meta-strip" delay={0.2}>
-            {project.meta.map((m, mi) => (
-              <span key={m.label} className="pi-strip-item">
-                <span className="pi-strip-label">{m.label}</span>
-                <span className="pi-strip-sep"> / </span>
-                <span className="pi-strip-val">{m.value}</span>
-                {mi < project.meta.length - 1 && <span className="pi-strip-dot"> · </span>}
-              </span>
-            ))}
-          </Reveal>
-        </div>
-      ) : (
-        /* V1 & V2 — 2-col grid (V2 shifts to 3/5 split via CSS class) */
-        <div className={`project-info${variant === 2 ? ' project-info--v2' : ''}`}>
-          <Reveal className="pi-title-col" delay={0.1}>
-            <p className="pi-label">Project</p>
-            <h1 className="pi-title">{project.title}</h1>
-            <p className="pi-desc">{project.description}</p>
-            <div className="pi-deliverables">
-              {project.tags.map((t) => (
-                <span key={t} className="pi-tag">{t}</span>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal className="pi-meta-col" delay={0.2}>
-            {project.meta.map((m) => (
-              <div key={m.label} className="meta-row">
-                <p className="pi-label">{m.label}</p>
-                <p className="meta-val">{m.value}</p>
+          {variant === 3 ? (
+            <div className="project-info project-info--v3">
+              <div className="pi-v3-main">
+                <p className="pi-label">Project</p>
+                <h1 className="pi-title">{project.title}</h1>
+                <p className="pi-desc">{project.description}</p>
+                <div className="pi-deliverables">
+                  {project.tags.map((t) => (
+                    <span key={t} className="pi-tag">{t}</span>
+                  ))}
+                </div>
               </div>
-            ))}
-          </Reveal>
-        </div>
-      )}
+              <div className="pi-v3-meta-strip">
+                {project.meta.map((m, mi) => (
+                  <span key={m.label} className="pi-strip-item">
+                    <span className="pi-strip-label">{m.label}</span>
+                    <span className="pi-strip-sep"> / </span>
+                    <span className="pi-strip-val">{m.value}</span>
+                    {mi < project.meta.length - 1 && <span className="pi-strip-dot"> · </span>}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className={`project-info${variant === 2 ? ' project-info--v2' : ''}`}>
+              <div className="pi-title-col">
+                <p className="pi-label">Project</p>
+                <h1 className="pi-title">{project.title}</h1>
+                <p className="pi-desc">{project.description}</p>
+                <div className="pi-deliverables">
+                  {project.tags.map((t) => (
+                    <span key={t} className="pi-tag">{t}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="pi-meta-col">
+                {project.meta.map((m) => (
+                  <div key={m.label} className="meta-row">
+                    <p className="pi-label">{m.label}</p>
+                    <p className="meta-val">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        </div>{/* /relative z-10 */}
-      </div>{/* /panel wipe outer */}
+          </motion.div>
+        </div>
+      </div>
 
       <div className="proj-divider" />
 
@@ -361,7 +379,6 @@ export default function ProjectPage() {
           height: 100vh;
           overflow: hidden;
           background: var(--dark);
-          padding-top: 53px;
         }
         .project-hero img {
           width: 100%; height: 100%;
@@ -715,9 +732,7 @@ export default function ProjectPage() {
 
         /* Hero: tall and dominant — nearly square */
         .pv2 .project-hero {
-          aspect-ratio: 1.5 / 1;
-          margin-top: 0;
-          position: relative;
+          height: 100vh;
         }
 
         /* Project info: tighter top padding — hero carries weight */
@@ -763,11 +778,7 @@ export default function ProjectPage() {
 
         /* Hero: visibly inset from edges — creates a "frame" */
         .pv3 .project-hero {
-          aspect-ratio: 16 / 9;
-          margin-top: 68px;
-          margin-left: clamp(16px, 4vw, 64px);
-          margin-right: clamp(16px, 4vw, 64px);
-          width: auto;
+          height: 100vh;
         }
 
         /* Info block: single column, wide, centered feel */
@@ -852,15 +863,14 @@ export default function ProjectPage() {
           }
           .pi-title-col, .pi-meta-col { grid-column: span 1; }
 
-          /* V2 mobile: restore standard hero */
-          .pv2 .project-hero { aspect-ratio: 2.35 / 1; margin-top: 53px; }
+          /* V2 mobile */
           .pv2 .project-info { margin-top: 0; background: none; }
           .project-info--v2 .pi-title-col { grid-column: span 1; }
           .project-info--v2 .pi-meta-col  { grid-column: span 1; padding-left: 0; border-left: none; }
           .ps-duo--asymmetric { grid-template-columns: 1fr; }
 
-          /* V3 mobile: full-bleed hero, strip wraps */
-          .pv3 .project-hero { margin-left: 0; margin-right: 0; width: 100%; aspect-ratio: 2.35/1; margin-top: 53px; }
+          /* V3 mobile */
+          .pv3 .project-hero { width: 100%; }
           .pv3 .ps-full--contained { margin-left: 0; margin-right: 0; }
           .ps-duo--diptych { grid-template-columns: 1fr; }
           .pi-v3-meta-strip { gap: 6px; }
