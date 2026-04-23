@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 
 const SKILLS = [
@@ -41,7 +41,7 @@ function clamp01(n) {
   return Math.max(0, Math.min(1, n))
 }
 
-function PinPanel({ idx, entryProgress, progress }) {
+function PinPanel({ idx, entryProgress, progress, disableExit = false }) {
   // Entry: spring stiff enough to track fast scroll, soft enough to feel damped
   const rawScaleY = useTransform(entryProgress, [0, PANEL_END[idx]], [0, 1])
   const scaleY    = useSpring(
@@ -56,6 +56,7 @@ function PinPanel({ idx, entryProgress, progress }) {
   // remains keyed to the longest-travelling panel without the trailing panel
   // floating above the viewport bottom before it actually releases.
   const rawY = useTransform(progress, (p) => {
+    if (disableExit) return 0
     const exitEnd = EXIT_WIPE_START + EXIT_PHASE * (EXIT_STAGGER[idx] / EXIT_LONGEST_TRAVEL)
     const releaseStart = exitEnd - EXIT_RELEASE_WINDOW
     if (p <= releaseStart) return 0
@@ -79,7 +80,7 @@ function PinPanel({ idx, entryProgress, progress }) {
   )
 }
 
-export default function Skillset({ containerRef: externalContainerRef }) {
+export default function Skillset({ containerRef: externalContainerRef, disableExit = false }) {
   const localContainerRef = useRef(null)
   const containerRef = externalContainerRef ?? localContainerRef
   const sectionRef   = useRef(null)
@@ -89,6 +90,19 @@ export default function Skillset({ containerRef: externalContainerRef }) {
   const sqState      = useRef(SQUARES.map(sq => ({ cx: sq.bx, cy: sq.by })))
   const dimsRef      = useRef({ w: 0, h: 0 })
   const rafRef       = useRef(null)
+  const [isStackedMobile, setIsStackedMobile] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 809px)').matches
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+    const mq = window.matchMedia('(max-width: 809px)')
+    const sync = () => setIsStackedMobile(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   // Main pin scroll: 0 when container top = viewport top, 1 when container bottom = viewport bottom
   const { scrollYProgress } = useScroll({
@@ -108,16 +122,19 @@ export default function Skillset({ containerRef: externalContainerRef }) {
 
   // Cards start rising shortly after pin — wider travel range, slower reveal
   const rawCardsY = useTransform(scrollYProgress, (p) => {
-    const t = Math.max(0, Math.min(1, (p - 0.08) / (EXIT_START - 0.08)))
+    const revealEnd = isStackedMobile ? 0.68 : EXIT_START
+    const t = Math.max(0, Math.min(1, (p - 0.08) / (revealEnd - 0.08)))
     const grid = gridRef.current
     const sec  = sectionRef.current
     if (!grid || !sec) return 0
     const padV  = 160
-    const colW  = grid.offsetWidth * 0.5
+    const cardSpan = isStackedMobile ? grid.offsetWidth : grid.offsetWidth * 0.5
     const secH  = sec.offsetHeight
 
     const yStart = secH - padV                    // SK1 top at viewport bottom
-    const yEnd   = secH * 0.25 - padV - 3.5 * colW  // SK4 sits at ~25% — more white space below
+    const yEnd   = isStackedMobile
+      ? secH * 0.12 - padV - 3.05 * cardSpan
+      : secH * 0.25 - padV - 3.5 * cardSpan
     return yStart + (yEnd - yStart) * t
   })
   const cardsY = useSpring(rawCardsY, { stiffness: 55, damping: 22, mass: 0.8 })
@@ -125,10 +142,12 @@ export default function Skillset({ containerRef: externalContainerRef }) {
   // Body completes its full travel in the first 40% of the exit phase, then plateaus.
   // This ensures SK4 is out of sight by the 50% mark even accounting for spring lag.
   const rawBodyY = useTransform(scrollYProgress, (p) => {
-    if (p <= EXIT_WIPE_START) return 0
+    if (disableExit) return 0
+    const exitStart = isStackedMobile ? 0.78 : EXIT_WIPE_START
+    if (p <= exitStart) return 0
     const sec = sectionRef.current
     if (!sec) return 0
-    const t = Math.max(0, Math.min(1, (p - EXIT_WIPE_START) / ((1.0 - EXIT_WIPE_START) * 0.40)))
+    const t = Math.max(0, Math.min(1, (p - exitStart) / ((1.0 - exitStart) * 0.40)))
     return -sec.offsetHeight * t
   })
   const bodyY = useSpring(rawBodyY, { stiffness: 100, damping: 28, mass: 0.4 })
@@ -188,7 +207,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         {/* Panel wipe — entry driven by pre-pin rise, exit driven by pin scroll */}
         <div className="sk-panels" aria-hidden="true">
           {[0, 1, 2, 3, 4].map(i => (
-            <PinPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} />
+            <PinPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={disableExit} />
           ))}
         </div>
 
@@ -208,7 +227,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         <motion.div className="sk-body relative z-10" style={{ y: bodyY }}>
 
           <motion.div className="sk-left" style={{ opacity: labelOpacity }}>
-            <span className="label" style={{ color: 'var(--muted)' }}>\ My Skillset</span>
+            <span className="label" style={{ color: '#000' }}>\ My Skillset</span>
           </motion.div>
 
           <div className="sk-right">
@@ -260,7 +279,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
           top: 0;
           height: 100vh;
           overflow: hidden;
-          padding: 160px 0;
+          padding: 80px 0 160px;
           background: transparent;
         }
 
@@ -296,7 +315,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         }
         .sk-body {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr);
           align-items: start;
           padding-left: var(--pad);
           height: 100%;
@@ -312,12 +331,15 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         .sk-right {
           height: 100%;
           padding-right: var(--pad);
+          display: flex;
+          justify-content: flex-end;
         }
 
         /* ── GRID ── */
         .sk-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
+          width: min(100%, 68vw);
           margin: -1px;
         }
 
@@ -331,7 +353,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         .sk-card {
           border: 1px solid rgba(0, 0, 0, 0.08);
           aspect-ratio: 1;
-          padding: 14px 18px;
+          padding: 20px 24px;
           position: relative;
           overflow: hidden;
           margin: -0.5px;
@@ -348,10 +370,10 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         /* ── INDEX ── */
         .sk-num {
           position: absolute;
-          top: 12px;
-          left: 14px;
+          top: 18px;
+          left: 18px;
           font-family: var(--fm);
-          font-size: 11px;
+          font-size: 12px;
           color: rgba(0, 0, 0, 0.25);
           letter-spacing: 0.045em;
         }
@@ -359,7 +381,7 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         /* ── TITLE ── */
         .sk-title {
           font-family: var(--fd);
-          font-size: clamp(22px, 3vw, 44px);
+          font-size: clamp(24px, 3.5vw, 55px);
           font-weight: 600;
           letter-spacing: -0.04em;
           text-transform: uppercase;
@@ -371,12 +393,53 @@ export default function Skillset({ containerRef: externalContainerRef }) {
         }
 
         /* ── RESPONSIVE ── */
+        @media (max-width: 1279px) {
+          .skillset-pin { min-height: 240vh; }
+          .sk-body {
+            grid-template-columns: minmax(0, 0.52fr) minmax(0, 1.48fr);
+          }
+          .sk-grid {
+            width: min(100%, 58vw);
+          }
+          .sk-card,
+          .sk-empty {
+            min-width: 0;
+          }
+          .sk-card {
+            padding: 18px 20px;
+          }
+          .sk-num {
+            top: 16px;
+            left: 16px;
+            font-size: 12px;
+          }
+          .sk-title {
+            font-size: clamp(18px, 2.52vw, 34px);
+          }
+        }
         @media (max-width: 809px) {
-          .skillset-pin { min-height: 280vh; }
+          .skillset-pin { min-height: 300vh; }
           .sk-body { grid-template-columns: 1fr; padding-left: var(--pad); }
           .sk-left  { margin-bottom: 24px; }
           .sk-right { padding-right: var(--pad); }
-          .sk-title { font-size: clamp(18px, 7vw, 36px); }
+          .sk-grid {
+            width: min(100%, clamp(244px, 49.92vw, 343px));
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          .sk-empty {
+            display: none;
+          }
+          .sk-card {
+            aspect-ratio: 1;
+            padding: 24px 26px;
+          }
+          .sk-num {
+            top: 20px;
+            left: 20px;
+            font-size: 12px;
+          }
+          .sk-title { font-size: clamp(17px, 4.9vw, 29px); }
         }
       `}</style>
     </div>

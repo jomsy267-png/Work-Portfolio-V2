@@ -49,14 +49,24 @@ const Y_START       = 140   // below viewport
 const Y_END         = -30   // above viewport
 const Y_TRAVEL      = Y_START - Y_END
 const EASE_POWER    = 2.2   // ease-out exponent → damped deceleration
+const SQUARE_RISE_SPEED = 0.406
+const COAST_START = 0.78
+const COAST_DISTANCE = 26
+const END_TAIL_DRIFT = 24
+const END_TAIL_BLEND = 0.22
+const END_TAIL_SETTLE_PORTION = 0.38
+const HANDOFF_PARALLAX_DISTANCE = 30
+const TAIL_STREAM_ADVANCE = 1.35
+const HANDOFF_STREAM_ADVANCE = 2.4
 
-function AboutPanel({ idx, entryProgress, progress }) {
+function AboutPanel({ idx, entryProgress, progress, disableExit = false }) {
   const exitEnd = EXIT_WIPE_START + EXIT_STAGGER[idx] * EXIT_PHASE
 
   const rawScaleY = useTransform(entryProgress, [0, PANEL_END[idx]], [0, 1])
   const scaleY    = useSpring(rawScaleY, { stiffness: 150, damping: 22, mass: 0.5 })
 
   const rawY = useTransform(progress, (p) => {
+    if (disableExit) return 0
     if (p <= EXIT_WIPE_START) return 0
     const t = Math.min(1, (p - EXIT_WIPE_START) / (exitEnd - EXIT_WIPE_START))
     return -window.innerHeight * t
@@ -77,7 +87,7 @@ function WordSpan({ word, index, total, progress }) {
   return <motion.span className="rv-word" style={{ opacity }}>{word} </motion.span>
 }
 
-export default function AboutSection({ containerRef: externalContainerRef }) {
+export default function AboutSection({ containerRef: externalContainerRef, disableExit = false }) {
   const localContainerRef = useRef(null)
   const containerRef = externalContainerRef ?? localContainerRef
   const sectionRef   = useRef(null)
@@ -98,15 +108,24 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
     target: containerRef,
     offset: ['start 30%', 'start start'],
   })
+  const { scrollYProgress: handoffProgress } = useScroll({
+    target: containerRef,
+    offset: ['end end', 'end start'],
+  })
 
   const labelOpacity = useTransform(scrollYProgress, [0.02, 0.12], [0, 1])
   const ctaOpacity   = useTransform(scrollYProgress, [0.35, 0.50], [0, 1])
+  const bottomFillOpacity = useSpring(
+    useTransform(entryProgress, [0.82, 1], [0, 1]),
+    { stiffness: 120, damping: 22, mass: 0.45 }
+  )
 
   // Word reveal: 0→1 sub-range of pin scroll drives the stagger
   const wordProgress = useTransform(scrollYProgress, [0.04, 0.40], [0, 1])
 
   // Body scrolls up during exit (same pattern as Skillset)
   const rawBodyY = useTransform(scrollYProgress, (p) => {
+    if (disableExit) return 0
     if (p <= EXIT_WIPE_START) return 0
     const sec = sectionRef.current
     if (!sec) return 0
@@ -117,6 +136,7 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
 
   // Damped scroll for squares — removes scroll jitter, smooths motion
   const sqProgress = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.5 })
+  const sqHandoffProgress = useSpring(handoffProgress, { stiffness: 90, damping: 26, mass: 0.5 })
 
   // Sync section dims for squares RAF
   useEffect(() => {
@@ -146,8 +166,15 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
   useEffect(() => {
     const tick = () => {
       const prog     = sqProgress.get()
-      const cp       = Math.max(0, Math.min(prog, CYCLE_END)) / CYCLE_END
-      const clock    = cp * SPAWN_PERIOD
+      const handoffProg = sqHandoffProgress.get()
+      const boundedProg = Math.max(0, Math.min(prog, 1))
+      const boundedHandoff = Math.max(0, Math.min(handoffProg, 1))
+      const cyclePhase  = Math.max(0, Math.min(boundedProg, CYCLE_END)) / CYCLE_END
+      const tailPhase   = Math.max(0, Math.min((boundedProg - CYCLE_END) / (1 - CYCLE_END), 1))
+      const clock       = cyclePhase * SPAWN_PERIOD + tailPhase * TAIL_STREAM_ADVANCE + boundedHandoff * HANDOFF_STREAM_ADVANCE
+      const settlePhase = Math.max(0, Math.min(tailPhase / END_TAIL_SETTLE_PORTION, 1))
+      const settleEase  = 1 - Math.exp(-settlePhase / END_TAIL_BLEND)
+      const tailDrift   = END_TAIL_DRIFT * settleEase
       const mx       = mouseRef.current.x
       const my       = mouseRef.current.y
       const { w, h } = dimsRef.current
@@ -159,13 +186,22 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
 
         const localClock = clock - sq.delay
         let t = 0
+        let coastDrift = 0
+        let handoffDrift = 0
         if (localClock > 0) {
-          const cycleT = ((localClock * sq.sp) % 1 + 1) % 1
+          const cycleT = ((localClock * sq.sp * SQUARE_RISE_SPEED) % 1 + 1) % 1
           t = 1 - Math.pow(1 - cycleT, EASE_POWER)  // ease-out damping
+          const coastPhase = Math.max(0, (cycleT - COAST_START) / (1 - COAST_START))
+          coastDrift = coastPhase * COAST_DISTANCE
+        }
+        if (tailPhase > 0 || boundedHandoff > 0) {
+          const carryPhase = Math.max(0, (tailPhase - END_TAIL_SETTLE_PORTION) / (1 - END_TAIL_SETTLE_PORTION))
+          const carryBlend = carryPhase * carryPhase * (3 - 2 * carryPhase)
+          handoffDrift = (carryBlend * 0.45 + boundedHandoff) * HANDOFF_PARALLAX_DISTANCE * (0.82 + sq.sp * 0.14)
         }
 
         const tx = sq.bx + (mx - 0.5) * sq.ms * 100
-        const ty = Y_START - t * Y_TRAVEL + (my - 0.5) * sq.ms * 100
+        const ty = Y_START - t * Y_TRAVEL - coastDrift - tailDrift - handoffDrift + (my - 0.5) * sq.ms * 100
         st.cx += (tx - st.cx) * 0.12
         st.cy = ty
         el.style.transform = `translate(${st.cx / 100 * w}px, ${st.cy / 100 * h}px) translate(-50%, -50%)`
@@ -175,7 +211,7 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
     }
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [sqProgress])
+  }, [sqProgress, sqHandoffProgress])
 
   const words = ABOUT_TEXT.split(' ')
 
@@ -183,10 +219,12 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
     <div ref={containerRef} className="about-pin z-layer-2" id="about" style={{ marginTop: '-100vh' }}>
       <section ref={sectionRef} className="about-sticky">
 
+        <motion.div className="ab-bottom-fill" aria-hidden="true" style={{ opacity: bottomFillOpacity }} />
+
         {/* Panel wipe — entry via pre-pin rise, exit via pin scroll */}
         <div className="ab-panels" aria-hidden="true">
           {[0, 1, 2, 3, 4].map(i => (
-            <AboutPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} />
+            <AboutPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={disableExit} />
           ))}
         </div>
 
@@ -241,17 +279,29 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
         .ab-panels {
           position: absolute;
           inset: 0;
-          z-index: 0;
+          z-index: 1;
           display: flex;
           overflow: hidden;
           pointer-events: none;
         }
 
+        .ab-bottom-fill {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 12vh;
+          background: var(--light);
+          pointer-events: none;
+          z-index: 0;
+          display: none;
+        }
+
         /* ── PARTICLES — above content so mix-blend-mode composites against text ── */
         .ab-particles {
           position: absolute;
-          inset: 0;
-          overflow: hidden;
+          inset: 0 0 -14vh 0;
+          overflow: visible;
           pointer-events: none;
           z-index: 15;
         }
@@ -322,9 +372,25 @@ export default function AboutSection({ containerRef: externalContainerRef }) {
         .about-cta:hover .cta-slash { color: rgba(0, 0, 0, 0.6); }
 
         /* ── RESPONSIVE ── */
+        @media (max-width: 1279px) {
+          .about-pin { min-height: 220vh; }
+          .about-sticky {
+            background: transparent;
+            overflow: visible;
+          }
+          .ab-bottom-fill {
+            display: block;
+          }
+          .ab-panels {
+            clip-path: inset(0 0 12vh 0);
+          }
+          .ab-content {
+            align-items: center;
+            padding-block: clamp(56px, 8vw, 88px);
+          }
+        }
         @media (max-width: 809px) {
-          .about-pin { min-height: 300vh; }
-          .ab-content { align-items: flex-start; padding-top: 80px; }
+          .about-pin { min-height: 200vh; }
         }
       `}</style>
     </div>

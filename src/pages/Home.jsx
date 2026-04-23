@@ -100,6 +100,10 @@ export default function Home() {
   const workRef = useRef(null)
   const skillsetRef = useRef(null)
   const [isScrollingUp, setIsScrollingUp] = useState(false)
+  const [isResponsiveLock, setIsResponsiveLock] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 1279px)').matches
+  })
   const [workPin, setWorkPin] = useState({
     wrapHeight: null,
   })
@@ -142,9 +146,10 @@ export default function Home() {
   const revealOpacity = useTransform(revealProgress, [0.74, 0.92], [0, 1])
   const revealYRaw    = useTransform(revealProgress, [0.74, 0.92], [34, 0])
   const revealY       = useSpring(revealYRaw, { stiffness: 90, damping: 24, mass: 0.5 })
+  const workSlowdownDistance = isResponsiveLock ? 0 : 132
   const workSlowdownYRaw = useTransform(skillsetEntryProgress, (p) => {
     const t = clamp01((p - 0.05) / 0.28)
-    return 132 * easeOutQuart(t)
+    return workSlowdownDistance * easeOutQuart(t)
   })
   const workSlowdownY = useSpring(workSlowdownYRaw, {
     stiffness: 88,
@@ -157,6 +162,15 @@ export default function Home() {
     if (prev == null || latest === prev) return
     setIsScrollingUp(latest < prev)
   })
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1279px)')
+    const sync = () => setIsResponsiveLock(mq.matches)
+
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   useLayoutEffect(() => {
     const wrapper = workPinRef.current
@@ -242,18 +256,21 @@ export default function Home() {
       </div>
 
       {/* ─── ABOUT ────────────────────────────────────────────────────── */}
-      <AboutSection containerRef={aboutRef} />
+      <AboutSection containerRef={aboutRef} disableExit={isResponsiveLock} />
 
       <div
         ref={postAboutRevealRef}
         className="post-about-reveal-wrap"
-        style={{ marginTop: '-220vh', minHeight: '380vh' }}
+        style={{
+          marginTop: isResponsiveLock ? 0 : '-220vh',
+          minHeight: isResponsiveLock ? '220vh' : '380vh',
+        }}
       >
         <motion.div
           className="post-about-reveal-content"
           style={{
-            opacity: postAboutRevealOpacity,
-            y: postAboutContentY,
+            opacity: isResponsiveLock ? 1 : postAboutRevealOpacity,
+            y: isResponsiveLock ? 0 : postAboutContentY,
           }}
         >
           {/* ─── CLIENTS — revealed below About's exit wipe ─────────────── */}
@@ -278,7 +295,7 @@ export default function Home() {
             className="work-pin-wrap work-after-clients"
           >
             <div
-              style={{ minHeight: workPin.wrapHeight ? `${workPin.wrapHeight}px` : undefined }}
+              style={{ minHeight: isResponsiveLock ? undefined : workPin.wrapHeight ? `${workPin.wrapHeight}px` : undefined }}
             >
             <motion.section
               ref={workRef}
@@ -311,7 +328,7 @@ export default function Home() {
       <div
         className="skillset-overlap"
       >
-        <Skillset containerRef={skillsetRef} />
+        <Skillset containerRef={skillsetRef} disableExit={isResponsiveLock} />
       </div>
 
       {/* REVEAL WRAP — holds Whispers + Footer BEHIND Skillset (lower z).
@@ -320,10 +337,16 @@ export default function Home() {
       <div
         ref={revealRef}
         className="reveal-wrap z-layer-4"
-        style={{ marginTop: '-200vh', minHeight: '300vh' }}
+        style={{
+          marginTop: isResponsiveLock ? 0 : '-200vh',
+          minHeight: isResponsiveLock ? '180vh' : '300vh',
+        }}
       >
         <div className="reveal-sticky">
-          <motion.div className="reveal-content" style={{ opacity: revealOpacity, y: revealY }}>
+          <motion.div
+            className="reveal-content"
+            style={{ opacity: isResponsiveLock ? 1 : revealOpacity, y: isResponsiveLock ? 0 : revealY }}
+          >
             <section className="section whispers" id="whispers">
               <div className="sec-layout relative z-10">
                 <div className="sec-label">
@@ -579,6 +602,37 @@ export default function Home() {
 
         /* RESPONSIVE */
         @media (max-width: 1279px) {
+          .post-about-reveal-wrap {
+            min-height: 220vh;
+          }
+          .post-about-reveal-content {
+            position: sticky;
+            top: 0;
+          }
+          .work-after-clients {
+            margin-top: 0;
+          }
+          .work-section {
+            padding: 64px 0 32px;
+          }
+          .skillset-overlap {
+            margin-top: 0;
+          }
+          .reveal-wrap {
+            min-height: auto;
+          }
+          .reveal-sticky {
+            position: relative;
+            top: auto;
+            height: auto;
+            overflow: visible;
+          }
+          .reveal-content {
+            width: 100%;
+          }
+          .whispers {
+            padding: 72px 0 40px;
+          }
           .work-row { grid-template-columns: repeat(2, 1fr); }
           .work-row .work-card:nth-child(1),
           .work-row .work-card:nth-child(2) { grid-column: span 1 !important; }
@@ -594,7 +648,9 @@ export default function Home() {
           .about-cta-row { justify-content: flex-start; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
-          .skillset-overlap { margin-top: -44px; }
+          .whispers {
+            padding: 64px 0 32px;
+          }
 
         }
       `}</style>
