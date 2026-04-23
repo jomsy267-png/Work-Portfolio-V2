@@ -6,26 +6,41 @@ import Footer from '../components/Footer'
 import { getProject, getNextProject } from '../data/projects'
 import { StaggeredSectionBackground } from '../components/PanelWipe'
 
-// ─── Shared reveal + parallax wrapper ────────────────────────────
-// depth: how many px the element travels over its scroll range
-// images use depth=28, text uses depth=14
-function Reveal({ children, delay = 0, className = '', style, depth = 28 }) {
+// ─── Shared reveal wrapper (static container, entrance only) ─────
+function Reveal({ children, delay = 0, className = '', style }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-6% 0px' })
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const rawY = useTransform(scrollYProgress, [0, 1], [depth, -depth])
-  const y    = useSpring(rawY, { stiffness: 90, damping: 28, mass: 0.4 })
   return (
     <motion.div
       ref={ref}
       className={className}
-      style={{ ...style, y }}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : {}}
+      style={style}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay }}
     >
       {children}
     </motion.div>
+  )
+}
+
+// ─── Parallax + zoom image (animations inside overflow:hidden wrapper)
+function ParallaxImg({ src, alt, loading = 'lazy' }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rawY     = useTransform(scrollYProgress, [0, 1], ['5%', '-5%'])
+  const rawScale = useTransform(scrollYProgress, [0, 1], [1.14, 1.04])
+  const y     = useSpring(rawY,     { stiffness: 80, damping: 25, mass: 0.5 })
+  const scale = useSpring(rawScale, { stiffness: 80, damping: 25, mass: 0.5 })
+  return (
+    <div ref={ref} style={{ overflow: 'hidden', width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <motion.img
+        src={src}
+        alt={alt}
+        loading={loading}
+        style={{ display: 'block', width: 'auto', maxWidth: '100%', maxHeight: '85vh', y, scale }}
+      />
+    </div>
   )
 }
 
@@ -34,7 +49,7 @@ function Reveal({ children, delay = 0, className = '', style, depth = 28 }) {
 function SectionFull({ s, contained = false }) {
   return (
     <Reveal className={`ps-full${contained ? ' ps-full--contained' : ''}`}>
-      <img src={s.src} alt={s.alt} loading="lazy" />
+      <ParallaxImg src={s.src} alt={s.alt} />
       {s.caption && <p className="ps-caption">{s.caption}</p>}
     </Reveal>
   )
@@ -48,10 +63,10 @@ function SectionDuo({ s, asymmetric = false, diptych = false }) {
   return (
     <div className={cls}>
       <Reveal className="ps-duo-img" delay={0}>
-        <img src={s.left.src} alt={s.left.alt} loading="lazy" />
+        <ParallaxImg src={s.left.src} alt={s.left.alt} />
       </Reveal>
       <Reveal className="ps-duo-img" delay={diptych ? 0 : 0.09}>
-        <img src={s.right.src} alt={s.right.alt} loading="lazy" />
+        <ParallaxImg src={s.right.src} alt={s.right.alt} />
       </Reveal>
     </div>
   )
@@ -72,7 +87,7 @@ function SectionGrid({ s, variant }) {
           delay={i * 0.045}
           className={`ps-grid-img${img.span === 2 ? ' span-2' : ''}`}
         >
-          <img src={img.src} alt={img.alt} loading="lazy" />
+          <ParallaxImg src={img.src} alt={img.alt} />
         </Reveal>
       ))}
     </div>
@@ -82,7 +97,7 @@ function SectionGrid({ s, variant }) {
 // ─── Section: Text block ──────────────────────────────────────────
 function SectionText({ s, variant }) {
   return (
-    <Reveal className={`ps-text${variant === 3 ? ' ps-text--v3' : ''}`} depth={14}>
+    <Reveal className={`ps-text${variant === 3 ? ' ps-text--v3' : ''}`}>
       {s.label && (
         <p className="ps-eyebrow">
           <span className="ps-slash">\</span>{s.label}
@@ -99,7 +114,7 @@ function SectionTextImage({ s }) {
   const isLeft = s.layout === 'left'
   return (
     <div className={`ps-ti${isLeft ? ' ps-ti--left' : ''}`}>
-      <Reveal className="ps-ti-text" delay={0} depth={14}>
+      <Reveal className="ps-ti-text" delay={0}>
         {s.label && (
           <p className="ps-eyebrow">
             <span className="ps-slash">\</span>{s.label}
@@ -109,7 +124,7 @@ function SectionTextImage({ s }) {
         <p className="ps-body">{s.body}</p>
       </Reveal>
       <Reveal className="ps-ti-img" delay={0.12}>
-        <img src={s.image.src} alt={s.image.alt} loading="lazy" />
+        <ParallaxImg src={s.image.src} alt={s.image.alt} />
       </Reveal>
     </div>
   )
@@ -118,7 +133,7 @@ function SectionTextImage({ s }) {
 // ─── Section: Campaign / chapter divider ─────────────────────────
 function SectionCampaign({ s, variant }) {
   return (
-    <Reveal className={`ps-campaign${variant === 2 ? ' ps-campaign--v2' : ''}`} depth={14}>
+    <Reveal className={`ps-campaign${variant === 2 ? ' ps-campaign--v2' : ''}`}>
       {s.num && <p className="ps-campaign-num">{s.num}</p>}
       <h2 className="ps-campaign-title">{s.title}</h2>
       {s.body && <p className="ps-body ps-campaign-body">{s.body}</p>}
@@ -156,9 +171,9 @@ function SectionPub({ s }) {
   return (
     <div className="ps-pub">
       <Reveal className="ps-pub-img" delay={0}>
-        <img src={s.image} alt={s.title} loading="lazy" />
+        <ParallaxImg src={s.image} alt={s.title} />
       </Reveal>
-      <Reveal className="ps-pub-info" delay={0.12} depth={14}>
+      <Reveal className="ps-pub-info" delay={0.12}>
         <p className="ps-pub-num">{s.num}</p>
         <h3 className="ps-pub-title">{s.title}</h3>
         <p className="ps-pub-meta">{s.client} — {s.year}</p>
@@ -521,9 +536,7 @@ export default function ProjectPage() {
         .ps-duo-img img {
           width: 100%;
           display: block;
-          transition: transform .65s ease;
         }
-        .ps-duo-img:hover img { transform: scale(1.025); }
 
         /* ══════════════════════════════════════════════════════
            SECTION — GRID
@@ -542,9 +555,7 @@ export default function ProjectPage() {
         .ps-grid-img img {
           width: 100%;
           display: block;
-          transition: transform .65s ease;
         }
-        .ps-grid-img:hover img { transform: scale(1.025); }
 
         /* ══════════════════════════════════════════════════════
            SECTION — TEXT BLOCK

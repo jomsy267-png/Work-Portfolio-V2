@@ -1,12 +1,13 @@
-import { useRef, useState, Suspense, lazy } from 'react'
+import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
-import { StaggeredSectionBackground } from '../components/PanelWipe'
+import { motion, useInView, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion'
+import AboutSection from '../components/AboutSection'
+import Skillset from '../components/Skillset'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
 
-// No Spline loaded
+import { Application } from '@splinetool/runtime'
 
 /* ---- Reveal wrapper ---- */
 function Reveal({ children, delay = 0, className = '' }) {
@@ -25,54 +26,11 @@ function Reveal({ children, delay = 0, className = '' }) {
   )
 }
 
-/* ---- Word-by-word scroll-scrub opacity reveal (matches reference) ---- */
-function WordSpan({ word, index, total, progress }) {
-  const start = (index / total) * 0.78
-  const end = Math.min(((index + 2.5) / total) * 0.78, 1)
-  const opacity = useTransform(progress, [start, end], [0.12, 1])
-  return <motion.span className="rv-word" style={{ opacity }}>{word} </motion.span>
-}
-
-function WordReveal({ text, className = '' }) {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 0.82', 'end 0.28'],
-  })
-  const words = text.split(' ')
-  return (
-    <p ref={ref} className={`word-reveal ${className}`}>
-      {words.map((word, i) => (
-        <WordSpan key={i} word={word} index={i} total={words.length} progress={scrollYProgress} />
-      ))}
-    </p>
-  )
-}
-
 /* ---- Featured work rows ---- */
 const featuredRows = [
   [projects[0], projects[1]],
   [projects[2], projects[3]],
   [projects[4], projects[5]],
-]
-
-/* ---- Services data ---- */
-const services = [
-  {
-    title: 'Research',
-    desc: 'We start by understanding — your brand, your market, your audience. Through deep research, we uncover insights that form the foundation of everything we build.',
-    items: ['Brand Audit', 'Market Segmentation', 'Journey Mapping', 'Competitor Analysis', 'User Research'],
-  },
-  {
-    title: 'Strategy',
-    desc: 'We translate insights into direction — crafting positioning, narrative, and architecture that give your brand a clear voice and purpose in the market.',
-    items: ['Brand Positioning', 'Brand Architecture', 'Messaging Framework', 'Content Strategy', 'Go-to-Market'],
-  },
-  {
-    title: 'Experience',
-    desc: 'We bring the brand to life — through visual identity, digital products, and every touchpoint where your audience meets your brand.',
-    items: ['Visual Identity', 'Web Design', 'Motion & Interaction', 'Brand Guidelines', 'Art Direction'],
-  },
 ]
 
 /* ---- Whispers data ---- */
@@ -103,114 +61,139 @@ function WorkCard({ project }) {
   )
 }
 
-/* ---- Services section — accordion hover reveal matching reference ---- */
-function ServiceRow({ service, index, total }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-8% 0px' })
-  const [open, setOpen] = useState(false)
-
-  return (
-    <motion.div
-      ref={ref}
-      className="service-row"
-      initial={{ opacity: 0, y: 36 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.13 }}
-      onHoverStart={() => setOpen(true)}
-      onHoverEnd={() => setOpen(false)}
-      onClick={() => setOpen(v => !v)}
-    >
-      <div className="service-divider" />
-
-      {/* Always-visible header: title + counter */}
-      <div className="service-row-header">
-        <motion.span
-          className="service-name-text"
-          animate={{ x: open ? 7 : 0 }}
-          transition={{ duration: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          {index > 0 && <motion.span
-            className="svc-slash"
-            animate={{ color: open ? 'rgba(207,207,207,0.6)' : 'rgba(207,207,207,0.25)' }}
-            transition={{ duration: 0.3 }}
-          >\ </motion.span>}
-          {service.title.toUpperCase()}
-        </motion.span>
-
-        <motion.div
-          className="service-counter"
-          animate={{ opacity: open ? 1 : 0.45 }}
-          transition={{ duration: 0.3 }}
-        >
-          <span className="counter-n">{String(index + 1).padStart(2, '0')}</span>
-          <span className="counter-sep"> / </span>
-          <span className="counter-total">{String(total).padStart(2, '0')}</span>
-        </motion.div>
-      </div>
-
-      {/* Expandable: description + tags */}
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            className="service-expanded"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ height: { duration: 0.42, ease: [0.25, 0.1, 0.25, 1] }, opacity: { duration: 0.28, ease: 'easeOut' } }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div className="service-expanded-inner">
-              <p className="service-desc-text">{service.desc}</p>
-              <div className="service-tags-row">
-                {service.items.map((tag, ti) => (
-                  <span key={tag} className="svc-tag">
-                    {tag}{ti < service.items.length - 1 && <span className="tag-sep"> \ </span>}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
-}
-
-function ServicesSection() {
-  return (
-    <section className="services theme-light z-layer-5" id="services">
-      <StaggeredSectionBackground isLight={true} />
-      <div className="sec-layout relative z-10">
-        <div className="sec-label">
-          <span className="label">\ What We Do</span>
-        </div>
-        <div className="services-list">
-          {services.map((s, i) => (
-            <ServiceRow key={s.title} service={s} index={i} total={services.length} />
-          ))}
-          {/* Bottom closing line */}
-          <div className="service-divider" />
-        </div>
-      </div>
-    </section>
-  )
-}
-
 // Detect capable device function removed since Spline was decommissioned.
 
-export default function Home() {
-  const servicesRef = useRef(null)
+function clamp01(n) {
+  return Math.max(0, Math.min(1, n))
+}
 
-  // Track services entering — same offset as the panel wipe trigger
-  const { scrollYProgress: svcProgress } = useScroll({
-    target: servicesRef,
-    offset: ['start 130%', 'start 20%'],
+function easeInOutCubic(t) {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
+
+function easeInCubic(t) {
+  return t * t * t
+}
+
+function easeOutQuart(t) {
+  return 1 - Math.pow(1 - t, 4)
+}
+
+export default function Home() {
+  const splineCanvasRef = useRef(null)
+  const aboutRef = useRef(null)
+  const clientsRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = splineCanvasRef.current
+    if (!canvas) return
+    const app = new Application(canvas)
+    app.load('https://prod.spline.design/6uUuJgGqnS2jicVX/scene.splinecode')
+    return () => app.dispose()
+  }, [])
+
+  const postAboutRevealRef = useRef(null)
+  const revealRef = useRef(null)
+  const workPinRef = useRef(null)
+  const workRef = useRef(null)
+  const skillsetRef = useRef(null)
+  const [isScrollingUp, setIsScrollingUp] = useState(false)
+  const [workPin, setWorkPin] = useState({
+    wrapHeight: null,
+  })
+  const { scrollY, scrollYProgress: revealProgress } = useScroll({
+    target: revealRef,
+    offset: ['start end', 'start start'],
+  })
+  const { scrollYProgress: postAboutRevealProgress } = useScroll({
+    target: postAboutRevealRef,
+    offset: ['start end', 'start start'],
+  })
+  const { scrollYProgress: skillsetEntryProgress } = useScroll({
+    target: skillsetRef,
+    offset: ['start end', 'start start'],
+  })
+  const postAboutRevealOpacity = useTransform(postAboutRevealProgress, [0.74, 0.92], [0, 1])
+  const postAboutRevealYOffset = useTransform(postAboutRevealProgress, [0.74, 0.92], [34, 0])
+  const postAboutReleaseEaseRaw = useTransform(postAboutRevealProgress, (p) => {
+    if (isScrollingUp) return 0
+    const t = clamp01((p - 0.62) / 0.22)
+    return 42 * (1 - easeInCubic(t))
+  })
+  const postAboutRelockEaseRaw = useTransform(postAboutRevealProgress, (p) => {
+    if (!isScrollingUp) return 0
+    const t = clamp01((p - 0.42) / 0.44)
+    return 152 * (1 - easeOutQuart(t))
+  })
+  const postAboutReverseSinkRaw = useTransform(postAboutRevealProgress, (p) => {
+    if (!isScrollingUp) return 0
+    const t = clamp01((p - 0.8) / 0.18)
+    return 200 * easeInOutCubic(t)
+  })
+  const postAboutContentY = useSpring(
+    useTransform(
+      [postAboutRevealYOffset, postAboutReleaseEaseRaw, postAboutRelockEaseRaw, postAboutReverseSinkRaw],
+      ([revealY, releaseEase, relockEase, reverseSink]) => revealY + releaseEase + relockEase + reverseSink
+    ),
+    { stiffness: 46, damping: 24, mass: 1.18 }
+  )
+  const revealOpacity = useTransform(revealProgress, [0.74, 0.92], [0, 1])
+  const revealYRaw    = useTransform(revealProgress, [0.74, 0.92], [34, 0])
+  const revealY       = useSpring(revealYRaw, { stiffness: 90, damping: 24, mass: 0.5 })
+  const workSlowdownYRaw = useTransform(skillsetEntryProgress, (p) => {
+    const t = clamp01((p - 0.05) / 0.28)
+    return 132 * easeOutQuart(t)
+  })
+  const workSlowdownY = useSpring(workSlowdownYRaw, {
+    stiffness: 88,
+    damping: 30,
+    mass: 0.78,
   })
 
-  // Positive Y partially counteracts upward scroll → work appears to slow
-  // Starts at 0 (no effect), grows to 200px as services fully covers work
-  const rawWorkY = useTransform(svcProgress, [0, 1], [0, 200])
-  const workY = useSpring(rawWorkY, { stiffness: 55, damping: 22, mass: 0.8 })
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const prev = scrollY.getPrevious()
+    if (prev == null || latest === prev) return
+    setIsScrollingUp(latest < prev)
+  })
+
+  useLayoutEffect(() => {
+    const wrapper = workPinRef.current
+    const work = workRef.current
+    if (!wrapper || !work) return undefined
+
+    let raf = null
+    const measure = () => {
+      const workHeight = work.offsetHeight
+      const wrapHeight = workHeight
+
+      setWorkPin({
+        wrapHeight,
+      })
+    }
+
+    const requestMeasure = () => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = null
+        measure()
+      })
+    }
+
+    measure()
+    window.addEventListener('scroll', requestMeasure, { passive: true })
+    window.addEventListener('resize', requestMeasure)
+    const ro = new ResizeObserver(requestMeasure)
+    ro.observe(work)
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', requestMeasure)
+      window.removeEventListener('resize', requestMeasure)
+      ro.disconnect()
+    }
+  }, [])
 
   return (
     <>
@@ -236,6 +219,10 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.4, ease: 'easeOut', delay: 0.2 }}
           />
+          <div className="hero-glass-sim" />
+          <div className="hero-spline">
+            <canvas ref={splineCanvasRef} />
+          </div>
           <Navbar heroMode />
           <div className="hero-tagline">
             {['VISUAL DESIGNS', 'THAT TELL A STORY'].map((line, i) => (
@@ -244,11 +231,7 @@ export default function Home() {
                   className="hero-tagline-inner"
                   initial={{ y: '108%' }}
                   animate={{ y: '0%' }}
-                  transition={{
-                    duration: 1.05,
-                    ease: [0.16, 1, 0.3, 1],
-                    delay: 0.55 + i * 0.14,
-                  }}
+                  transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1], delay: 0.55 + i * 0.14 }}
                 >
                   {line}
                 </motion.span>
@@ -258,106 +241,131 @@ export default function Home() {
         </section>
       </div>
 
-      {/* ─── ABOUT (light wipe over Hero) ─────────────────────────────── */}
-      <section
-        className="section theme-light z-layer-2"
-        id="about"
-        style={{ marginTop: '-100vh' }}
+      {/* ─── ABOUT ────────────────────────────────────────────────────── */}
+      <AboutSection containerRef={aboutRef} />
+
+      <div
+        ref={postAboutRevealRef}
+        className="post-about-reveal-wrap"
+        style={{ marginTop: '-220vh', minHeight: '380vh' }}
       >
-        <StaggeredSectionBackground isLight={true} />
-        <div className="sec-layout relative z-10">
-          <div className="sec-label">
-            <span className="label">\ About</span>
-          </div>
-          <div className="about-body">
-            <WordReveal text="I create brand identities and visual systems with an emphasis on clarity, composition, and quiet confidence. Outside of design, riding motorcycles remains one of the few things that clears the noise and keeps me grounded." />
-            <div className="about-cta-row">
-              <a href="https://jomsy267.myportfolio.com" target="_blank" rel="noreferrer" className="about-cta">
-                <span className="cta-slash">\</span> Read About Me
-              </a>
+        <motion.div
+          className="post-about-reveal-content"
+          style={{
+            opacity: postAboutRevealOpacity,
+            y: postAboutContentY,
+          }}
+        >
+          {/* ─── CLIENTS — revealed below About's exit wipe ─────────────── */}
+          <section ref={clientsRef} className="clients z-layer-3">
+            <div className="sec-layout relative z-10">
+              <p className="label sec-label">\ Selected Clients</p>
+              <div className="clients-list">
+                {['APEGA', 'Ballet Edmonton', 'Odvod Media Inc.', 'Edmonton Community Foundation', 'CEA', 'University of Alberta', 'Runway Footwear', 'Odd. Brewing Company', 'Page The Cleaners', 'Edify'].map((c, i, arr) => (
+                  <span key={c}>{c}{i < arr.length - 1 && <span className="dot-sep"> · </span>}</span>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div className="divider" />
+
+          {/* ─── WORK ──────────────────────────────────────────────────
+             Work scrolls normally until its bottom composition reaches the viewport,
+             then holds in place before Skillset wipes over it. */}
+          <div
+            ref={workPinRef}
+            className="work-pin-wrap work-after-clients"
+          >
+            <div
+              style={{ minHeight: workPin.wrapHeight ? `${workPin.wrapHeight}px` : undefined }}
+            >
+            <motion.section
+              ref={workRef}
+              className="work-section work-sticky"
+              id="work"
+              style={{ y: workSlowdownY }}
+            >
+              <div className="sec-layout work-sec">
+                <div className="sec-label">
+                  <span className="label">\ Featured Work</span>
+                </div>
+                <div className="work-body">
+                  {featuredRows.map((row, ri) => (
+                    <Reveal key={ri} className="work-row" delay={ri * 0.08}>
+                      {row.map((p) => <WorkCard key={p.slug} project={p} />)}
+                    </Reveal>
+                  ))}
+                <div className="work-footer">
+                  <Link to="/work" className="nav-link-cta"><span className="cta-slash">\</span> View All Work</Link>
+                </div>
+                </div>
+              </div>
+            </motion.section>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ─── CLIENTS (solid dark — fully covers Hero) ─────────────────── */}
-      <Reveal>
-        <section className="clients z-layer-3">
-          <div className="sec-layout relative z-10">
-            <p className="label sec-label">\ Selected Clients</p>
-            <div className="clients-list">
-              {['APEGA', 'Ballet Edmonton', 'Odvod Media Inc.', 'Edmonton Community Foundation', 'CEA', 'University of Alberta', 'Runway Footwear', 'Odd. Brewing Company', 'Page The Cleaners', 'Edify'].map((c, i, arr) => (
-                <span key={c}>{c}{i < arr.length - 1 && <span className="dot-sep"> · </span>}</span>
-              ))}
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      <div className="divider" />
-
-      {/* ─── WORK ──────────────────────────────────────────────────
-         Scrolls normally (no sticky). Services’ staggered panels naturally
-         sweep upward as Services enters — Work exits the top at the same
-         time, creating the visual “wipe over” effect without any pinning. */}
-      <motion.section
-        className="work-section z-layer-4"
-        id="work"
-        style={{ y: workY }}
-      >
-        <div className="sec-layout work-sec">
-          <div className="sec-label">
-            <span className="label">\ Featured Work</span>
-          </div>
-          <div className="work-body">
-            {featuredRows.map((row, ri) => (
-              <Reveal key={ri} className="work-row" delay={ri * 0.08}>
-                {row.map((p) => <WorkCard key={p.slug} project={p} />)}
-              </Reveal>
-            ))}
-            <div className="work-footer">
-              <Link to="/work" className="nav-link-cta"><span className="cta-slash">\</span> View All Work</Link>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ─── SERVICES (panels sweep up as Work exits top) ───────────────── */}
-      <div ref={servicesRef}>
-        <ServicesSection />
+        </motion.div>
       </div>
 
-      {/* WHISPERS */}
-      <section className="section whispers z-layer-6" id="whispers">
-        <div className="sec-layout relative z-10">
-          <div className="sec-label">
-            <span className="label">\ Whispers</span>
-          </div>
-          <div className="whispers-grid">
-            {whispers.map((w, i) => (
-              <Reveal key={w.title} className="whisper-card" delay={i * 0.08}>
-                <p className="whisper-date">{w.date}</p>
-                <h3 className="whisper-title">{w.title}</h3>
-                <p className="whisper-excerpt">{w.excerpt}</p>
-              </Reveal>
-            ))}
-          </div>
+      {/* ─── SKILLSET (panels sweep up as Work exits top) ──────────────── */}
+      <div
+        className="skillset-overlap"
+      >
+        <Skillset containerRef={skillsetRef} />
+      </div>
+
+      {/* REVEAL WRAP — holds Whispers + Footer BEHIND Skillset (lower z).
+          The pane is present for the full wipe, but its content fades in after
+          a short scroll delay so the reveal feels softer. */}
+      <div
+        ref={revealRef}
+        className="reveal-wrap z-layer-4"
+        style={{ marginTop: '-200vh', minHeight: '300vh' }}
+      >
+        <div className="reveal-sticky">
+          <motion.div className="reveal-content" style={{ opacity: revealOpacity, y: revealY }}>
+            <section className="section whispers" id="whispers">
+              <div className="sec-layout relative z-10">
+                <div className="sec-label">
+                  <span className="label">\ Whispers</span>
+                </div>
+                <div className="whispers-grid">
+                  {whispers.map((w, i) => (
+                    <Reveal key={w.title} className="whisper-card" delay={i * 0.08}>
+                      <p className="whisper-date">{w.date}</p>
+                      <h3 className="whisper-title">{w.title}</h3>
+                      <p className="whisper-excerpt">{w.excerpt}</p>
+                    </Reveal>
+                  ))}
+                </div>
+              </div>
+            </section>
+            <Footer />
+          </motion.div>
         </div>
-      </section>
-
-      <div className="divider" />
-
-      <Footer className="z-layer-7" />
+      </div>
 
       <style>{`
         /* HERO — position/z-index controlled by .z-layer-1 in index.css */
         .hero {
           min-height: 100dvh;
-          overflow: hidden;
+          overflow: clip;
+          --glass-size: 70vmin;
+          --glass-right: 5%;
+          --glass-radius: 35vmin;
+          --glass-center-x: calc(100% - var(--glass-right) - var(--glass-radius));
         }
         .hero-video { position: absolute; inset: 0; z-index: 1; }
         .hero-video video { width: 100%; height: 100%; object-fit: cover; }
         .hero-overlay { position: absolute; inset: 0; background: #000; opacity: .32; z-index: 2; }
+        .hero-spline {
+          position: absolute; inset: 0; z-index: 10;
+          pointer-events: none;
+          transform: scale(1.4);
+          transform-origin: center center;
+          mix-blend-mode: lighten;
+        }
+        .hero-spline canvas { pointer-events: none !important; display: block; width: 100% !important; height: 100% !important; background: transparent !important; }
         .hero-tagline {
           position: absolute;
           bottom: clamp(32px, 5vh, 64px);
@@ -365,7 +373,7 @@ export default function Home() {
           max-width: var(--max);
           margin: 0 auto;
           padding: 0 var(--pad);
-          z-index: 3;
+          z-index: 4;
           font-family: var(--fd);
           font-size: clamp(28px, min(6.3vw, 11.9dvh), 95px);
           font-weight: 600;
@@ -373,15 +381,21 @@ export default function Home() {
           text-transform: uppercase;
           color: #fff;
         }
-        /* Each line is an overflow:hidden clip boundary */
-        .hero-tagline-line {
-          overflow: hidden;
-          line-height: .92;
-          padding-bottom: 0.06em;
-        }
-        .hero-tagline-inner {
-          display: block;
-          line-height: .92;
+        .hero-tagline-line { overflow: hidden; line-height: .92; padding-bottom: 0.06em; }
+        .hero-tagline-inner { display: block; line-height: .92; }
+        .hero-glass-sim {
+          position: absolute;
+          z-index: 9;
+          width: var(--glass-size);
+          height: var(--glass-size);
+          border-radius: 50%;
+          top: 50%;
+          right: var(--glass-right);
+          transform: translateY(-50%);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          background: rgba(255, 255, 255, 0.01);
+          pointer-events: none;
         }
 
         /* TWO-COLUMN SECTION LAYOUT */
@@ -400,49 +414,30 @@ export default function Home() {
           align-self: start;
         }
 
-        /* ABOUT — position/z-index controlled by .z-layer-X in index.css */
         .section { padding: 80px 0; }
-        /* Extra breathing room on light sections */
-        .theme-light.section,
-        .theme-light.services { padding: 160px 0; }
-        .about-body {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 36px;
-        }
-
-        /* Word-by-word scroll reveal */
-        .word-reveal {
-          font-family: var(--fd);
-          font-size: clamp(20px, 2.6vw, 36px);
-          font-weight: 500;
-          letter-spacing: -.025em;
-          line-height: 1.3;
-          color: inherit;
-          text-align: right;
-          max-width: 680px;
-        }
-        .rv-word { display: inline; }
-
-        .about-cta-row { display: flex; justify-content: flex-end; }
         .cta-slash { color: rgba(207,207,207,.35); margin-right: 2px; }
-        .about-cta {
-          font-family: var(--fd);
-          font-size: 13px; font-weight: 500;
-          letter-spacing: .04em;
-          text-transform: uppercase;
-          display: inline-flex; align-items: center; gap: 4px;
-          color: var(--muted);
-          border-bottom: 1px solid rgba(207,207,207,.2);
-          padding-bottom: 2px;
-          transition: color .3s, border-color .3s;
+
+        /* ABOUT REVEAL WRAP — Clients + Work sit behind About's white panels,
+           matching the Whispers + Footer reveal under Skillset. */
+        .post-about-reveal-wrap {
+          position: relative;
+          z-index: 1;
+          background: var(--bg);
         }
-        .about-cta:hover { color: var(--light); border-color: var(--light); }
-        .about-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
+        .post-about-reveal-content {
+          position: sticky;
+          top: 0;
+          width: 100%;
+          background: var(--bg);
+        }
+        .post-about-reveal-content .sec-label {
+          position: static;
+        }
 
         /* CLIENTS — position/z-index controlled by .z-layer-3 in index.css */
-        .clients { padding: 80px 0; }
+        .clients {
+          padding: 80px 0;
+        }
         .clients-list {
           font-family: var(--fd);
           font-size: clamp(13px, 1.6vw, 17px);
@@ -454,8 +449,25 @@ export default function Home() {
         .clients-list span:hover { color: var(--light); }
         .dot-sep { color: rgba(207,207,207,.15); padding: 0 4px; }
 
-        /* WORK — position/z-index controlled by inline style in JSX */
+        /* WORK — JS pins exact View All Work target; no visible dead spacer. */
+        .work-pin-wrap {
+          position: relative;
+          z-index: 2;
+          background: var(--bg);
+        }
         .work-section { padding: 80px 0; }
+        .work-after-clients {
+          margin-top: -44px;
+        }
+        .work-sticky {
+          position: relative;
+          background: var(--bg);
+        }
+        .skillset-overlap {
+          position: relative;
+          z-index: 6;
+          margin-top: -88px;
+        }
         .work-body {
           display: flex; flex-direction: column; gap: var(--gap);
         }
@@ -533,92 +545,21 @@ export default function Home() {
         .nav-link-cta:hover { color: var(--light); border-color: var(--light); }
         .nav-link-cta:hover .cta-slash { color: rgba(207,207,207,.7); }
 
-        /* SERVICES — position/z-index controlled by .z-layer-5 in index.css */
-        .services { padding: 80px 0; }
-        .services-list { display: flex; flex-direction: column; }
-
-        .service-divider {
-          height: 1px;
-          background: rgba(140, 140, 140, 0.22);
-        }
-
-        .service-row { cursor: pointer; }
-
-        /* Always-visible header row: title left, counter right */
-        .service-row-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 24px 0;
-          gap: 16px;
-        }
-
-        .service-name-text {
-          font-family: var(--fd);
-          font-size: clamp(26px, 3.8vw, 52px);
-          font-weight: 700;
-          letter-spacing: -.03em;
-          line-height: 1;
-          text-transform: uppercase;
-          color: var(--light);
-          display: block;
-        }
-        .svc-slash { margin-right: 1px; }
-
-        /* Counter — always visible, right side of header */
-        .service-counter {
-          flex-shrink: 0;
-          text-align: right;
-          white-space: nowrap;
-          line-height: 1;
-        }
-        .counter-n {
-          font-family: var(--fd);
-          font-size: clamp(22px, 2.8vw, 36px);
-          font-weight: 700;
-          letter-spacing: -.03em;
-          color: var(--light);
-        }
-        .counter-sep { color: var(--muted); font-size: 14px; margin: 0 2px; }
-        .counter-total {
-          font-family: var(--fd);
-          font-size: clamp(22px, 2.8vw, 36px);
-          font-weight: 700;
-          letter-spacing: -.03em;
-          color: var(--muted);
-        }
-
-        /* Expandable reveal area */
-        .service-expanded-inner {
+        /* REVEAL WRAP — Whispers + Footer sit inside a sticky pane, with the
+           actual content opacity scroll-delayed in JSX. */
+        .reveal-sticky {
+          position: sticky;
+          top: 0;
+          height: 100vh;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          padding-bottom: 28px;
+          justify-content: center;
+          overflow: hidden;
         }
-        .service-desc-text {
-          font-size: 15px;
-          line-height: 1.72;
-          color: var(--muted);
-          max-width: 560px;
-        }
-
-        /* Tags — inline backslash separators */
-        .service-tags-row {
-          font-family: var(--fd);
-          font-size: 11.5px;
-          letter-spacing: .05em;
-          text-transform: uppercase;
-          color: var(--muted);
-          line-height: 1.9;
-        }
-        .svc-tag { white-space: nowrap; }
-        .tag-sep {
-          color: rgba(207, 207, 207, 0.22);
-          margin: 0 3px;
-        }
-
-        /* WHISPERS — position/z-index controlled by .z-layer-6 in index.css */
-        .whispers { padding-top: 80px; }
+        .reveal-content { width: 100%; }
+        /* Whispers padding tightened so content + Footer fit the 100vh pane
+           without overflow; Footer slots right underneath. */
+        .whispers { padding: 40px 0 24px; }
         .whispers-grid {
           display: grid; grid-template-columns: repeat(3, 1fr);
           gap: var(--gap);
@@ -653,19 +594,8 @@ export default function Home() {
           .about-cta-row { justify-content: flex-start; }
           .work-row { display: flex; flex-direction: column; gap: 12px; }
           .whispers-grid { grid-template-columns: 1fr; }
+          .skillset-overlap { margin-top: -44px; }
 
-          /* Services mobile: smaller title, tighter header padding */
-          .service-row-header { padding: 18px 0; }
-          .service-name-text { font-size: clamp(22px, 7vw, 34px); }
-          .counter-n, .counter-total { font-size: clamp(18px, 5.5vw, 28px); }
-          /* Expanded content fills width on mobile */
-          .service-desc-text { max-width: 100%; }
-        }
-
-        @media (min-width: 810px) and (max-width: 1279px) {
-          /* Services tablet */
-          .service-row-header { padding: 20px 0; }
-          .service-name-text { font-size: clamp(22px, 3.4vw, 42px); }
         }
       `}</style>
     </>

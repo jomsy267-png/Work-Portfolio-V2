@@ -41,7 +41,7 @@ export function StaggeredSectionBackground({ isLight = true }) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start 130%', 'start 20%'],
+    offset: ['start 200%', 'start 20%'],
   })
 
   const colorClass = isLight ? 'bg-panel-light' : 'bg-panel-dark'
@@ -73,7 +73,7 @@ export function StaggeredSectionBackground({ isLight = true }) {
 function ScrubPanel({ index, colorClass, progress }) {
   const raw = useTransform(progress, [0, PANEL_END[index]], [0, 1])
   // Spring with low stiffness + damping → eases out when scroll stops
-  const scaleY = useSpring(raw, { stiffness: 60, damping: 20, mass: 0.6 })
+  const scaleY = useSpring(raw, { stiffness: 150, damping: 22, mass: 0.5 })
 
   return (
     <motion.div

@@ -79,7 +79,7 @@ img { display: block; max-width: 100%; height: auto; }
 .z-layer-2 { position: relative; z-index: 2;        } /* About   — light wipe     */
 .z-layer-3 { position: relative; z-index: 3; background: var(--bg); } /* Clients  — solid dark    */
 .z-layer-4 { position: relative; z-index: 4; background: var(--bg); } /* Work     — solid dark + sticky inner */
-.z-layer-5 { position: relative; z-index: 5;        } /* Services — light wipe    */
+.z-layer-5 { position: relative; z-index: 5;        } /* Skillset — light wipe    */
 .z-layer-6 { position: relative; z-index: 6; background: var(--bg); } /* Whispers — solid dark    */
 .z-layer-7 { position: relative; z-index: 7; background: var(--bg); } /* Footer   — highest       */
 

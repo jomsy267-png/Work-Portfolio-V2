@@ -19,8 +19,16 @@ export default function Cursor() {
       ringY.set(e.clientY)
     }
 
-    const enter = () => { hovering.current = true; dot.classList.add('h'); ring.classList.add('h') }
-    const leave = () => { hovering.current = false; dot.classList.remove('h'); ring.classList.remove('h') }
+    const enter = () => {
+      hovering.current = true
+      dot.classList.add('h')
+      ring.classList.add('h')
+    }
+    const leave = () => {
+      hovering.current = false
+      dot.classList.remove('h')
+      ring.classList.remove('h')
+    }
 
     const dot = document.getElementById('cursor-dot')
     const ring = document.getElementById('cursor-ring')

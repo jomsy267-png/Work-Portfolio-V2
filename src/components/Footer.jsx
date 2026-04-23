@@ -42,7 +42,7 @@ export default function Footer({ minimal = false }) {
           <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#work">Work</a></li>
-            <li><a href="#services">Services</a></li>
+            <li><a href="#skillset">Skillset</a></li>
             <li><Link to="/work">All Projects</Link></li>
           </ul>
         </div>
