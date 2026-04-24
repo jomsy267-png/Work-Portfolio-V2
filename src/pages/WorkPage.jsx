@@ -38,7 +38,7 @@ function WorkCard({ project, i }) {
       <Link to={`/work/${project.slug}`} className="wpc">
         {/* Image */}
         <div className="wpc-img img-wrap">
-          <img src={project.hero} alt={project.title} loading="lazy" />
+          <img src={project.cover || project.hero} alt={project.title} loading="lazy" />
           <div className="wpc-overlay" />
         </div>
 

@@ -45,7 +45,7 @@ function WorkCard({ project }) {
   return (
     <Link to={`/work/${project.slug}`} className="work-card" data-cursor>
       <div className="work-card-image img-wrap">
-        <img src={project.hero} alt={project.title} loading="lazy" />
+        <img src={project.cover || project.hero} alt={project.title} loading="lazy" />
       </div>
       <div className="work-card-frost">
         <div className="work-card-title-area">
@@ -380,7 +380,7 @@ export default function Home() {
         }
         .hero-video { position: absolute; inset: 0; z-index: 1; }
         .hero-video video { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; background: #000; opacity: .32; z-index: 2; }
+        .hero-overlay { position: absolute; inset: 0; background: var(--dark); opacity: .32; z-index: 2; }
         .hero-spline {
           position: absolute; inset: 0; z-index: 10;
           pointer-events: none;

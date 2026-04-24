@@ -16,18 +16,19 @@ export const projects = [
     ],
     description: 'A comprehensive branding initiative for Runway Footwear — a modern dropshipping footwear brand. The work spans logo redesign, packaging, application UI, stationery, and social media imagery, building a polished visual system around style, sophistication, and a memorable unboxing experience.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e2abd588-53bc-4234-9609-3f84bac4cbc8_rw_3840.jpg?h=3868f39f1a0e219c2b000e530af7eaf9',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/58014fc9-dae6-4400-ba37-9ba1a6009200_car_1x1.png?h=a98d7e43b6316122b7755a0f7f0b2568',
     sections: [
       { type: 'text', body: 'The entire project was marked by collaborative synergy, initiated through a connection with a friend who presented the opportunity. What began as a logo refresh evolved into a broader identity system across packaging, application UI, stationery, and social media touchpoints.' },
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/68caf2ca-dfdb-4b8f-a052-fff66eb9603d_rw_1920.png?h=757092bef7836fd62690130dea9bde4b', alt: 'Runway Footwear — Logo Presentation' },
       {
         type: 'duo',
         left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/8f693fa9-93ce-4c9a-9b36-b3077e4f7b48_rw_3840.png?h=cf63074f79ffd377e814315f16706f92', alt: 'Runway Footwear — Identity Application 01' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/17b792a2-8fc0-437c-bbe2-67171e63866f_rw_1920.png?h=cd9a6b826433bc900cfc1ec3e00ed5b7', alt: 'Runway Footwear — Identity Application 02' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/17b792a2-8fc0-437c-bbe2-67171e63866f_rw_1200.png?h=87aa6fd7be6d9677ba1315d79a25c90c', alt: 'Runway Footwear — Identity Application 02' },
       },
       {
         type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e6ff6968-5dbb-4a9d-b2b2-fc0583d2253a_rw_1920.png?h=ecb7d6dc4822635dba1454b213f2f9c8', alt: 'Runway Footwear — Identity Application 03' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/3b38352a-06c5-428c-a137-bafd329c4c16_rw_3840.png?h=24192bca60d885e9832292cde74f6695', alt: 'Runway Footwear — Identity Application 04' },
+        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e6ff6968-5dbb-4a9d-b2b2-fc0583d2253a_rw_1200.png?h=a065154a90590d9fc444106422695552', alt: 'Runway Footwear — Identity Application 03' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/3b38352a-06c5-428c-a137-bafd329c4c16_rw_1200.png?h=5ed8138052dddd71b1cd960429476c0b', alt: 'Runway Footwear — Identity Application 04' },
       },
       {
         type: 'grid',
@@ -72,7 +73,8 @@ export const projects = [
       { label: 'Designer', value: 'Jomil Shah' },
     ],
     description: 'A comprehensive branding initiative balancing contrasts and cohesion. A minimalist black-and-white primary mark for versatility and longevity, complemented by a tap room logo for signage — and bold, vibrant packaging that stands out on the shelf while maintaining brand integrity.',
-    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/7a54e702-e051-4682-be6d-5ee4b73812ca_rw_3840.jpg?h=9f03f3ebdf283b6d2c4a445d3d4c2711',
+    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/7a54e702-e051-4682-be6d-5ee4b73812ca_rw_1200.png?h=481e9356a89318a187530e1e228afa77',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ae81ad30-9010-4f16-a4ce-59163f2882ba_car_1x1.jpg?h=f078d3b6f876008ad2f000aafbbe7513',
     sections: [
       { type: 'full', src: '/images/projects/b9f12569-0b50-428b-bfce-9d47820f5d6a_rw_1920.jpg', alt: 'Odd Brewing — Brand Campaign Hero' },
       { type: 'full', src: '/images/projects/ea7461df-90bc-478c-93c7-f54b15622a50_rw_1920.jpg', alt: 'Odd Brewing — Brand System Overview' },
@@ -150,6 +152,7 @@ export const projects = [
     ],
     description: 'Editorial design and motion graphics for Edify Magazine — encompassing layout design, brand identity applications, and animated social content. Each piece was crafted to bring the magazine\'s visual voice to life across print and digital touchpoints.',
     hero: '/images/projects/31f60dfd-a4cb-4ac3-b64f-83fc305cca38_rw_1920.jpg',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ca2d16ea-27a7-4600-a59f-ea65bd7e5396_car_1x1.jpg?h=ce45c7111155a256755a90d267515459',
     sections: [
       { type: 'full', src: '/images/projects/a7686831-8492-412a-8cab-eab52fd5aa94_rw_3840.jpg', alt: 'Edify — Brand Overview' },
       {
@@ -199,10 +202,11 @@ export const projects = [
       { label: 'Designer', value: 'Jomil Shah' },
     ],
     description: 'Two major campaigns for APEGA — the largest regulator of self-regulated professionals in Western Canada. The work spans infographic storytelling, custom iconography, animation, magazine ads, social media, and video editing designed to communicate impact with clarity and empathy.',
-    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f76736a7-a71c-4a4d-9be2-d7eaa24a7233_rw_3840.jpg?h=940d3ec8e1339787bfc5cf7144498341',
+    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f76736a7-a71c-4a4d-9be2-d7eaa24a7233_rw_1200.jpg?h=a240d04a675e0cc4889430b75cc0ba65',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e4e0e07d-6aac-4b34-b983-c35fbb37035a_car_1x1.jpg?h=0f4e304f54d465a8c884aba05c9dc9dc',
     sections: [
       { type: 'text', label: 'Campaign 01', heading: 'Membership Dollars At Work', body: 'A transformative initiative aimed at transparently communicating the tangible impact of APEGA members\' contributions. The campaign brought together infographic posters, custom iconography, magazine advertising, and motion design to explain how member dollars are put to work.' },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/25847497-73bf-4934-b381-8b2cda3ab498_rw_1920.jpg?h=bf56da2711dbb40c2ec4f113a3b4af57', alt: 'APEGA — Membership Dollars At Work Intro Visual' },
+      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/25847497-73bf-4934-b381-8b2cda3ab498_rw_1920.png?h=2d065953481fc49c29b9e82b020c7aa1', alt: 'APEGA — Membership Dollars At Work Intro Visual' },
       {
         type: 'duo',
         left: { src: '/images/projects/f794d8a5-fc5c-4ba4-8bbb-81660117b533_rw_1200.jpg', alt: 'APEGA — Membership Dollars At Work Campaign Overview' },
@@ -211,8 +215,8 @@ export const projects = [
       { type: 'text', label: 'Custom Iconography', heading: 'Crafted From Scratch', body: 'The iconography designed for the campaign was a bespoke collection, developed to visually represent APEGA\'s diverse areas of impact. The goal was to translate complex information into a clear visual language that felt precise, useful, and recognisably APEGA.' },
       {
         type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ad1d3147-1328-48d2-8f67-03b83ffacfe8_rw_1920.jpg?h=88b03fdb70698c7585863446ef6af46f', alt: 'APEGA — Iconography Detail 01' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f49e39e4-5e75-4455-b7b8-f2002db796eb_rw_3840.jpg?h=4a47744bec7b25ef58aeb00ba9426d93', alt: 'APEGA — Iconography Detail 02' },
+        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ad1d3147-1328-48d2-8f67-03b83ffacfe8_rw_1200.png?h=18ad9cb50f4835a6a92f4ce267e88cc4', alt: 'APEGA — Iconography Detail 01' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f49e39e4-5e75-4455-b7b8-f2002db796eb_rw_3840.jpg?h=dc445d75ae81062db2b51b6ba5129c4a', alt: 'APEGA — Iconography Detail 02' },
       },
       { type: 'text', label: 'Animated Video', heading: 'Motion That Explains', body: 'To bring the campaign to life, multiple short animated videos were conceptualized and produced. The dynamic visuals featured iconography and gear elements that reinforced the central message while making the information easier to absorb and share.' },
       { type: 'video', id: 'L2V6jpIIyDM' },
@@ -261,6 +265,7 @@ export const projects = [
     ],
     description: 'Comprehensive branding and design work capturing the grace, precision, and emotional depth inherent in ballet. The work spans promotional art, banners, posters, social content, motion studies, a program guide booklet, and a proposed ticket portal redesign.',
     hero: '/images/projects/ca653fac-b1b1-49c5-b6df-1157b00f92ec_rw_1200.png',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/be79f73d-be25-4c84-aaf9-fd47e75528db_car_1x1.jpg?h=ac1af8ee5cc1231b0ede62dc7538e78b',
     sections: [
       { type: 'text', body: 'Ballet Edmonton stands as a beacon of artistic excellence, where the timeless beauty of dance converges with innovation to create an enchanting experience. The work developed through Odvod Media covered branding strategy, promotion, social media, motion assets, program design, and digital experience concepts.' },
       {
@@ -269,14 +274,14 @@ export const projects = [
         right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/8117f493-da20-4e0d-9364-d30ca4ac8fd7_rw_3840.jpg?h=7976405572680ee4835a482116a5e40d', alt: 'Ballet Edmonton — Brand Identity Application' },
       },
       { type: 'full', src: '/images/projects/2388ce1d-ae19-4bf4-b993-ecd99e117892_rw_3840.jpg', alt: 'Ballet Edmonton — Campaign Overview' },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/11ecea2d-0eb8-46b1-88c9-16c75f60db50_rw_1200.jpg?h=75e37fc62565a164b65ff3faf31067cc', alt: 'Ballet Edmonton — Campaign Detail' },
+      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/11ecea2d-0eb8-46b1-88c9-16c75f60db50_rw_1200.jpg?h=aa461a8a83b4bb42fafac85f593ef1bf', alt: 'Ballet Edmonton — Campaign Detail' },
       { type: 'text', label: 'Print & Promotion', heading: 'Motion Captured In Print', body: 'The challenge of visually translating the essence of ballet into tangible promotional materials was met with thoughtful design. Banners and posters were developed to communicate grace, emotional depth, and physical precision while still functioning as clear promotional tools.' },
       {
         type: 'grid',
         items: [
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c619cb71-064e-447e-8c9c-f6a70075971b_rw_1200.jpg?h=066f7559f6fd8ca3f397f44ee8e5c8d6', alt: 'Ballet Edmonton — Poster Detail 01' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/4c67ce83-0a9d-4ccd-90ba-ded78e44f62b_rw_1200.jpg?h=8a792733bdf0f1e240a72bd5c292465b', alt: 'Ballet Edmonton — Poster Detail 02' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/46368be6-b528-495b-a356-3db7e4269dc8_rw_1200.jpg?h=a70a0f394cf93ed1cd20cf4016d7c8d2', alt: 'Ballet Edmonton — Poster Detail 03', span: 2 },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c619cb71-064e-447e-8c9c-f6a70075971b_rw_3840.jpg?h=c882051d209d221df0c19ffcdfd5cf45', alt: 'Ballet Edmonton — Poster Detail 01' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/4c67ce83-0a9d-4ccd-90ba-ded78e44f62b_rw_1920.jpg?h=ca20f88235c0383b582de6f19aa0e3c1', alt: 'Ballet Edmonton — Poster Detail 02' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/46368be6-b528-495b-a356-3db7e4269dc8_rw_3840.jpg?h=104c7a045a6868329d175e474b6ba525', alt: 'Ballet Edmonton — Poster Detail 03', span: 2 },
         ],
       },
       {
@@ -285,7 +290,7 @@ export const projects = [
         right: { src: '/images/projects/bfe173f1-2ca0-444d-b71a-13b84f825549_rw_3840.jpg', alt: 'Ballet Edmonton — Performance Poster' },
       },
       { type: 'text', label: 'Program Guide', heading: 'An Immersive Reading Experience', body: 'The collaboration extended to the creation of a visually engaging program guide booklet. Each page was designed to complement the elegance of Ballet Edmonton\'s performances, giving patrons a richer visual experience before, during, and after the show.' },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/38d6f576-4120-4472-9c29-a6c397f9ccb4_rw_1200.jpg?h=90fdb9d9cde0f0f2f90227bfa8ff7b06', alt: 'Ballet Edmonton — Program Guide Detail' },
+      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/38d6f576-4120-4472-9c29-a6c397f9ccb4_rw_1920.jpg?h=49ff312dca327845daedcc6ab41d1d9f', alt: 'Ballet Edmonton — Program Guide Detail' },
       {
         type: 'grid',
         items: [
@@ -324,6 +329,7 @@ export const projects = [
     ],
     description: 'Full visual identity for Page The Cleaners — an Edmonton-based dry cleaning operation offering a full suite of services for individual and commercial clients. The work covers logo design, brand identity, environmental design, and store signage, all built around a clean, dependable visual system.',
     hero: '/images/projects/ae96c42b-e2da-4265-8371-51f925166acf_rw_3840.png',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1c84543d-ab48-4638-9ca7-41ce262fdcd9_rwc_0x84x1862x1396x1862.png?h=40ee1e5905b857b328bd3bd837c41e08',
     sections: [
       { type: 'text', body: 'Page The Cleaners is a long-standing Edmonton-based dry cleaning and garment-care company known for its commitment to quality, reliability, and customer-focused service. They offer a full suite of cleaning solutions — from dry cleaning and laundry services to alterations, stain treatment, and specialty garment care.' },
       {
@@ -357,7 +363,8 @@ export const projects = [
       { label: 'Designer', value: 'Jomil Shah' },
     ],
     description: 'Art direction across multiple annual publications — from community foundation storytelling to engineering industry overviews and legal scholarship. The work combines editorial structure, cover direction, typography, photography selection, and print-ready layout systems.',
-    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a067e81f-b4e2-4141-b43d-eefa1f52e164_rw_3840.jpg?h=1ee47deaf659645f865efded8cb4c8b0',
+    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a067e81f-b4e2-4141-b43d-eefa1f52e164_rw_1920.jpg?h=81565059021fd647808cc0c2a47e42d7',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/beca79ce-ebe3-4c77-a45a-c1d93036ae40_car_1x1.jpg?h=a2a44bf7a1817bdd30fd605dea115212',
     sections: [
       { type: 'text', label: 'A Note', body: 'Publications are always a team effort. The designs and layouts shown here are the issues, spreads, and covers produced by Jomil Shah as Art Director.' },
       {
@@ -367,16 +374,16 @@ export const projects = [
         client: 'Edmonton Community Foundation',
         year: '2023',
         description: 'Edmonton Community Foundation works with donors to create endowment funds that support charitable causes in Edmonton and beyond. Legacy in Action brings its readers compelling stories from the spaces where endowments and community intersect — from arts and education to health and the environment.',
-        image: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/6d9dd560-f3d2-45f4-b5a2-beb5d4816303_rw_3840.jpg?h=6f0dd58c341fd4c0e2279e30bb7f15c2',
+        image: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/6d9dd560-f3d2-45f4-b5a2-beb5d4816303_rw_1920.jpg?h=18e4460abb35830bcb01c9ddd90c8128',
       },
       {
         type: 'grid',
         items: [
           { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/96c4d690-5420-4709-a926-2b1f736085a4_rw_3840.jpg?h=80220ccc5efb6d995b267fa29536c0f0', alt: 'Legacy In Action — Cover', span: 2 },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/2675d08a-1a14-492d-981b-4b56931345cd_rw_3840.jpg?h=576949a88f8a5f452af5622cf57600b5', alt: 'Legacy In Action — Spread 01' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/09a7ccc6-550e-4cbe-b12b-7fc710bdfc1e_rw_1920.jpg?h=0f7648c3c39c347bcf9d6c8620a13d4d', alt: 'Legacy In Action — Spread 02' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/edc78304-3f39-45e8-83ed-f73ad49fd789_rw_1200.jpg?h=1f587f4135ce6e51e7cff7fa80ca7ca0', alt: 'Legacy In Action — Spread 03' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/0d6d7093-6c73-46e7-a1bc-6a3a86baf82e_rw_1920.jpg?h=2e8b2af1d0931c550d1b4838f2727e34', alt: 'Legacy In Action — Spread 04' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/2675d08a-1a14-492d-981b-4b56931345cd_rw_1920.jpg?h=6179398933a57d4bdf34cc56c40f8208', alt: 'Legacy In Action — Spread 01' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/09a7ccc6-550e-4cbe-b12b-7fc710bdfc1e_rw_1920.jpg?h=ac81290312a8e205af14b4d8a0c381bb', alt: 'Legacy In Action — Spread 02' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/edc78304-3f39-45e8-83ed-f73ad49fd789_rw_3840.jpg?h=37d30a4f53cf2bcc3e8fc4a592534b97', alt: 'Legacy In Action — Spread 03' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/0d6d7093-6c73-46e7-a1bc-6a3a86baf82e_rw_1920.jpg?h=1bc1a3b3968caebfe89e4908b406042a', alt: 'Legacy In Action — Spread 04' },
         ],
       },
       {
@@ -391,19 +398,19 @@ export const projects = [
       },
       {
         type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c5f2af11-6b99-459e-9b01-ac755b615828_rw_1920.jpg?h=09033d10e2b2de8f28a17ed9370fb3d6', alt: 'CEA Alberta Innovators 2023 — Spread 01' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ac4599bd-b830-4398-aff5-296ee10a8de4_rw_1920.jpg?h=63444766f7807badf4f7fd6d4e4a2e3d', alt: 'CEA Alberta Innovators 2023 — Spread 02' },
+        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/c5f2af11-6b99-459e-9b01-ac755b615828_rw_1920.jpg?h=08b47139f0a26674a3e303de4601b8f2', alt: 'CEA Alberta Innovators 2023 — Spread 01' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ac4599bd-b830-4398-aff5-296ee10a8de4_rw_1920.jpg?h=33512d22ad45f3fc5b13ffff9c2eb7f0', alt: 'CEA Alberta Innovators 2023 — Spread 02' },
       },
       { type: 'text', label: 'Alberta Innovators 2023', heading: 'A Year Of Bold Breakthroughs', body: 'Alberta Innovators 2023 is framed as a visual snapshot of a year defined by bold breakthroughs and boundary-pushing ideas. The layouts were designed to feel forward-looking without losing readability or editorial discipline.' },
       { type: 'text', label: 'CEA Alberta Innovators Magazine 2024', heading: 'Proposed Covers', body: 'Early cover explorations for Alberta Innovators 2024 tested different ways to reflect the ideas, energy, and imagination shaping the province\'s future.' },
       {
         type: 'grid',
         items: [
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/94c4c59c-007f-4d35-b3f6-48848b24cf3f_rw_1920.jpg?h=5b43a5ee741936f9f49ef20a8e055f62', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 01' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1eb4a525-a208-459e-b1de-860f62b9d41c_rw_1920.jpg?h=0bb2e4554b8d61c6faf425d4f1a286d4', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 02' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f12b86fa-4700-432a-8705-a97d0320f24b_rw_1920.jpg?h=d191d196b549497ec7eb32b2193957a7', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 03' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/cd1b1940-02e1-4ad8-8faf-f8a4da202497_rw_1920.jpg?h=35c26b93f169d46a5113718bf7730f42', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 04' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/dedde675-bb07-4c2f-8fc5-15f39afc4c23_rw_1920.jpg?h=1ae5d7a41ec30dcc27da01ac7e129cf5', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 05', span: 2 },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/94c4c59c-007f-4d35-b3f6-48848b24cf3f_rw_1920.jpg?h=f02ace3ec2fdf110781662ab4df13e9e', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 01' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1eb4a525-a208-459e-b1de-860f62b9d41c_rw_1920.jpg?h=f7abe13cf904f3dcbf6da5be446f1e23', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 02' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f12b86fa-4700-432a-8705-a97d0320f24b_rw_1920.jpg?h=6ecdcd5cf7ff6a181e8ad7c2fafe355d', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 03' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/cd1b1940-02e1-4ad8-8faf-f8a4da202497_rw_1920.jpg?h=b8f8103076072725ba0d26d7fb9e8705', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 04' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/dedde675-bb07-4c2f-8fc5-15f39afc4c23_rw_1920.jpg?h=7c31607a53e2940ac41950b2292f5af1', alt: 'CEA Alberta Innovators 2024 — Proposed Cover 05', span: 2 },
         ],
       },
       {
@@ -428,10 +435,10 @@ export const projects = [
       {
         type: 'grid',
         items: [
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/d53a6240-b1fc-40e6-8b68-2d1fead0ac3e_rw_1920.jpg?h=2bc8e87c2e306d464f42caec098f6c7c', alt: 'University of Alberta Law Magazine — Spread 01' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f36bf248-3c70-4df2-83b0-a58accc139a8_rw_1920.jpg?h=fd9e59f51a75a8f754b2dfcfe811db90', alt: 'University of Alberta Law Magazine — Spread 02' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/41370cda-3a65-4de7-98c2-f6a93265429f_rw_3840.jpg?h=f7ae3f7cb9626c772f2d68d24e8ddc92', alt: 'University of Alberta Law Magazine — Spread 03' },
-          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/bdf027a9-8103-434b-9622-5c2e7f77ea1e_rw_1200.jpg?h=8e23633b85b8d9ca0af3ea8f35630fdd', alt: 'University of Alberta Law Magazine — Spread 04', span: 2 },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/d53a6240-b1fc-40e6-8b68-2d1fead0ac3e_rw_1920.jpg?h=dce48e26dc5d3e11b5b1ed8323871283', alt: 'University of Alberta Law Magazine — Spread 01' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f36bf248-3c70-4df2-83b0-a58accc139a8_rw_1920.jpg?h=324ee7f6ea8a33b0c087d162d18115ef', alt: 'University of Alberta Law Magazine — Spread 02' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/41370cda-3a65-4de7-98c2-f6a93265429f_rw_1920.jpg?h=55a8f37d39445b6553477c53c450c729', alt: 'University of Alberta Law Magazine — Spread 03' },
+          { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/bdf027a9-8103-434b-9622-5c2e7f77ea1e_rw_1920.jpg?h=62364862cb516121d1ae78bafd0606c0', alt: 'University of Alberta Law Magazine — Spread 04', span: 2 },
         ],
       },
     ],
@@ -453,25 +460,26 @@ export const projects = [
       { label: 'Designer', value: 'Jomil Shah' },
     ],
     description: 'A collection of graphic design work exploring urban themes through posters, typography, layout, and visual communication studies rooted in city life, culture, and community.',
-    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a119b96f-fa93-40d9-acce-d08c5372a833_rw_3840.jpg?h=230dff3c6237c15f8b482f44938a7f8f',
+    hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a119b96f-fa93-40d9-acce-d08c5372a833_rw_3840.jpg?h=d6cbcafedbbbd4f708a77994bda52166',
+    cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/9a54b106-4ebc-4c6b-a023-acf5ab031796_car_1x1.jpg?h=e3dd2a6c4df6631dc832ab9fc679d0bf',
     sections: [
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/03915a22-026c-472d-8464-f1b2d787c63e_rw_3840.jpg?h=1c5813e59bc0f1fc8afec83e7484e33c', alt: 'Urban Affairs — Work 01' },
+      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/03915a22-026c-472d-8464-f1b2d787c63e_rw_1920.png?h=70c981998b87a06adea68e4ef229f918', alt: 'Urban Affairs — Work 01' },
       {
         type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/475b4616-c0ef-4a91-b0ea-478e8cad40d8_rw_3840.jpg?h=80cd52be4ef48b72f73086e92bbc4cab', alt: 'Urban Affairs — Work 02' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5eec14dd-22e8-453d-b469-4cd1b1bebc06_rw_3840.jpg?h=2619f1c5ca7ca56118e7484eafcbce9c', alt: 'Urban Affairs — Work 03' },
+        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/475b4616-c0ef-4a91-b0ea-478e8cad40d8_rw_1920.jpg?h=a14d93ae89d1a966e70d2e66f033bd11', alt: 'Urban Affairs — Work 02' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5eec14dd-22e8-453d-b469-4cd1b1bebc06_rw_1920.png?h=a7e67f25c60c5428260669caa7b11364', alt: 'Urban Affairs — Work 03' },
       },
       {
         type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/13d50732-d094-4704-bff7-ed72e9640d19_rw_3840.jpg?h=e6a7d6e7605f48406585886ab8c8e7ea', alt: 'Urban Affairs — Work 04' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1e4ffe86-ef7a-4b8a-857f-112f9be1d022_rw_3840.jpg?h=e266369d4a7d0ebfc8d5b3e0555edc5c', alt: 'Urban Affairs — Work 05' },
+        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/13d50732-d094-4704-bff7-ed72e9640d19_rw_1920.jpg?h=32fa167620300ba9f5765b7f55221597', alt: 'Urban Affairs — Work 04' },
+        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1e4ffe86-ef7a-4b8a-857f-112f9be1d022_rw_1920.png?h=f0b460317004ac60ef0691a6166a28fa', alt: 'Urban Affairs — Work 05' },
       },
       {
         type: 'duo',
         left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/b1747dcb-3d05-4d99-a6e8-9eafcbbe6772_rw_1200.jpg?h=82ded530e8424623b03f27810acbb0ac', alt: 'Urban Affairs — Work 06' },
         right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/4b214c61-f358-4102-af0a-43ef00e8b138_rw_1200.jpg?h=626a6456280f6b6576760ffceb691421', alt: 'Urban Affairs — Work 07' },
       },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5bb81dd9-1ba6-43b0-ba47-234056ecebf9_rw_3840.jpg?h=e514902d4553d33fe7708e0b8c2386ce', alt: 'Urban Affairs — Work 08' },
+      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/5bb81dd9-1ba6-43b0-ba47-234056ecebf9_rw_3840.png?h=3fe05f3d3b327c99736ad343e3ab7d77', alt: 'Urban Affairs — Work 08' },
       {
         type: 'grid',
         items: [

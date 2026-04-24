@@ -1,11 +1,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #1a1a1a;
+  --rich-black: #050505;
+  --bg: var(--rich-black);
   --surface: #cfcfcf;
   --light: #f7f7f7;
   --muted: #8c8c8c;
-  --dark: #262626;
+  --dark: var(--rich-black);
   --accent: #0099ff;
   --gap: 20px;
   --pad: 16.5px;
@@ -121,9 +122,6 @@ img { display: block; max-width: 100%; height: auto; }
 }
 .img-wrap {
   background: var(--dark);
-  background-image: linear-gradient(90deg, var(--dark) 0%, #303030 50%, var(--dark) 100%);
-  background-size: 600px 100%;
-  animation: shimmer 1.6s infinite linear;
 }
 .img-wrap img { display: block; }
 

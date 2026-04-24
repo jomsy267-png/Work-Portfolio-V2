@@ -227,7 +227,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         <motion.div className="sk-body relative z-10" style={{ y: bodyY }}>
 
           <motion.div className="sk-left" style={{ opacity: labelOpacity }}>
-            <span className="label" style={{ color: '#000' }}>\ My Skillset</span>
+            <span className="label" style={{ color: 'var(--dark)' }}>\ My Skillset</span>
           </motion.div>
 
           <div className="sk-right">
@@ -315,7 +315,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         }
         .sk-body {
           display: grid;
-          grid-template-columns: minmax(0, 0.42fr) minmax(0, 1.58fr);
+          grid-template-columns: minmax(120px, 0.16fr) minmax(0, 1.84fr);
           align-items: start;
           padding-left: var(--pad);
           height: 100%;
@@ -339,7 +339,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         .sk-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          width: min(100%, 68vw);
+          width: min(calc(100vw - (var(--pad) * 2)), clamp(950px, 90.6vw, 1503px));
           margin: -1px;
         }
 
@@ -353,7 +353,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         .sk-card {
           border: 1px solid rgba(0, 0, 0, 0.08);
           aspect-ratio: 1;
-          padding: 20px 24px;
+          padding: 22px 26px;
           position: relative;
           overflow: hidden;
           margin: -0.5px;
@@ -370,10 +370,10 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         /* ── INDEX ── */
         .sk-num {
           position: absolute;
-          top: 18px;
-          left: 18px;
+          top: 20px;
+          left: 20px;
           font-family: var(--fm);
-          font-size: 12px;
+          font-size: 13px;
           color: rgba(0, 0, 0, 0.25);
           letter-spacing: 0.045em;
         }
@@ -381,7 +381,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         /* ── TITLE ── */
         .sk-title {
           font-family: var(--fd);
-          font-size: clamp(24px, 3.5vw, 55px);
+          font-size: clamp(26px, 3.87vw, 61px);
           font-weight: 600;
           letter-spacing: -0.04em;
           text-transform: uppercase;
@@ -396,25 +396,25 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         @media (max-width: 1279px) {
           .skillset-pin { min-height: 240vh; }
           .sk-body {
-            grid-template-columns: minmax(0, 0.52fr) minmax(0, 1.48fr);
+            grid-template-columns: minmax(0, 0.38fr) minmax(0, 1.62fr);
           }
           .sk-grid {
-            width: min(100%, 58vw);
+            width: min(100%, clamp(722px, 81.1vw, 989px));
           }
           .sk-card,
           .sk-empty {
             min-width: 0;
           }
           .sk-card {
-            padding: 18px 20px;
+            padding: 25px 28px;
           }
           .sk-num {
-            top: 16px;
-            left: 16px;
-            font-size: 12px;
+            top: 23px;
+            left: 23px;
+            font-size: 13px;
           }
           .sk-title {
-            font-size: clamp(18px, 2.52vw, 34px);
+            font-size: clamp(25px, 3.53vw, 47px);
           }
         }
         @media (max-width: 809px) {
@@ -423,23 +423,23 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
           .sk-left  { margin-bottom: 24px; }
           .sk-right { padding-right: var(--pad); }
           .sk-grid {
-            width: min(100%, clamp(244px, 49.92vw, 343px));
+            width: min(100%, clamp(309px, 63.5vw, 436px));
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
           }
           .sk-empty {
             display: none;
           }
           .sk-card {
             aspect-ratio: 1;
-            padding: 24px 26px;
+            padding: 30px 33px;
           }
           .sk-num {
-            top: 20px;
-            left: 20px;
-            font-size: 12px;
+            top: 25px;
+            left: 25px;
+            font-size: 13px;
           }
-          .sk-title { font-size: clamp(17px, 4.9vw, 29px); }
+          .sk-title { font-size: clamp(22px, 6.22vw, 37px); }
         }
       `}</style>
     </div>
