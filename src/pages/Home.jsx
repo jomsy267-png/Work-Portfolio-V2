@@ -1,25 +1,24 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useSpring, useMotionValueEvent, useReducedMotion } from 'framer-motion'
 import AboutSection from '../components/AboutSection'
 import Skillset from '../components/Skillset'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
 
-import { Application } from '@splinetool/runtime'
-
 /* ---- Reveal wrapper ---- */
 function Reveal({ children, delay = 0, className = '' }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-10% 0px' })
+  const prefersReducedMotion = useReducedMotion()
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 28 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, ease: [0.25, 0.1, 0.25, 1], delay }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.75, ease: [0.25, 0.1, 0.25, 1], delay: prefersReducedMotion ? 0 : delay }}
     >
       {children}
     </motion.div>
@@ -45,7 +44,7 @@ function WorkCard({ project }) {
   return (
     <Link to={`/work/${project.slug}`} className="work-card" data-cursor>
       <div className="work-card-image img-wrap">
-        <img src={project.cover || project.hero} alt={project.title} loading="lazy" />
+        <img src={project.cover || project.hero} alt={project.title} loading="lazy" decoding="async" />
       </div>
       <div className="work-card-frost">
         <div className="work-card-title-area">
@@ -85,14 +84,26 @@ export default function Home() {
   const splineCanvasRef = useRef(null)
   const aboutRef = useRef(null)
   const clientsRef = useRef(null)
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
+    if (prefersReducedMotion) return undefined
     const canvas = splineCanvasRef.current
     if (!canvas) return
-    const app = new Application(canvas)
-    app.load('https://prod.spline.design/6uUuJgGqnS2jicVX/scene.splinecode')
-    return () => app.dispose()
-  }, [])
+    let app
+    let cancelled = false
+
+    import('@splinetool/runtime').then(({ Application }) => {
+      if (cancelled) return
+      app = new Application(canvas)
+      app.load('https://prod.spline.design/6uUuJgGqnS2jicVX/scene.splinecode')
+    })
+
+    return () => {
+      cancelled = true
+      app?.dispose()
+    }
+  }, [prefersReducedMotion])
 
   const postAboutRevealRef = useRef(null)
   const revealRef = useRef(null)
@@ -210,20 +221,20 @@ export default function Home() {
   }, [])
 
   return (
-    <>
+    <main id="main-content">
 
       {/* ─── HERO STICKY WRAP ─────────────────────────────────────────────
           200vh wrapper: Hero sticks for exactly 100vh of scroll, then
           releases. About pulls up with marginTop:-100vh so no empty space. */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '200vh' }}>
-        <section className="hero sticky-section" id="main-content">
+        <section className="hero sticky-section" aria-labelledby="home-hero-title">
           <motion.div
             className="hero-video"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.8, ease: 'easeOut' }}
           >
-            <video autoPlay loop muted playsInline>
+            <video autoPlay loop muted playsInline preload="metadata" aria-hidden="true">
               <source src="https://res.cloudinary.com/workbyw/video/upload/v1741537245/W_Showreel_cdqxat.mp4" type="video/mp4" />
             </video>
           </motion.div>
@@ -238,20 +249,20 @@ export default function Home() {
             <canvas ref={splineCanvasRef} />
           </div>
           <Navbar heroMode />
-          <div className="hero-tagline">
+          <h1 className="hero-tagline" id="home-hero-title">
             {['VISUAL DESIGNS', 'THAT TELL A STORY'].map((line, i) => (
               <div key={i} className="hero-tagline-line">
                 <motion.span
                   className="hero-tagline-inner"
-                  initial={{ y: '108%' }}
+                  initial={prefersReducedMotion ? false : { y: '108%' }}
                   animate={{ y: '0%' }}
-                  transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1], delay: 0.55 + i * 0.14 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 1.05, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : 0.55 + i * 0.14 }}
                 >
                   {line}
                 </motion.span>
               </div>
             ))}
-          </div>
+          </h1>
         </section>
       </div>
 
@@ -389,6 +400,9 @@ export default function Home() {
           mix-blend-mode: lighten;
         }
         .hero-spline canvas { pointer-events: none !important; display: block; width: 100% !important; height: 100% !important; background: transparent !important; }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-spline { display: none; }
+        }
         .hero-tagline {
           position: absolute;
           bottom: clamp(32px, 5vh, 64px);
@@ -654,6 +668,6 @@ export default function Home() {
 
         }
       `}</style>
-    </>
+    </main>
   )
 }

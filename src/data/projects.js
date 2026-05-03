@@ -6,6 +6,9 @@ export const projects = [
     title: 'Runway Footwear',
     category: 'Brand Identity & Digital Design',
     categoryShort: 'Brand Identity',
+    energyCategory: 'technical-system',
+    projectType: 'branding-digital',
+    transitionTone: 'precise',
     tags: ['Logo Design', 'Branding Package', 'Application UI', 'Social Media', 'Stationery'],
     client: 'Runway Footwear',
     meta: [
@@ -17,6 +20,7 @@ export const projects = [
     description: 'A comprehensive branding initiative for Runway Footwear — a modern dropshipping footwear brand. The work spans logo redesign, packaging, application UI, stationery, and social media imagery, building a polished visual system around style, sophistication, and a memorable unboxing experience.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e2abd588-53bc-4234-9609-3f84bac4cbc8_rw_3840.jpg?h=3868f39f1a0e219c2b000e530af7eaf9',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/58014fc9-dae6-4400-ba37-9ba1a6009200_car_1x1.png?h=a98d7e43b6316122b7755a0f7f0b2568',
+    posterImage: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/58014fc9-dae6-4400-ba37-9ba1a6009200_car_1x1.png?h=a98d7e43b6316122b7755a0f7f0b2568',
     sections: [
       { type: 'text', body: 'The entire project was marked by collaborative synergy, initiated through a connection with a friend who presented the opportunity. What began as a logo refresh evolved into a broader identity system across packaging, application UI, stationery, and social media touchpoints.' },
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/68caf2ca-dfdb-4b8f-a052-fff66eb9603d_rw_1920.png?h=757092bef7836fd62690130dea9bde4b', alt: 'Runway Footwear — Logo Presentation' },
@@ -65,6 +69,9 @@ export const projects = [
     title: 'Odd. Brewing Co.',
     category: 'Branding & Packaging',
     categoryShort: 'Branding & Packaging',
+    energyCategory: 'high-energy-campaign',
+    projectType: 'branding-packaging',
+    transitionTone: 'punchy',
     tags: ['Logo Design', 'Brand Identity', 'Tap Room Mark', 'Packaging Design'],
     client: 'Odd. Brewing Company',
     meta: [
@@ -75,6 +82,7 @@ export const projects = [
     description: 'A comprehensive branding initiative balancing contrasts and cohesion. A minimalist black-and-white primary mark for versatility and longevity, complemented by a tap room logo for signage — and bold, vibrant packaging that stands out on the shelf while maintaining brand integrity.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/7a54e702-e051-4682-be6d-5ee4b73812ca_rw_1200.png?h=481e9356a89318a187530e1e228afa77',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ae81ad30-9010-4f16-a4ce-59163f2882ba_car_1x1.jpg?h=f078d3b6f876008ad2f000aafbbe7513',
+    posterImage: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ae81ad30-9010-4f16-a4ce-59163f2882ba_car_1x1.jpg?h=f078d3b6f876008ad2f000aafbbe7513',
     sections: [
       { type: 'full', src: '/images/projects/b9f12569-0b50-428b-bfce-9d47820f5d6a_rw_1920.jpg', alt: 'Odd Brewing — Brand Campaign Hero' },
       { type: 'full', src: '/images/projects/ea7461df-90bc-478c-93c7-f54b15622a50_rw_1920.jpg', alt: 'Odd Brewing — Brand System Overview' },
@@ -142,6 +150,9 @@ export const projects = [
     title: 'Edify',
     category: 'Editorial & Motion Design — 2023',
     categoryShort: 'Editorial & Motion',
+    energyCategory: 'motion-experimental',
+    projectType: 'editorial-motion',
+    transitionTone: 'fluid',
     tags: ['Editorial Design', 'Motion Graphics', 'Social Media', 'Brand Identity', 'Graphic Design'],
     client: 'Edify Magazine',
     meta: [
@@ -153,6 +164,7 @@ export const projects = [
     description: 'Editorial design and motion graphics for Edify Magazine — encompassing layout design, brand identity applications, and animated social content. Each piece was crafted to bring the magazine\'s visual voice to life across print and digital touchpoints.',
     hero: '/images/projects/31f60dfd-a4cb-4ac3-b64f-83fc305cca38_rw_1920.jpg',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ca2d16ea-27a7-4600-a59f-ea65bd7e5396_car_1x1.jpg?h=ce45c7111155a256755a90d267515459',
+    posterImage: '/images/projects/31f60dfd-a4cb-4ac3-b64f-83fc305cca38_rw_1920.jpg',
     sections: [
       { type: 'full', src: '/images/projects/a7686831-8492-412a-8cab-eab52fd5aa94_rw_3840.jpg', alt: 'Edify — Brand Overview' },
       {
@@ -193,6 +205,9 @@ export const projects = [
     title: 'APEGA',
     category: 'Marketing Campaign Design',
     categoryShort: 'Campaign Design',
+    energyCategory: 'technical-system',
+    projectType: 'campaign-system',
+    transitionTone: 'precise',
     tags: ['Campaign Design', 'Infographic Poster', 'Animated Video', 'Magazine Ads', 'Social Media', 'Custom Iconography', 'Illustration'],
     client: 'APEGA',
     meta: [
@@ -204,6 +219,7 @@ export const projects = [
     description: 'Two major campaigns for APEGA — the largest regulator of self-regulated professionals in Western Canada. The work spans infographic storytelling, custom iconography, animation, magazine ads, social media, and video editing designed to communicate impact with clarity and empathy.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/f76736a7-a71c-4a4d-9be2-d7eaa24a7233_rw_1200.jpg?h=a240d04a675e0cc4889430b75cc0ba65',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e4e0e07d-6aac-4b34-b983-c35fbb37035a_car_1x1.jpg?h=0f4e304f54d465a8c884aba05c9dc9dc',
+    posterImage: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/e4e0e07d-6aac-4b34-b983-c35fbb37035a_car_1x1.jpg?h=0f4e304f54d465a8c884aba05c9dc9dc',
     sections: [
       { type: 'text', label: 'Campaign 01', heading: 'Membership Dollars At Work', body: 'A transformative initiative aimed at transparently communicating the tangible impact of APEGA members\' contributions. The campaign brought together infographic posters, custom iconography, magazine advertising, and motion design to explain how member dollars are put to work.' },
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/25847497-73bf-4934-b381-8b2cda3ab498_rw_1920.png?h=2d065953481fc49c29b9e82b020c7aa1', alt: 'APEGA — Membership Dollars At Work Intro Visual' },
@@ -255,7 +271,10 @@ export const projects = [
     title: 'Ballet Edmonton',
     category: 'Graphic Design & Branding',
     categoryShort: 'Graphic Design',
-    tags: ['Branding Strategy', 'Banners & Posters', 'Social Media', 'Program Guide Booklet', 'Ticket Portal Proposal', 'Image Editing'],
+    energyCategory: 'calm-editorial',
+    projectType: 'mixed-media',
+    transitionTone: 'soft',
+    tags: ['Branding Strategy', 'Banners & Posters', 'Social Media', 'Program Guide Booklet', 'Digital Experience', 'Image Editing'],
     client: 'Ballet Edmonton',
     meta: [
       { label: 'Client', value: 'Ballet Edmonton' },
@@ -263,19 +282,22 @@ export const projects = [
       { label: 'Category', value: 'Graphic Design & Branding' },
       { label: 'Designer', value: 'Jomil Shah' },
     ],
-    description: 'Comprehensive branding and design work capturing the grace, precision, and emotional depth inherent in ballet. The work spans promotional art, banners, posters, social content, motion studies, a program guide booklet, and a proposed ticket portal redesign.',
-    hero: '/images/projects/ca653fac-b1b1-49c5-b6df-1157b00f92ec_rw_1200.png',
+    description: 'A multi-touch identity and campaign system for Ballet Edmonton, spanning brand presentation, print promotion, social content, motion studies, a program guide booklet, and digital presentation.',
+    hero: '/images/projects/2b2c9580-ba0e-413d-8ab0-a31c6bf16cb6_rw_1920.jpg',
+    heroPosition: 'center 58%',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/be79f73d-be25-4c84-aaf9-fd47e75528db_car_1x1.jpg?h=ac1af8ee5cc1231b0ede62dc7538e78b',
+    posterImage: '/images/projects/2b2c9580-ba0e-413d-8ab0-a31c6bf16cb6_rw_1920.jpg',
+    socialImage: '/assets/projects/ballet-edmonton/social/ballet-edmonton-social-preview.jpg',
     sections: [
-      { type: 'text', body: 'Ballet Edmonton stands as a beacon of artistic excellence, where the timeless beauty of dance converges with innovation to create an enchanting experience. The work developed through Odvod Media covered branding strategy, promotion, social media, motion assets, program design, and digital experience concepts.' },
+      { type: 'full', src: '/images/projects/2388ce1d-ae19-4bf4-b993-ecd99e117892_rw_3840.jpg', alt: 'Ballet Edmonton — Identity System Overview' },
+      { type: 'text', label: 'Identity System', heading: 'A quiet identity for a live art form', body: 'The work developed through Odvod Media translated Ballet Edmonton\'s poise and precision into a flexible visual system: elegant enough for program guides, clear enough for promotion, and adaptable across digital campaign touchpoints.' },
       {
         type: 'duo',
         left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/18cba515-b8c7-46c3-9c3a-f67a9efce9d9_rw_1200.jpg?h=f5a139f17089cfda8c895bc5d0b53e48', alt: 'Ballet Edmonton — Brand Mark Presentation' },
         right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/8117f493-da20-4e0d-9364-d30ca4ac8fd7_rw_3840.jpg?h=7976405572680ee4835a482116a5e40d', alt: 'Ballet Edmonton — Brand Identity Application' },
       },
-      { type: 'full', src: '/images/projects/2388ce1d-ae19-4bf4-b993-ecd99e117892_rw_3840.jpg', alt: 'Ballet Edmonton — Campaign Overview' },
+      { type: 'campaign', num: '\\ Print & Promotion', title: 'Motion Held\nIn Print.', body: 'Posters, banners, and campaign applications carry the physicality of ballet without becoming decorative. The strongest pieces use generous negative space, precise typography, and dancer-led imagery to make the promotion feel calm but alive.' },
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/11ecea2d-0eb8-46b1-88c9-16c75f60db50_rw_1200.jpg?h=aa461a8a83b4bb42fafac85f593ef1bf', alt: 'Ballet Edmonton — Campaign Detail' },
-      { type: 'text', label: 'Print & Promotion', heading: 'Motion Captured In Print', body: 'The challenge of visually translating the essence of ballet into tangible promotional materials was met with thoughtful design. Banners and posters were developed to communicate grace, emotional depth, and physical precision while still functioning as clear promotional tools.' },
       {
         type: 'grid',
         items: [
@@ -289,7 +311,7 @@ export const projects = [
         left: { src: '/images/projects/8e241ead-24f7-490c-afe7-bfc763a2eec0_rw_1920.jpg', alt: 'Ballet Edmonton — Promotional Banner' },
         right: { src: '/images/projects/bfe173f1-2ca0-444d-b71a-13b84f825549_rw_3840.jpg', alt: 'Ballet Edmonton — Performance Poster' },
       },
-      { type: 'text', label: 'Program Guide', heading: 'An Immersive Reading Experience', body: 'The collaboration extended to the creation of a visually engaging program guide booklet. Each page was designed to complement the elegance of Ballet Edmonton\'s performances, giving patrons a richer visual experience before, during, and after the show.' },
+      { type: 'campaign', num: '\\ Program Guide', title: 'A Program Guide\nWith Stage Presence.', body: 'The program guide becomes the most editorial part of the system: restrained covers, dancer imagery, and wide open composition give patrons a quieter object to hold before the performance begins.' },
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/38d6f576-4120-4472-9c29-a6c397f9ccb4_rw_1920.jpg?h=49ff312dca327845daedcc6ab41d1d9f', alt: 'Ballet Edmonton — Program Guide Detail' },
       {
         type: 'grid',
@@ -299,15 +321,89 @@ export const projects = [
           { src: '/images/projects/4ea1c4c3-8e1b-4a34-93f1-82ef5faee248_rw_1920.jpg', alt: 'Ballet Edmonton — Booklet Spread' },
         ],
       },
+      { type: 'campaign', num: '\\ Motion & Digital', title: 'Motion Studies\nAnd Digital Presence.', body: 'Motion studies and public-facing website context extend the same system into moving and interactive environments, keeping the experience clear while preserving the quiet tone established by the print work.' },
       {
-        type: 'duo',
-        left: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/ef44e109-e87e-439c-9d55-b5f11a730f69_rw_600.gif?h=fecb967b6f3eef85830e0993925cd25c', alt: 'Ballet Edmonton — Motion Design 01' },
-        right: { src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/278e5227-1285-457f-88dd-1ebad86678cf_rw_600.gif?h=a8937f6232f761808a46e63d9071af26', alt: 'Ballet Edmonton — Motion Design 02' },
+        type: 'motion-duo',
+        items: [
+          {
+            label: 'Motion Study 01',
+            poster: '/assets/projects/ballet-edmonton/motion/motion-study-01-poster.jpg',
+            videoSrc: '/assets/projects/ballet-edmonton/motion/motion-study-01.webm',
+            videoType: 'video/webm',
+            width: 300,
+            height: 250,
+            alt: 'Ballet Edmonton motion study using the campaign identity system',
+          },
+          {
+            label: 'Motion Study 02',
+            poster: '/assets/projects/ballet-edmonton/motion/motion-study-02-poster.jpg',
+            videoSrc: '/assets/projects/ballet-edmonton/motion/motion-study-02.webm',
+            videoType: 'video/webm',
+            width: 300,
+            height: 250,
+            alt: 'Ballet Edmonton motion study with restrained brand animation',
+          },
+        ],
       },
-      { type: 'full', src: '/images/projects/2e522f5b-9474-463c-b20a-ada241b0b9e7_rw_1200.jpg', alt: 'Ballet Edmonton — Ticket Portal Proposal' },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/b450046f-3552-4022-bb1f-94e0a0818817_rw_1920.png?h=9f1ea52fc3e9e52e1e8c0b28d9ba2507', alt: 'Ballet Edmonton — Ticket Portal Wireframe' },
-      { type: 'text', label: 'Digital Experience', heading: 'A Proposed Ticket Portal', body: 'A redesigned ticket portal was proposed to align Ballet Edmonton\'s online experience with the same level of polish present in the brand and promotional work. The proposal focused on a clearer, more elegant path to exploring performances and purchasing tickets.' },
-      { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/4eea5f03-78b8-4ddd-8d66-1c5f77552fbb_rw_3840.jpg?h=e1dfda617f0e7399df7fa7df2a3ba4b3', alt: 'Ballet Edmonton — Ticket Portal Final Mockup' },
+      {
+        type: 'website-showcase',
+        id: 'ballet-website-showcase',
+        motionProfile: 'calm-editorial',
+        label: 'Digital Presence',
+        heading: 'The website,\nheld quietly.',
+        body: 'A restrained digital extension of the season system: image-led, direct, and built around performance.',
+        shots: [
+          {
+            src: '/assets/projects/ballet-edmonton/curated/landing-page.jpg',
+            alt: 'Ballet Edmonton website homepage with performance hero and season overview',
+            layout: 'intro',
+            width: 1800,
+            height: 3701,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/season-page.jpg',
+            alt: 'Ballet Edmonton season page with layered performance imagery and event cards',
+            layout: 'hero',
+            width: 1600,
+            height: 3961,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/about.jpg',
+            alt: 'Ballet Edmonton about section with text card and performance video composition',
+            layout: 'wide',
+            width: 1600,
+            height: 993,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/about-ballet-edmonton.jpg',
+            alt: 'Ballet Edmonton company page with dancer imagery, leadership profiles, and editorial text',
+            layout: 'narrow-right',
+            width: 1600,
+            height: 3410,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/support.jpg',
+            alt: 'Ballet Edmonton support page with layered performance imagery and sponsorship copy',
+            layout: 'wide-right',
+            width: 1800,
+            height: 1150,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/tour-section-1.jpg',
+            alt: 'Ballet Edmonton touring section with performance information and dancer imagery',
+            layout: 'mid',
+            width: 1800,
+            height: 862,
+          },
+          {
+            src: '/assets/projects/ballet-edmonton/curated/tour-section-2.jpg',
+            alt: 'Ballet Edmonton touring page detail with performance imagery and production information',
+            layout: 'narrow-left',
+            width: 1600,
+            height: 2593,
+          },
+        ],
+      },
     ],
     next: 'page-the-cleaners',
   },
@@ -319,6 +415,9 @@ export const projects = [
     title: 'Page The Cleaners',
     category: 'Brand Identity & Environmental',
     categoryShort: 'Brand Identity',
+    energyCategory: 'technical-system',
+    projectType: 'signage-environmental',
+    transitionTone: 'precise',
     tags: ['Logo Design', 'Brand Identity', 'Environmental Design', 'Store Signage'],
     client: 'Page The Cleaners',
     meta: [
@@ -330,6 +429,7 @@ export const projects = [
     description: 'Full visual identity for Page The Cleaners — an Edmonton-based dry cleaning operation offering a full suite of services for individual and commercial clients. The work covers logo design, brand identity, environmental design, and store signage, all built around a clean, dependable visual system.',
     hero: '/images/projects/ae96c42b-e2da-4265-8371-51f925166acf_rw_3840.png',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/1c84543d-ab48-4638-9ca7-41ce262fdcd9_rwc_0x84x1862x1396x1862.png?h=40ee1e5905b857b328bd3bd837c41e08',
+    posterImage: '/images/projects/ae96c42b-e2da-4265-8371-51f925166acf_rw_3840.png',
     sections: [
       { type: 'text', body: 'Page The Cleaners is a long-standing Edmonton-based dry cleaning and garment-care company known for its commitment to quality, reliability, and customer-focused service. They offer a full suite of cleaning solutions — from dry cleaning and laundry services to alterations, stain treatment, and specialty garment care.' },
       {
@@ -354,6 +454,9 @@ export const projects = [
     title: 'Publications',
     category: 'Art Direction — 2023–2024',
     categoryShort: 'Art Direction',
+    energyCategory: 'calm-editorial',
+    projectType: 'print-editorial',
+    transitionTone: 'soft',
     tags: ['Art Direction', 'Editorial Design', 'Magazine Layout', 'Print Production'],
     client: 'Odvod Publishing Inc.',
     meta: [
@@ -365,6 +468,7 @@ export const projects = [
     description: 'Art direction across multiple annual publications — from community foundation storytelling to engineering industry overviews and legal scholarship. The work combines editorial structure, cover direction, typography, photography selection, and print-ready layout systems.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a067e81f-b4e2-4141-b43d-eefa1f52e164_rw_1920.jpg?h=81565059021fd647808cc0c2a47e42d7',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/beca79ce-ebe3-4c77-a45a-c1d93036ae40_car_1x1.jpg?h=a2a44bf7a1817bdd30fd605dea115212',
+    posterImage: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/beca79ce-ebe3-4c77-a45a-c1d93036ae40_car_1x1.jpg?h=a2a44bf7a1817bdd30fd605dea115212',
     sections: [
       { type: 'text', label: 'A Note', body: 'Publications are always a team effort. The designs and layouts shown here are the issues, spreads, and covers produced by Jomil Shah as Art Director.' },
       {
@@ -452,6 +556,9 @@ export const projects = [
     title: 'Urban Affairs',
     category: 'Graphic Design',
     categoryShort: 'Graphic Design',
+    energyCategory: 'high-energy-campaign',
+    projectType: 'print-graphic',
+    transitionTone: 'punchy',
     tags: ['Graphic Design', 'Visual Communication', 'Print Design'],
     client: 'Urban Affairs',
     meta: [
@@ -462,6 +569,7 @@ export const projects = [
     description: 'A collection of graphic design work exploring urban themes through posters, typography, layout, and visual communication studies rooted in city life, culture, and community.',
     hero: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/a119b96f-fa93-40d9-acce-d08c5372a833_rw_3840.jpg?h=d6cbcafedbbbd4f708a77994bda52166',
     cover: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/9a54b106-4ebc-4c6b-a023-acf5ab031796_car_1x1.jpg?h=e3dd2a6c4df6631dc832ab9fc679d0bf',
+    posterImage: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/9a54b106-4ebc-4c6b-a023-acf5ab031796_car_1x1.jpg?h=e3dd2a6c4df6631dc832ab9fc679d0bf',
     sections: [
       { type: 'full', src: 'https://cdn.myportfolio.com/ca72b759-5bcb-4a9e-bc2d-b4085b298de1/03915a22-026c-472d-8464-f1b2d787c63e_rw_1920.png?h=70c981998b87a06adea68e4ef229f918', alt: 'Urban Affairs — Work 01' },
       {

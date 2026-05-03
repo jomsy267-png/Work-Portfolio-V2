@@ -58,6 +58,10 @@ img { display: block; max-width: 100%; height: auto; }
   transition: top .2s;
 }
 .skip-link:focus { top: 16px; }
+.skip-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
 
 /* Critical Layout Utilities for Text Overlays */
 .relative {
@@ -124,6 +128,23 @@ img { display: block; max-width: 100%; height: auto; }
   background: var(--dark);
 }
 .img-wrap img { display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .sticky-section {
+    position: relative;
+  }
+}
 
 @media (max-width: 1024px) {
   :root { --pad: 5px; }

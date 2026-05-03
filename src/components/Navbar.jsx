@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 
 function useClock() {
   const [clock, setClock] = useState({ time: '', tz: '', available: true, seconds: 0, minutes: 0 })
@@ -71,6 +71,7 @@ export default function Navbar({ isProject = false, heroMode = false }) {
   const { time, tz, available, seconds, minutes } = useClock()
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const prefersReducedMotion = useReducedMotion()
 
   const vh = useRef(typeof window !== 'undefined' ? window.innerHeight : 800)
   useEffect(() => {
@@ -91,16 +92,16 @@ export default function Navbar({ isProject = false, heroMode = false }) {
   const animTop = useSpring(rawTop, { stiffness: 160, damping: 28, mass: 0.7 })
 
   const navFade = (delay) => ({
-    initial: { opacity: 0, y: 10 },
+    initial: prefersReducedMotion ? false : { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1], delay },
+    transition: { duration: prefersReducedMotion ? 0 : 0.55, ease: [0.16, 1, 0.3, 1], delay: prefersReducedMotion ? 0 : delay },
   })
 
   return (
     <motion.nav
       className="navbar"
       aria-label="Main navigation"
-      style={{ top: animTop }}
+      style={{ top: prefersReducedMotion ? 0 : animTop }}
     >
       <div className="nav-inner">
         <div className="nav-left">
@@ -229,7 +230,20 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           transition: color .35s ease;
         }
         .nav-link:hover { color: var(--light); }
-        .nav-link:hover .nav-slash { color: rgba(207,207,207,.7); }
+        .nav-link:hover,
+        .nav-link:focus-visible,
+        .nav-brand:focus-visible,
+        .nav-back:focus-visible { color: var(--light); }
+        .nav-link:hover .nav-slash,
+        .nav-link:focus-visible .nav-slash,
+        .nav-back:hover .nav-slash,
+        .nav-back:focus-visible .nav-slash { color: rgba(207,207,207,.7); }
+        .nav-link:focus-visible,
+        .nav-brand:focus-visible,
+        .nav-back:focus-visible {
+          outline: 1px solid rgba(255,255,255,.72);
+          outline-offset: 5px;
+        }
 
         /* Roll effect — overflow clips to 1 line, duplicate slides up on hover */
         .roll-wrap {
@@ -246,8 +260,11 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-link:hover .roll-wrap span,
+        .nav-link:focus-visible .roll-wrap span,
         .nav-brand:hover .roll-wrap span,
-        .nav-back:hover .roll-wrap span {
+        .nav-brand:focus-visible .roll-wrap span,
+        .nav-back:hover .roll-wrap span,
+        .nav-back:focus-visible .roll-wrap span {
           transform: translateY(-100%);
         }
 
@@ -262,7 +279,6 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           transition: color .35s ease;
         }
         .nav-back:hover { color: var(--light); }
-        .nav-back:hover .nav-slash { color: rgba(207,207,207,.7); }
 
         .nav-greeting {
           font-family: var(--fm);
@@ -295,6 +311,23 @@ export default function Navbar({ isProject = false, heroMode = false }) {
           .nav-inner { flex-direction: column; gap: 10px; align-items: flex-start; }
           .nav-right { width: 100%; justify-content: space-between; }
           .nav-greeting { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-slash,
+          .nav-link,
+          .nav-back,
+          .roll-wrap span,
+          .nav-clock-area * {
+            transition: none !important;
+          }
+          .nav-link:hover .roll-wrap span,
+          .nav-link:focus-visible .roll-wrap span,
+          .nav-brand:hover .roll-wrap span,
+          .nav-brand:focus-visible .roll-wrap span,
+          .nav-back:hover .roll-wrap span,
+          .nav-back:focus-visible .roll-wrap span {
+            transform: none;
+          }
         }
       `}</style>
     </motion.nav>

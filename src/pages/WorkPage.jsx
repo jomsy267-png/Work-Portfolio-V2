@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { projects } from '../data/projects'
@@ -26,19 +26,32 @@ function matchesFilter(project, filter) {
 }
 
 function WorkCard({ project, i }) {
+  const prefersReducedMotion = useReducedMotion()
+  const previewImage = project.posterImage || project.cover || project.hero
+  const energyCategory = project.energyCategory || 'calm-editorial'
+
   return (
     <motion.div
-      layout
+      layout={!prefersReducedMotion}
       key={project.slug}
-      initial={{ opacity: 0, y: 40 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.97 }}
-      transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1], delay: (i % 2) * 0.08 }}
+      exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.55,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: prefersReducedMotion ? 0 : (i % 2) * 0.08,
+      }}
     >
-      <Link to={`/work/${project.slug}`} className="wpc">
+      <Link
+        to={`/work/${project.slug}`}
+        className={`wpc wpc--${energyCategory}`}
+        data-energy-category={energyCategory}
+        data-project-type={project.projectType || 'mixed-media'}
+      >
         {/* Image */}
         <div className="wpc-img img-wrap">
-          <img src={project.cover || project.hero} alt={project.title} loading="lazy" />
+          <img src={previewImage} alt={project.title} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
           <div className="wpc-overlay" />
         </div>
 
@@ -59,57 +72,63 @@ function WorkCard({ project, i }) {
 
 export default function WorkPage() {
   const [active, setActive] = useState('all')
+  const prefersReducedMotion = useReducedMotion()
   const filtered = projects.filter(p => matchesFilter(p, active))
 
   return (
     <>
       <Navbar />
 
-      {/* ── HEADER ── */}
-      <motion.div
-        className="wph"
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
-      >
-        <div className="wph-inner">
-          <h1 className="wph-title">All Work</h1>
-          <div className="wph-meta">
-            <span className="wph-count">{String(projects.length).padStart(2, '0')} Projects</span>
-            <p className="wph-desc">Brand identities, campaigns, publications, and visual systems — across print and digital.</p>
+      <main id="main-content">
+        {/* ── HEADER ── */}
+        <motion.div
+          className="wph"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: [0.25, 0.1, 0.25, 1], delay: prefersReducedMotion ? 0 : 0.1 }}
+        >
+          <div className="wph-inner">
+            <h1 className="wph-title">All Work</h1>
+            <div className="wph-meta">
+              <span className="wph-count">{String(projects.length).padStart(2, '0')} Projects</span>
+              <p className="wph-desc">Brand identities, campaigns, publications, and visual systems — across print and digital.</p>
+            </div>
           </div>
-        </div>
-      </motion.div>
-
-      {/* ── FILTER TABS ── */}
-      <motion.div
-        className="wpf"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0.22 }}
-      >
-        {FILTERS.map(f => (
-          <button
-            key={f.value}
-            className={`wpf-btn${active === f.value ? ' is-active' : ''}`}
-            onClick={() => setActive(f.value)}
-          >
-            {active === f.value && <span className="wpf-slash">\ </span>}
-            {f.label}
-          </button>
-        ))}
-      </motion.div>
-
-      {/* ── GRID ── */}
-      <div className="wpg-wrap">
-        <motion.div className="wpg" layout>
-          <AnimatePresence mode="popLayout">
-            {filtered.map((p, i) => (
-              <WorkCard key={p.slug} project={p} i={i} />
-            ))}
-          </AnimatePresence>
         </motion.div>
-      </div>
+
+        {/* ── FILTER TABS ── */}
+        <motion.div
+          className="wpf"
+          role="group"
+          aria-label="Project filters"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: [0.25, 0.1, 0.25, 1], delay: prefersReducedMotion ? 0 : 0.22 }}
+        >
+          {FILTERS.map(f => (
+            <button
+              key={f.value}
+              className={`wpf-btn${active === f.value ? ' is-active' : ''}`}
+              onClick={() => setActive(f.value)}
+              aria-pressed={active === f.value}
+            >
+              {active === f.value && <span className="wpf-slash" aria-hidden="true">\ </span>}
+              {f.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* ── GRID ── */}
+        <div className="wpg-wrap">
+          <motion.div className="wpg" layout={!prefersReducedMotion}>
+            <AnimatePresence>
+              {filtered.map((p, i) => (
+                <WorkCard key={p.slug} project={p} i={i} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </main>
 
       <Footer minimal />
 
@@ -179,7 +198,14 @@ export default function WorkPage() {
           transition: color .25s ease, border-color .25s ease;
           margin-bottom: -1px;
         }
-        .wpf-btn:hover { color: var(--light); }
+        .wpf-btn:hover,
+        .wpf-btn:focus-visible {
+          color: var(--light);
+        }
+        .wpf-btn:focus-visible {
+          outline: 1px solid rgba(207,207,207,.72);
+          outline-offset: -5px;
+        }
         .wpf-btn.is-active {
           color: var(--light);
           border-bottom-color: var(--light);
@@ -201,6 +227,7 @@ export default function WorkPage() {
           display: block;
           text-decoration: none;
           cursor: pointer;
+          outline: none;
         }
         .wpc-img {
           position: relative;
@@ -214,9 +241,21 @@ export default function WorkPage() {
           object-fit: cover;
           transition: transform .75s cubic-bezier(.25,.1,.25,1), filter .45s ease;
         }
-        .wpc:hover .wpc-img img {
-          transform: scale(1.05);
+        .wpc:hover .wpc-img img,
+        .wpc:focus-visible .wpc-img img {
+          transform: scale(1.035);
           filter: brightness(.82);
+        }
+        .wpc--high-energy-campaign:hover .wpc-img img,
+        .wpc--high-energy-campaign:focus-visible .wpc-img img,
+        .wpc--motion-experimental:hover .wpc-img img,
+        .wpc--motion-experimental:focus-visible .wpc-img img {
+          transform: scale(1.05);
+        }
+        .wpc--technical-system:hover .wpc-img img,
+        .wpc--technical-system:focus-visible .wpc-img img {
+          transform: scale(1.02);
+          filter: brightness(.86);
         }
         .wpc-overlay {
           position: absolute; inset: 0;
@@ -225,7 +264,12 @@ export default function WorkPage() {
           transition: opacity .45s ease;
           pointer-events: none;
         }
-        .wpc:hover .wpc-overlay { opacity: 1; }
+        .wpc:hover .wpc-overlay,
+        .wpc:focus-visible .wpc-overlay { opacity: 1; }
+        .wpc:focus-visible .wpc-img {
+          outline: 1px solid rgba(207,207,207,.78);
+          outline-offset: 6px;
+        }
 
         /* card footer */
         .wpc-foot {
@@ -259,7 +303,8 @@ export default function WorkPage() {
           gap: 4px;
           transition: color .3s;
         }
-        .wpc:hover .wpc-title { color: var(--surface); }
+        .wpc:hover .wpc-title,
+        .wpc:focus-visible .wpc-title { color: var(--surface); }
         .wpc-slash {
           color: rgba(207,207,207,.28);
           font-weight: 400;
@@ -284,6 +329,24 @@ export default function WorkPage() {
           .wpg { grid-template-columns: 1fr; gap: 36px; }
           .wpf-btn { padding: 16px 12px 14px; font-size: 12px; }
           .wpc-num { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .wpf-btn,
+          .wpc-img img,
+          .wpc-overlay,
+          .wpc-title {
+            transition: none !important;
+          }
+          .wpc:hover .wpc-img img,
+          .wpc:focus-visible .wpc-img img,
+          .wpc--high-energy-campaign:hover .wpc-img img,
+          .wpc--high-energy-campaign:focus-visible .wpc-img img,
+          .wpc--motion-experimental:hover .wpc-img img,
+          .wpc--motion-experimental:focus-visible .wpc-img img,
+          .wpc--technical-system:hover .wpc-img img,
+          .wpc--technical-system:focus-visible .wpc-img img {
+            transform: none;
+          }
         }
         @media (min-width: 810px) and (max-width: 1279px) {
           .wph-inner { grid-template-columns: 1fr 220px; }

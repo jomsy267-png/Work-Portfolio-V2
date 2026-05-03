@@ -40,3 +40,73 @@ under `.claude/skills/*/SKILL.md` and follow relevant workflow.
   `PATH=/Users/jomilshah/.nvm/versions/node/v24.14.1/bin:$PATH npm run build`
 - Dev URL:
   `http://127.0.0.1:5173/`
+
+---
+
+# Awwwards Submission Standard
+
+This portfolio is being prepared for Awwwards submission.
+
+The quality bar is not normal portfolio quality. The quality bar is award-submission quality.
+
+Every design, layout, motion, and implementation decision must be judged against:
+
+1. Design
+2. Usability
+3. Creativity
+4. Content
+5. Responsive design
+6. Accessibility
+7. Performance / WPO
+8. Animation and transitions
+9. Semantics / SEO
+10. Markup and metadata
+
+## Awwwards-level rule
+
+Do not make the website trendy.
+
+Make it:
+- memorable
+- refined
+- usable
+- fast
+- cinematic where appropriate
+- technically polished
+- conceptually clear
+- brand-consistent
+- emotionally distinctive
+
+## No-exception quality bar
+
+A project page is not complete unless:
+
+- the hero has impact
+- the first 3 seconds feel premium
+- the page has a clear creative concept
+- the image sequence feels art-directed
+- typography feels intentional
+- motion feels custom, not template-like
+- mobile is not an afterthought
+- performance is protected
+- accessibility is respected
+- the ending feels designed
+- the page has at least one memorable interaction or visual moment
+- nothing feels generic, stock, or AI-generated
+
+## Judging mindset
+
+Before finalizing any work, score it from 1-10 in:
+
+- Design
+- Usability
+- Creativity
+- Content
+- Motion
+- Performance
+- Mobile
+- Accessibility
+
+Anything below 8 must be improved before completion.
+
+The target is 8.5+ across all categories.

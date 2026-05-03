@@ -10,7 +10,8 @@ export default function Cursor() {
 
   useEffect(() => {
     const isTouchDevice = window.matchMedia('(hover: none)').matches
-    if (isTouchDevice) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (isTouchDevice || prefersReducedMotion) return
 
     const move = (e) => {
       dotX.set(e.clientX)
@@ -88,7 +89,12 @@ export default function Cursor() {
           transition: width .28s, height .28s, border-color .28s;
         }
         .cursor-ring.h { width: 50px; height: 50px; top: -25px; left: -25px; border-color: var(--accent); }
-        @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+        @media (hover: none), (prefers-reduced-motion: reduce) {
+          .cursor-dot,
+          .cursor-ring {
+            display: none;
+          }
+        }
       `}</style>
     </>
   )

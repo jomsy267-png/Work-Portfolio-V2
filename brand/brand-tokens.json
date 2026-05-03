@@ -1,0 +1,27 @@
+{
+  "colors": {
+    "backgroundPrimary": "#050505",
+    "backgroundSecondary": "#f7f7f7",
+    "textPrimary": "#f7f7f7",
+    "textSecondary": "#8c8c8c",
+    "accentPrimary": "#0099ff",
+    "accentSecondary": "#4ade80",
+    "borderSubtle": "rgba(207, 207, 207, 0.12)"
+  },
+  "typography": {
+    "headingFont": "Archivo Narrow",
+    "bodyFont": "Inter",
+    "labelFont": "Fragment Mono"
+  },
+  "spacing": {
+    "sectionY": "80px desktop / 60px mobile",
+    "pageX": "16.5px desktop / 5px tablet-mobile",
+    "gridGap": "20px desktop / 12px mobile"
+  },
+  "motion": {
+    "defaultEase": "[0.25, 0.1, 0.25, 1]",
+    "slowDuration": "1.05s-1.8s",
+    "mediumDuration": "0.55s-0.85s",
+    "fastDuration": "0.25s-0.45s"
+  }
+}

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 
 const PANEL_END       = [1.0, 0.72, 0.44, 0.20, 0.44]
 const EXIT_WIPE_START = 0.60
@@ -88,6 +88,8 @@ function WordSpan({ word, index, total, progress }) {
 }
 
 export default function AboutSection({ containerRef: externalContainerRef, disableExit = false }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionDisabled = disableExit || prefersReducedMotion
   const localContainerRef = useRef(null)
   const containerRef = externalContainerRef ?? localContainerRef
   const sectionRef   = useRef(null)
@@ -125,7 +127,7 @@ export default function AboutSection({ containerRef: externalContainerRef, disab
 
   // Body scrolls up during exit (same pattern as Skillset)
   const rawBodyY = useTransform(scrollYProgress, (p) => {
-    if (disableExit) return 0
+    if (motionDisabled) return 0
     if (p <= EXIT_WIPE_START) return 0
     const sec = sectionRef.current
     if (!sec) return 0
@@ -151,6 +153,7 @@ export default function AboutSection({ containerRef: externalContainerRef, disab
 
   // Mouse tracking
   useEffect(() => {
+    if (prefersReducedMotion) return undefined
     const el = sectionRef.current
     if (!el) return
     const onMove = (e) => {
@@ -159,11 +162,12 @@ export default function AboutSection({ containerRef: externalContainerRef, disab
     }
     el.addEventListener('mousemove', onMove)
     return () => el.removeEventListener('mousemove', onMove)
-  }, [])
+  }, [prefersReducedMotion])
 
   // RAF loop — emitter model. Each square waits for its delay (below viewport),
   // then rises with ease-out deceleration, loops off-screen, keeps streaming.
   useEffect(() => {
+    if (prefersReducedMotion) return undefined
     const tick = () => {
       const prog     = sqProgress.get()
       const handoffProg = sqHandoffProgress.get()
@@ -211,7 +215,7 @@ export default function AboutSection({ containerRef: externalContainerRef, disab
     }
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [sqProgress, sqHandoffProgress])
+  }, [sqProgress, sqHandoffProgress, prefersReducedMotion])
 
   const words = ABOUT_TEXT.split(' ')
 
@@ -224,7 +228,7 @@ export default function AboutSection({ containerRef: externalContainerRef, disab
         {/* Panel wipe — entry via pre-pin rise, exit via pin scroll */}
         <div className="ab-panels" aria-hidden="true">
           {[0, 1, 2, 3, 4].map(i => (
-            <AboutPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={disableExit} />
+            <AboutPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={motionDisabled} />
           ))}
         </div>
 

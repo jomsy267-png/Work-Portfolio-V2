@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 
 const SKILLS = [
   { num: '01', title: 'Brand\nIdentity' },
@@ -81,6 +81,8 @@ function PinPanel({ idx, entryProgress, progress, disableExit = false }) {
 }
 
 export default function Skillset({ containerRef: externalContainerRef, disableExit = false }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionDisabled = disableExit || prefersReducedMotion
   const localContainerRef = useRef(null)
   const containerRef = externalContainerRef ?? localContainerRef
   const sectionRef   = useRef(null)
@@ -142,7 +144,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
   // Body completes its full travel in the first 40% of the exit phase, then plateaus.
   // This ensures SK4 is out of sight by the 50% mark even accounting for spring lag.
   const rawBodyY = useTransform(scrollYProgress, (p) => {
-    if (disableExit) return 0
+    if (motionDisabled) return 0
     const exitStart = isStackedMobile ? 0.78 : EXIT_WIPE_START
     if (p <= exitStart) return 0
     const sec = sectionRef.current
@@ -165,6 +167,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
 
   // Mouse tracking
   useEffect(() => {
+    if (prefersReducedMotion) return undefined
     const el = sectionRef.current
     if (!el) return
     const onMove = (e) => {
@@ -173,10 +176,11 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
     }
     el.addEventListener('mousemove', onMove)
     return () => el.removeEventListener('mousemove', onMove)
-  }, [])
+  }, [prefersReducedMotion])
 
   // RAF loop — squares lerp toward mouse + rise on scroll
   useEffect(() => {
+    if (prefersReducedMotion) return undefined
     const tick = () => {
       const prog      = scrollYProgress.get()
       const mx        = mouseRef.current.x
@@ -198,7 +202,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
     }
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [scrollYProgress])
+  }, [scrollYProgress, prefersReducedMotion])
 
   return (
     <div ref={containerRef} className="skillset-pin z-layer-5" id="skillset">
@@ -207,7 +211,7 @@ export default function Skillset({ containerRef: externalContainerRef, disableEx
         {/* Panel wipe — entry driven by pre-pin rise, exit driven by pin scroll */}
         <div className="sk-panels" aria-hidden="true">
           {[0, 1, 2, 3, 4].map(i => (
-            <PinPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={disableExit} />
+            <PinPanel key={i} idx={i} entryProgress={entryProgress} progress={scrollYProgress} disableExit={motionDisabled} />
           ))}
         </div>
 

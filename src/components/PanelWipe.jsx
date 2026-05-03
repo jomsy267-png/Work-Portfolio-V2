@@ -1,10 +1,13 @@
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 
 const TRANSITION = { duration: 0.85, ease: [0.77, 0, 0.175, 1] }
 
 // 1. Initial Load & Route Transition Wipe
 export function PageLoadWipe() {
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) return null
+
   return (
     <div className="panel-wipe-wrapper">
       {[...Array(5)].map((_, i) => (
@@ -38,6 +41,7 @@ const PANEL_END = [1.0, 0.72, 0.44, 0.20, 0.44]
 
 export function StaggeredSectionBackground({ isLight = true }) {
   const ref = useRef(null)
+  const prefersReducedMotion = useReducedMotion()
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -45,6 +49,21 @@ export function StaggeredSectionBackground({ isLight = true }) {
   })
 
   const colorClass = isLight ? 'bg-panel-light' : 'bg-panel-dark'
+
+  if (prefersReducedMotion) {
+    return (
+      <div
+        ref={ref}
+        className={colorClass}
+        style={{
+          position: 'absolute',
+          top: 0, right: 0, bottom: 0, left: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
+    )
+  }
 
   return (
     <div
